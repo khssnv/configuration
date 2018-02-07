@@ -1,13 +1,13 @@
 [user]
-	name = Alisher Khassanov
-	email = a.khssnv@gmail.com
+  name = Alisher Khassanov
+  email = a.khssnv@gmail.com
 [core]
-	autocrlf = true
+  autocrlf = true
 [alias]
-    co = checkout
-    ci = commit
-    st = status
-    br = branch
-    hist = log --pretty=format:\"%h %ad | %s%d[%an]\" --graph --date=short
-    type = cat-file -t
-    dump = cat-file -p
+  co = checkout
+  ci = commit
+  st = status
+  br = branch
+  hist = log --pretty=format:\"%h %ad | %ae | %s%d\" --graph --date=short
+  type = cat-file -t
+  dump = cat-file -p
