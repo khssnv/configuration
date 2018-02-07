@@ -1,57 +1,39 @@
-set shiftwidth=4
-set expandtab
-set tabstop=4
-
-set wildmenu
-set wcm=<Tab>
-menu Encoding.koi8-r :e ++enc=koi8-r ++ff=unix<CR>
-menu Encoding.windows-1251 :e ++enc=cp1251 ++ff=dos<CR>
-menu Encoding.cp866 :e ++enc=cp866 ++ff=dos<CR>
-menu Encoding.utf-8 :e ++enc=utf8 <CR>
-menu Encoding.koi8-u :e ++enc=koi8-u ++ff=unix<CR>
-map <F8> :emenu Encoding.<TAB>
-
-:set number
-:syntax on
-:colorscheme desert
-:set noignorecase
-:set nocursorline
-
-:hi Error guifg=NONE guibg=NONE gui=undercurl ctermfg=white ctermbg=red cterm=NONE guisp=#FF6c60
-
-" disabling compat mode
-set nocompatible
-
-" set default UTF-8
-set encoding=utf-8
-
-" start pluginloader
-call pathogen#infect()
-filetype plugin indent on
-
-" setup color scheme
-colorscheme wombat256mod
+" syntax highlight
 syntax on
 
-" enabling line numbers
+" strings number
 set number
 highlight LineNr ctermfg=Yellow
 
-" enabling cursorline
-set cursorline
-
-" enabling statusline
 set laststatus=2
 
-" disabling backup
-set nobackup
-
-" set history len
-set history=100
-
 " set TAB space
-set tabstop=4
-set softtabstop=4
+set tabstop=2
+set softtabstop=2
+set shiftwidth=4                "An indent is 2 spaces
+set smarttab                    "Indent instead of tab at start of line
+set shiftround                  "Round spaces to nearest shiftwidth multiple
+set nojoinspaces                "Don't convert spaces to tabs
+set expandtab                   "set TAB to SPACE conversion
 
-" set TAB to SPACE conversion
-set expandtab
+" disable tabline
+set showtabline=0
+
+set keymap=russian-jcukenwin
+set iminsert=0
+set imsearch=0
+highlight lCursor guifg=NONE guibg=Cyan
+
+" Vundle block begin
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim'   " Installation https://github.com/VundleVim/Vundle.vim
+Plugin 'Valloric/YouCompleteMe' " Installation https://github.com/Valloric/YouCompleteMe
+
+call vundle#end()            " required
+filetype plugin indent on    " required
+" Vundle block end
