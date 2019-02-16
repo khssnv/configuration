@@ -2,7 +2,7 @@
   name = Alisher A. Khassanov
   email = a.khssnv@gmail.com
 [core]
-  autocrlf = true
+  autocrlf = input
 [alias]
   co = checkout
   ci = commit

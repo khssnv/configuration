@@ -1,4 +1,4 @@
-﻿" syntax highlight
+" syntax highlight
 syntax on
 set nocompatible              "be iMproved, required
 filetype off                  "required
