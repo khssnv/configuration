@@ -37,10 +37,8 @@ set imsearch=0
 highlight lCursor guifg=NONE guibg=Cyan
 
 " Vundle block begin
-
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-
 Plugin 'VundleVim/Vundle.vim'               "Vim plugin manager, https://github.com/VundleVim/Vundle.vim
 Plugin 'Valloric/YouCompleteMe'             "Code autocompleter, https://github.com/Valloric/YouCompleteMe
 Plugin 'taketwo/vim-ros'                    "From https://github.com/taketwo/vim-ros
@@ -55,8 +53,19 @@ Plugin 'nanotech/jellybeans.vim'            "Color scheme https://github.com/nan
 Plugin 'pangloss/vim-javascript'            "JavaScript
 Plugin 'mxw/vim-jsx'                        "React JSX
 Plugin 'Yggdroot/indentLine'                "Point indents
-
+Plugin 'ElmCast/elm-vim'                    "Elm
+Plugin 'w0rp/ale'                           "Linter
+Plugin 'mattn/emmet-vim'                    "HTML and CSS
 call vundle#end()            "required
 filetype plugin indent on    "required
 let g:pydiction_location='~/.vim/tools/pydiction/complete-dict'
 " Vundle block end
+
+
+" Elm
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:elm_syntastic_show_warnings = 1
+let g:ycm_semantic_triggers = {
+     \ 'elm' : ['.'],
+     \}
