@@ -1,0 +1,2 @@
+# execute .zlogin on X display manager login
+source ~/.zlogin > /dev/null 2>&1
