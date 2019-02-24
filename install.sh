@@ -1,7 +1,8 @@
 #!/bin/sh
 
 cp -rf ./.zshrc ~
-cp -rf ./.zprofile ~
+cp -rf ./.zlogin ~
+cp -rf ./.zlogout ~
 cp -rf ./.vimrc ~
 cp -rf ./.gitconfig ~
 cp -rf ./.tmux.conf ~

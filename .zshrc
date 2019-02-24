@@ -10,9 +10,18 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 unsetopt SHARE_HISTORY
+
 alias tl="tmux ls"
 alias ta="tmux a -t"
 alias tn="tmux new -s"
+
+moshs () {
+    mosh "$@" -- screen -dR mosh-session
+}
+
+mosh-tmux () {
+    mosh "$@" -- tmux new -ADs mosh-session
+}
 
 source /opt/ros/melodic/setup.zsh
 export PATH="$HOME/.cargo/bin:$PATH"
