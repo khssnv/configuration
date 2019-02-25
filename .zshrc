@@ -9,6 +9,7 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
+unsetopt no_match
 unsetopt SHARE_HISTORY
 
 alias tl="tmux ls"
@@ -24,5 +25,6 @@ mosh-tmux () {
 }
 
 source /opt/ros/melodic/setup.zsh
+#source /opt/ros/crystal/setup.zsh
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH=~/.npm-global/bin:$PATH
