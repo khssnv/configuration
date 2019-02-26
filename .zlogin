@@ -24,9 +24,9 @@ tmux has-session -t remote
 if [ $? != 0 ]
 then
   tmux new-session -s remote -n linode -d
-  tmux send-keys -t remote:linode 'moshs linode.khassanov.me' C-m
+  tmux send-keys -t remote:linode 'moshs linode.khassanov.me'
   tmux new-window -n ovh
-  tmux send-keys -t remote:ovh 'moshs ovh.khassanov.me' C-m
+  tmux send-keys -t remote:ovh 'moshs ovh.khassanov.me'
 fi
 
 tmux has-session -t ws
