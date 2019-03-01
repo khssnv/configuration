@@ -1,8 +1,9 @@
-#!/bin/sh
+#!/bin/bash
+
+DOTFILES_DIR="$( cd $( dirname ${BASH_SOURCE[0]} ) >/dev/null 2>&1 && pwd )"
 
 cp -rf ./.zshrc ~
 cp -rf ./.zlogin ~
-cp -rf ./.zlogout ~
 cp -rf ./.vimrc ~
 cp -rf ./.gitconfig ~
 cp -rf ./.tmux.conf ~

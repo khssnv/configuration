@@ -32,7 +32,7 @@ fi
 tmux has-session -t ws
 if [ $? != 0 ]
 then
-  tmux new-session -s ws -n ws -d
-  tmux send-keys -t ws:ws 'cd ~/Workspace' C-m
+  tmux new-session -s ws -n Workspace -d
+  tmux send-keys -t ws:Workspace 'cd ~/Workspace' C-m
 fi
 
