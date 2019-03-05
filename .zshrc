@@ -17,14 +17,27 @@ alias ta="tmux a -t"
 alias tn="tmux new -s"
 
 moshs () {
-    mosh "$@" -- screen -dR mosh-session
+    mosh "$@" -- screen -dR alisher
 }
 
 mosh-tmux () {
     mosh "$@" -- tmux new -ADs mosh-session
 }
 
-source /opt/ros/melodic/setup.zsh
-#source /opt/ros/crystal/setup.zsh
-export PATH="$HOME/.cargo/bin:$PATH"
-export PATH=~/.npm-global/bin:$PATH
+ROS1_ENV="/opt/ros/melodic/setup.zsh"
+ROS2_ENV="/opt/ros/crystal/setup.zsh"
+if [ -e "$ROS1_ENV" ]; then
+  source $ROS1_ENV
+elif [ -e $ROS2_ENV ]; then
+  source $ROS2_ENV
+fi
+
+CARGO_BIN="$HOME/.cargo/bin"
+if [ -d $CARGO_BIN ]; then
+  export PATH="$CARGO_BIN:$PATH"
+fi
+
+NPM_HOME="$HOME/.npm-global/bin"
+if [ -d $NPM_HOME ]; then
+  export PATH="$NPM_HOME:$PATH"
+fi
