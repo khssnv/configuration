@@ -57,10 +57,6 @@ then
   if [ $? != 0 ]
   then
     tmux new-session -s airalab -n citadel -d
-    tmux send-keys -t airalab:citadel 'moshs -p 60000 root@citadel.aira.life'
-    tmux new-window -n citadel1
-    tmux send-keys -t airalab:citadel1 'moshs -p 60000 root@citadel.aira.life'
-    tmux new-window -n citadel2
-    tmux send-keys -t airalab:citadel2 'moshs -p 60000 root@citadel.aira.life'
+    tmux send-keys -t airalab:citadel 'moshs root@citadel.aira.life'
   fi
 fi
