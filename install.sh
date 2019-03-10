@@ -7,6 +7,7 @@ cp -rf ./.zlogin ~
 cp -rf ./.vimrc ~
 cp -rf ./.gitconfig ~
 cp -rf ./.tmux.conf ~
+# cp -rf ./.yank.sh ~
 
 # VIM Vundle
 if [ ! -e ~/.vim/bundle/Vundle.vim ];
