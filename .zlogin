@@ -50,6 +50,8 @@ then
     tmux send-keys -t remote:linode 'moshs linode.khassanov.me'
     tmux new-window -n ovh
     tmux send-keys -t remote:ovh 'moshs ovh.khassanov.me'
+    tmux new-window -n hbrz
+    tmux send-keys -t remote:hbrz 'moshs hbrz.khassanov.me'
   fi
 
   # Airalab
