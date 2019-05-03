@@ -46,12 +46,10 @@ then
   tmux has-session -t remote
   if [ $? != 0 ]
   then
-    tmux new-session -s remote -n linode -d
-    tmux send-keys -t remote:linode 'moshs linode.khassanov.me'
-    tmux new-window -n ovh
-    tmux send-keys -t remote:ovh 'moshs ovh.khassanov.me'
+    tmux new-session -s remote -n hetzner -d
+    tmux send-keys -t remote:hetzner 'moshs hetzner.khassanov.me'
     tmux new-window -n hbrz
-    tmux send-keys -t remote:hbrz 'moshs hbrz.khassanov.me'
+    tmux send-keys -t remote:hbrz 'ssh hbrz.khassanov.me'
   fi
 
   # Airalab

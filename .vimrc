@@ -57,6 +57,7 @@ Plugin 'ElmCast/elm-vim'                    "Elm
 Plugin 'w0rp/ale'                           "Linter
 Plugin 'mattn/emmet-vim'                    "HTML and CSS
 Plugin 'LnL7/vim-nix'
+Plugin 'derekwyatt/vim-scala'
 call vundle#end()            "required
 filetype plugin indent on    "required
 let g:pydiction_location='~/.vim/tools/pydiction/complete-dict'
