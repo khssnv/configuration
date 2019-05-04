@@ -34,7 +34,10 @@
       # confFile = "/etc/cjdroute.conf";
     };
 
-    ipfs.enable = true;
+    ipfs = {
+      enable = true;
+      localDiscovery = false;
+    };
     
     ntp = {
       enable = true;
