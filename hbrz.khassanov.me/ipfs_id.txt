@@ -1,0 +1,12 @@
+{
+        "ID": "QmbHobv84D9XFC9sgzvq2APn9n9epi9Agr95q4sKvrJ8Bd",
+        "PublicKey": "CAASpgIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDqvzWCBbTlV12wmP2uWpUJ+Idb9lOIF7QzVpU/ovd98JJlodNrbcW0iAWY3pMySw63wYtY018Bai8FUxAo7GXP+CxXx4cysdZnww0IjtYe/Q8yD7tj8GTNrzJO7Q2RCCui4UR8hSLh4X6x4iGn00mk1s6JTeOSp7Mr8XDnhtf1gQavWZKMOrVVEkGM/1nkZRy1Ui2XPSiN6MP+W7ruZ2rH6LY+INTYqU05nwON8b/CtyEXJ0M9J4oiQjyu74bNWWiCRoEYprnJYXbcH55+BdaFECh3DoLi5xTKcyIOFB8KEDHPDjFRzJR/zzR2aIr9DAFSnKnqFDqHmVFcFqv4fDdrAgMBAAE=",
+        "Addresses": [
+                "/ip4/127.0.0.1/tcp/4001/ipfs/QmbHobv84D9XFC9sgzvq2APn9n9epi9Agr95q4sKvrJ8Bd",
+                "/ip4/127.0.0.2/tcp/4001/ipfs/QmbHobv84D9XFC9sgzvq2APn9n9epi9Agr95q4sKvrJ8Bd",
+                "/ip4/198.12.125.5/tcp/4001/ipfs/QmbHobv84D9XFC9sgzvq2APn9n9epi9Agr95q4sKvrJ8Bd",
+                "/ip6/::1/tcp/4001/ipfs/QmbHobv84D9XFC9sgzvq2APn9n9epi9Agr95q4sKvrJ8Bd"
+        ],
+        "AgentVersion": "go-ipfs/0.4.20/",
+        "ProtocolVersion": "ipfs/0.1.0"
+}
