@@ -9,6 +9,7 @@ cp -rf ./.gitconfig ~
 cp -rf ./.tmux.conf ~
 # cp -rf ./.yank.sh ~
 cp -rf ./.npmrc  ~
+cp -rf ./.screenrc  ~
 
 # VIM Vundle
 if [ ! -e ~/.vim/bundle/Vundle.vim ];
