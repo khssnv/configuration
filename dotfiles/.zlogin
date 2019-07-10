@@ -53,10 +53,20 @@ then
   fi
 
   # Airalab
-  tmux has-session -t airalab
+  # tmux has-session -t airalab
+  # if [ $? != 0 ]
+  # then
+  #   tmux new-session -s airalab -n citadel -d
+  #   tmux send-keys -t airalab:citadel 'moshs root@citadel.aira.life'
+  # fi
+
+  # REMY Robotics 
+  tmux has-session -t remy
   if [ $? != 0 ]
   then
-    tmux new-session -s airalab -n citadel -d
-    tmux send-keys -t airalab:citadel 'moshs root@citadel.aira.life'
+    tmux new-session -s remy -n base-1 -d
+    tmux send-keys -t remy:base-1'ssh khassanov@remy-base-1'
+    tmux new-window -n base-1f
+    tmux send-keys -t remy:base-1f 'ssh khassanov@remy-base-1f'
   fi
 fi
