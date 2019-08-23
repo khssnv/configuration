@@ -15,6 +15,8 @@ unsetopt SHARE_HISTORY
 alias tl="tmux ls"
 alias ta="tmux a -t"
 alias tn="tmux new -s"
+alias c="xclip -selection clipboard"
+alias v="xclip -o"
 
 moshs () {
     mosh "$@" -- screen -dR alisher
@@ -25,7 +27,7 @@ mosh-tmux () {
 }
 
 ROS1_ENV="/opt/ros/melodic/setup.zsh"
-ROS2_ENV="/opt/ros/crystal/setup.zsh"
+ROS2_ENV="/opt/ros/dashing/setup.zsh"
 if [ -e "$ROS1_ENV" ]; then
   source $ROS1_ENV
 elif [ -e $ROS2_ENV ]; then
