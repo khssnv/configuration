@@ -32,9 +32,13 @@ then
   if [ $? != 0 ]
   then
     tmux new-session -s remote -n hetzner -d
-    tmux send-keys -t remote:hetzner 'moshs hetzner.khassanov.me'
+    tmux send-keys -t remote:hetzner 'ssh hetzner.khassanov.me'
     tmux new-window -n hbrz
     tmux send-keys -t remote:hbrz 'ssh hbrz.khassanov.me'
+    tmux new-window -n oracle1
+    tmux send-keys -t remote:oracle1 'ssh oracle1.khassanov.me'
+    tmux new-window -n oracle2
+    tmux send-keys -t remote:oracle2 'ssh oracle2.khassanov.me'
   fi
 
   # Airalab
