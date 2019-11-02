@@ -27,6 +27,7 @@ set smarttab                    "Indent instead of tab at start of line
 set shiftround                  "Round spaces to nearest shiftwidth multiple
 set nojoinspaces                "Don't convert spaces to tabs
 set expandtab                   "set TAB to SPACE conversion
+let g:indentLine_setConceal = 0
 
 " disable tabline
 set showtabline=0
@@ -54,14 +55,26 @@ Plugin 'pangloss/vim-javascript'            "JavaScript
 Plugin 'mxw/vim-jsx'                        "React JSX
 Plugin 'Yggdroot/indentLine'                "Point indents
 Plugin 'ElmCast/elm-vim'                    "Elm
-Plugin 'w0rp/ale'                           "Linter
+Plugin 'dense-analysis/ale'                 "Linter
 Plugin 'mattn/emmet-vim'                    "HTML and CSS
 Plugin 'LnL7/vim-nix'
 Plugin 'derekwyatt/vim-scala'
+Plugin 'godlygeek/tabular'
+Plugin 'posva/vim-vue'                      "Vue.js syntax highlight, https://github.com/posva/vim-vue
+"Plugin 'plasticboy/vim-markdown'
+Plugin 'cespare/vim-toml'                   "Syntax for TOML conf https://github.com/cespare/vim-toml
+Plugin 'chr4/nginx.vim'
+Plugin 'HerringtonDarkholme/yats.vim'       "TypeScript highlights
 call vundle#end()            "required
 filetype plugin indent on    "required
-let g:pydiction_location='~/.vim/tools/pydiction/complete-dict'
+"let g:pydiction_location='~/.vim/tools/pydiction/complete-dict'
 " Vundle block end
+
+" Linter
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\   'python': [],
+\}
 
 
 " Elm
@@ -71,3 +84,6 @@ let g:elm_syntastic_show_warnings = 1
 let g:ycm_semantic_triggers = {
      \ 'elm' : ['.'],
      \}
+
+"let g:pyflakes_autostart = 0
+"map <F11> :PyflakesToggle<cr>
