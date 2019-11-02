@@ -15,34 +15,19 @@ fi
 cd ~
 tmux start-server
 
-# Workspace
+# General Workspace
 tmux has-session -t ws
 if [ $? != 0 ]
 then
-  tmux new-session -s ws -n Workspace -d
-  tmux send-keys -t ws:Workspace 'cd ~/Workspace' C-m
+  tmux new-session -s ws -n ws -d
+  tmux send-keys -t ws:ws 'cd ~/Workspace' C-m
 fi
 
-# Background
-tmux has-session -t bg
-if [ $? != 0 ]
-then
-  if test -z "$SSH_CLIENT"
-  then # localhost
-    tmux new-session -s bg -n vpn -d
-    tmux send-keys -t bg:vpn 'sudo openvpn --config ~/airalab-vpn.conf'
-    tmux new-window -n opt
-    tmux send-keys -t bg:opt 'cd /opt' C-m
-  else # remote host
-    tmux new-session -s bg -d
-  fi
-fi
-
-# Remotes
+# Other Workspaces
 if test -z "$SSH_CLIENT"
 then
 
-  # My own
+  # My servers
   tmux has-session -t remote
   if [ $? != 0 ]
   then
@@ -64,9 +49,31 @@ then
   tmux has-session -t remy
   if [ $? != 0 ]
   then
-    tmux new-session -s remy -n base-1 -d
-    tmux send-keys -t remy:base-1'ssh khassanov@remy-base-1'
-    tmux new-window -n base-1f
-    tmux send-keys -t remy:base-1f 'ssh khassanov@remy-base-1f'
+    tmux new-session -s remy -n ws -d
+    tmux send-keys -t remy:ws 'cd ~/Workspace/remy' C-m
+  fi
+
+  # CCAI
+  tmux has-session -t ccai
+  if [ $? != 0 ]
+  then
+    tmux new-session -s ccai -n ws -d
+    tmux send-keys -t ccai:ws 'cd ~/Workspace/ccai' C-m
+  fi
+
+fi
+
+# Background
+tmux has-session -t bg
+if [ $? != 0 ]
+then
+  if test -z "$SSH_CLIENT"
+  then # localhost
+    tmux new-session -s "b"g -n vpn -d
+    tmux send-keys -t "bg":vpn 'sudo openvpn --config ~/airalab-vpn.conf'
+    tmux new-window -n opt
+    tmux send-keys -t "bg":opt 'cd /opt' C-m
+  else # remote host
+    tmux new-session -s "bg" -d
   fi
 fi
