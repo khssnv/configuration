@@ -1,2 +1,0 @@
-/ip4/95.216.222.126/tcp/30333/p2p/QmWp8TCAP5nmcsrefaxPgwWpEzUyUh1s1h6BmGNMbvWDCD
-/ip6/fcda:f135:c94d:b36a:c9ce:205e:94ec:2e44/tcp/30333/p2p/QmWp8TCAP5nmcsrefaxPgwWpEzUyUh1s1h6BmGNMbvWDCD
