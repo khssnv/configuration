@@ -1,6 +1,21 @@
 { pkgs, ... }:
 
+let
+  home-manager = builtins.fetchGit {
+    url = "https://github.com/rycee/home-manager.git";
+    rev = "f5c9303cedd67a57121f0cbe69b585fb74ba82d9";
+    ref = "release-19.09";
+  };
+  vim_custom = pkgs.vim_configurable.override {
+    python = pkgs.python36Full;
+  };
+
+in
 {
+  imports = [
+      (import "${home-manager}/nixos")
+  ];
+
   users.extraUsers.khassanov = {
     isNormalUser = true;
     uid = 1000;
@@ -8,7 +23,34 @@
     description = "Alisher A. Khassanov";
     extraGroups = [ "wheel" "networkmanager" ];
     shell = pkgs.zsh;
-  #  openssh.authorizedKeys.keys = import ./keys.nix;
+    # openssh.authorizedKeys.keys = import ./keys.nix;
+  };
+
+  home-manager.users.khassanov = {
+    home.packages = [
+      vim_custom
+      pkgs.tmux
+      pkgs.ncdu
+    ];
+    programs = {
+      home-manager.enable = true;
+      git = {
+        enable = true;
+        userName = "Alisher A. Khassanov";
+        userEmail = "a.khssnv@gmail.com";
+      };
+      zsh = {
+        enable = true;
+        # enableCompletion = true;
+        # syntaxHighlighting.enable = true;
+        # enableAutosuggestions.enable = true;
+        oh-my-zsh = {
+          enable = true;
+          theme = "bira";
+          plugins = [ "git" ];
+        };
+      };
+    };
   };
 
   users.extraUsers.root.openssh.authorizedKeys.keys = [
