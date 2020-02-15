@@ -2,8 +2,6 @@
 
 {
   services = {
-
-    # OpenSSH daemon
     openssh = {
       enable = true;
       passwordAuthentication = false;
@@ -69,6 +67,23 @@
     #     };
     #   };
     # };
-
+    prometheus = {
+      enable = true;
+      configText = builtins.readFile ./prometheus.yml;
+      # configText = "
+      #   global:
+      #     scrape_interval: 30s
+      #     external_labels:
+      #       monitor: 'khassanov.me'
+      #   scrape_configs:
+      #     - job_name: 'nodes'
+      #       static_configs:
+      #         - targets: ['localhost:9100']
+      # ";
+      exporters.node = {
+        enable = true;
+        enabledCollectors = [ "loadavg" "meminfo" ];
+      };
+    };
   };
 }

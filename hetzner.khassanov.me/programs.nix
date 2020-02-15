@@ -2,7 +2,7 @@
 
 {
   programs = {
-    mosh.enable = true;
+    # mosh.enable = true;
   };
   environment.systemPackages = with pkgs; [
     htop
