@@ -1,12 +1,16 @@
 { config, ... }:
 
+let
+  confPath = "/etc/nixos/hetzner.khassanov.me";
+
+in
 {
   imports = [
-      ./hardware.nix
+      "${confPath}/hardware.nix"
       ./network.nix
       ./programs.nix
       ./services.nix
-      ./users.nix
+      "${confPath}/users.nix"
   ];
 
   i18n.defaultLocale = "en_US.UTF-8";
@@ -15,6 +19,10 @@
   system = {
     stateVersion = "19.09";
     autoUpgrade.enable = true;
+  };
+
+  nix = {
+    trustedUsers = ["khassanov"];
   };
 
   # security.acme.certs = {

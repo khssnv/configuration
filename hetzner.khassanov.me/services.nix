@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   services = {
@@ -67,9 +67,11 @@
     #     };
     #   };
     # };
+
     prometheus = {
       enable = true;
-      configText = builtins.readFile ./prometheus.yml;
+      configText = builtins.readFile "/etc/nixos/${config.networking.hostName}/prometheus.yml";
+      # configText = builtins.readFile /home/khassanov/Workspace/configuration/hetzner.khassanov.me/monitoring/server/prometheus.yml;
       # configText = "
       #   global:
       #     scrape_interval: 30s

@@ -14,6 +14,7 @@
       version = 2;
       device = "/dev/sda";
     };
+    growPartition = true;
   };
 
   fileSystems."/" = {

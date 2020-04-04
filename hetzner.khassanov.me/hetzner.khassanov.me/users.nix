@@ -14,17 +14,18 @@ in
 {
   imports = [
       (import "${home-manager}/nixos")
+      ../users_common.nix
   ];
 
-  users.extraUsers.khassanov = {
-    isNormalUser = true;
-    uid = 1000;
-    home = "/home/khassanov";
-    description = "Alisher A. Khassanov";
-    extraGroups = [ "wheel" "networkmanager" ];
-    shell = pkgs.zsh;
-    # openssh.authorizedKeys.keys = import ./keys.nix;
-  };
+  # users.extraUsers.khassanov = {
+  #   isNormalUser = true;
+  #   uid = 1000;
+  #   home = "/home/khassanov";
+  #   description = "Alisher A. Khassanov";
+  #   extraGroups = [ "wheel" "networkmanager" ];
+  #   shell = pkgs.zsh;
+  #   # openssh.authorizedKeys.keys = import ./keys.nix;
+  # };
 
   home-manager.users.khassanov = {
     home.packages = [
