@@ -1,7 +1,7 @@
-" syntax highlight
+set nocompatible "vi compatibility
 syntax on
-set nocompatible              "be iMproved, required
-filetype off                  "required
+set nowrap "scroll instead of one more line
+set encoding=utf8
 
 " strings number
 set number
@@ -22,14 +22,12 @@ set laststatus=2
 " set TAB space
 set tabstop=2
 set softtabstop=2
-set shiftwidth=2                "An indent is 2 spaces
-set smarttab                    "Indent instead of tab at start of line
-set shiftround                  "Round spaces to nearest shiftwidth multiple
-set nojoinspaces                "Don't convert spaces to tabs
-set expandtab                   "set TAB to SPACE conversion
+set shiftwidth=2                "an indent is 2 spaces
+set smarttab                    "indent instead of tab at start of line
+set shiftround                  "round spaces to nearest shiftwidth multiple
+set nojoinspaces                "don't convert spaces to tabs
+set expandtab                   "convert tabs to spaces
 let g:indentLine_setConceal = 0
-
-" disable tabline
 set showtabline=0
 
 set keymap=russian-jcukenwin
@@ -37,53 +35,52 @@ set iminsert=0
 set imsearch=0
 highlight lCursor guifg=NONE guibg=Cyan
 
-" Vundle block begin
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'VundleVim/Vundle.vim'               "Vim plugin manager, https://github.com/VundleVim/Vundle.vim
-Plugin 'Valloric/YouCompleteMe'             "Code autocompleter, https://github.com/Valloric/YouCompleteMe
-Plugin 'taketwo/vim-ros'                    "From https://github.com/taketwo/vim-ros
-"Plugin 'udalov/javap-vim'                   "Java decompiler from https://github.com/udalov/javap-vim
-Plugin 'aklt/plantuml-syntax'               "PlantUML syntax
-"Plugin 'scrooloose/vim-slumlord'           "Live preview of PlantUML diagrams, https://github.com/scrooloose/vim-slumlord
-"Plugin 'fatih/vim-go'                      "Necessary for 'vim-slumlord' plugin
-Plugin 'weirongxu/plantuml-previewer.vim'   "Browser PlantUML preview https://github.com/weirongxu/plantuml-previewer.vim
-Plugin 'tyru/open-browser.vim'              "Necessary for 'plantuml-previewer.vim'
-Plugin 'tomlion/vim-solidity'               "Ethereum Solidity syntax highlight, https://github.com/tomlion/vim-solidity
-Plugin 'nanotech/jellybeans.vim'            "Color scheme https://github.com/nanotech/jellybeans.vim
-Plugin 'pangloss/vim-javascript'            "JavaScript
-Plugin 'mxw/vim-jsx'                        "React JSX
-Plugin 'Yggdroot/indentLine'                "Point indents
-Plugin 'ElmCast/elm-vim'                    "Elm
-Plugin 'dense-analysis/ale'                 "Linter
-Plugin 'mattn/emmet-vim'                    "HTML and CSS
-Plugin 'LnL7/vim-nix'
-Plugin 'derekwyatt/vim-scala'
-Plugin 'godlygeek/tabular'
-Plugin 'posva/vim-vue'                      "Vue.js syntax highlight, https://github.com/posva/vim-vue
-"Plugin 'plasticboy/vim-markdown'
-Plugin 'cespare/vim-toml'                   "Syntax for TOML conf https://github.com/cespare/vim-toml
-Plugin 'chr4/nginx.vim'
-Plugin 'HerringtonDarkholme/yats.vim'       "TypeScript highlights
-call vundle#end()            "required
-filetype plugin indent on    "required
-"let g:pydiction_location='~/.vim/tools/pydiction/complete-dict'
-" Vundle block end
+" Install vim-plug automatically
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
-" Linter
+call plug#begin('~/.vim/plugged')
+Plug 'dense-analysis/ale'         "Universal linter
+Plug 'taketwo/vim-ros'
+Plug 'LnL7/vim-nix'
+
+" Utility
+Plug 'preservim/nerdtree'
+Plug 'majutsushi/tagbar'
+call plug#end()
+
+" ALE linter
+"let g:ale_enabled = 0
+let g:ale_lint_on_save = 0
+let g:ale_lint_on_text_changed = 'never' 
+"let g:ale_lint_on_enter = 0
+let g:ale_sign_column_always = 1
+let g:ale_linters_explicit = 1 "Only run linters named in ale_linters settings
 let g:ale_linters = {
+\   'cpp': ['gcc', 'cpplint'],
 \   'javascript': ['eslint'],
-\   'python': [],
+\   'python': ['flake8'],
 \}
+let g:ale_sign_error = '●'
+let g:ale_sign_warning = '.'
+" Enable / disable linting by Ctrl-l
+nmap <C-l> :ALEToggle<CR>
+"highlight clear ALEErrorSign
+"highlight clear ALEWarningSign
+"packloadall
+"silent! helptags ALL
 
+" Specials for C-family
+let g:ycm_clangd_binary_path = "/usr/bin/clangd" "YouCompleteMe for C-family
 
-" Elm
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:elm_syntastic_show_warnings = 1
+" vim-ros
 let g:ycm_semantic_triggers = {
-     \ 'elm' : ['.'],
-     \}
+\   'roslaunch' : ['="', '$(', '/'],
+\   'rosmsg,rossrv,rosaction' : ['re!^', '/'],
+\ }
 
-"let g:pyflakes_autostart = 0
-"map <F11> :PyflakesToggle<cr>
+map <C-n> :NERDTreeToggle<CR>
+map <C-m> :TagbarToggle<CR>
