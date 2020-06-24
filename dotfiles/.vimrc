@@ -13,13 +13,11 @@ if exists('+termguicolors')
   set termguicolors
 endif
 
-set rtp+=~/.vim/bundle/jellybeans.vim
-colorscheme jellybeans
 set backspace=indent,eol,start
 
 set laststatus=2
 
-" set TAB space
+" Identation, tabs and spaces
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2                "an indent is 2 spaces
@@ -43,11 +41,10 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
-Plug 'dense-analysis/ale'         "Universal linter
+Plug 'dense-analysis/ale'         "universal linter
 Plug 'taketwo/vim-ros'
 Plug 'LnL7/vim-nix'
-
-" Utility
+Plug 'nanotech/jellybeans.vim', { 'tag': 'v1.7' }
 Plug 'preservim/nerdtree'
 Plug 'majutsushi/tagbar'
 call plug#end()
@@ -84,3 +81,5 @@ let g:ycm_semantic_triggers = {
 
 map <C-n> :NERDTreeToggle<CR>
 map <C-m> :TagbarToggle<CR>
+
+colorscheme jellybeans
