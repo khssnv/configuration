@@ -25,9 +25,12 @@
 
   time.timeZone = "Europe/Barcelona";
 
-  # environment.systemPackages = with pkgs; [
-  #   wget
-  # ];
+  nixpkgs.config.allowUnfree = true;
+
+  environment.systemPackages = with pkgs; [
+    wget
+    neovim
+  ];
 
   # programs.mtr.enable = true;
   programs.gnupg.agent = {
@@ -58,13 +61,10 @@
     intelBusId = "PCI:0:2:0";
   };
 
-  # Enable touchpad support.
-  services.xserver.libinput.enable = true;
+  services.xserver.libinput.enable = true; # touchpad
 
   services.xserver.displayManager.sddm.enable = true;
   services.xserver.desktopManager.plasma5.enable = true;
-
-  nixpkgs.config.allowUnfree = true;
 
   users.users.khassanov = {
     isNormalUser = true;
@@ -75,11 +75,30 @@
   };
 
   home-manager.users.khassanov = { pkgs, ... }: {
+    nixpkgs.config.allowUnfree = true;
     home.packages = with pkgs; [ 
       ark # KDE archive manager
+      bmon
       gparted
+      libreoffice
       htop
       ncdu # disk usage
+      # (eclipses.eclipseWithPlugins {
+      #   eclipse = eclipses.eclipse-cpp;
+      #   jvmArgs = [ "-Xmx2048m" ];
+      #   plugins = with eclipses.plugins;
+      #     [ cdt ];
+      # })
+      kate
+      spotify
+
+      # instant messaging and calls
+      riot-desktop
+      skype
+      slack
+      zoom-us
+      tdesktop
+      discord
     ];
     programs = {
       tmux = {
@@ -109,8 +128,13 @@
           endif
         '';
       };
+      # eclipse = {
+      #   enable = true;
+      #   jvmArgs = [ "-Xmx2048m" ];
+      #   plugins = with eclipses.plugins; [ cdt ];
+      #   # plugins = [ "cdt" ];
+      # };
     };
-    # xsession.enable = true;
     services.gpg-agent = {
       enable = true;
       enableSshSupport = true;
