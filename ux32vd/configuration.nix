@@ -10,6 +10,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub.useOSProber = true;
+  boot.loader.grub.efiSupport = true;
   boot.supportedFilesystems = [ "ntfs" ];
 
   networking.hostName = "ux32vd";
@@ -23,7 +24,12 @@
     keyMap = "us";
   };
 
-  time.timeZone = "Europe/Barcelona";
+  time.timeZone = "Europe/Madrid";
+  time.hardwareClockInLocalTime = true;
+  services.ntp = {    
+    enable = true;    
+    servers = [ "0.pool.ntp.org" "1.pool.ntp.org" ];    
+  };
 
   nixpkgs.config.allowUnfree = true;
 
@@ -38,6 +44,8 @@
     enableSSHSupport = true;
     pinentryFlavor = "qt";
   };
+  # programs.zsh.enable = true;
+  # users.defaultUserShell = pkgs.zsh;
 
   # services.openssh.enable = true;
 
@@ -61,7 +69,8 @@
     intelBusId = "PCI:0:2:0";
   };
 
-  services.xserver.libinput.enable = true; # touchpad
+  # Enable touchpad support.
+  services.xserver.libinput.enable = true;
 
   services.xserver.displayManager.sddm.enable = true;
   services.xserver.desktopManager.plasma5.enable = true;
@@ -72,6 +81,7 @@
     home = "/home/khassanov";
     description = "Alisher A. Khassanov";
     extraGroups = [ "wheel" "networkmanager" ];
+    shell = pkgs.zsh;
   };
 
   home-manager.users.khassanov = { pkgs, ... }: {
@@ -110,9 +120,20 @@
       chromium.enable = true;
       git = {
       	enable = true;
-        includes = [{ path = "/home/khassanov/.gitconfig"; }];
+        includes = [{ path = "/home/khassanov/Workspace/configuration/dotfiles/.gitconfig"; }];
       };
-      bash.enable = true;
+      # bash.enable = true;
+      zsh = {
+        enable = true;
+        enableAutosuggestions = true;
+        enableCompletion = true;
+        oh-my-zsh = {
+          enable = true;
+          theme = "bira";
+          plugins = [ "git" ];
+        };
+	      initExtra = (builtins.readFile /home/khassanov/Workspace/configuration/dotfiles/.zshrc);
+      };
       neovim = {
         enable = true;
         viAlias = true;
@@ -122,11 +143,12 @@
         withPython3 = true;
         withRuby = true;
         withNodeJs = true;
-        configure.customRC = ''
-          if filereadable($HOME . "/.vimrc")
-            source ~/.vimrc
-          endif
-        '';
+        configure.customRC = (builtins.readFile /home/khassanov/Workspace/configuration/dotfiles/.vimrc);
+        # configure.customRC = ''
+        #   if filereadable($HOME . "/.vimrc")
+        #     source ~/.vimrc
+        #   endif
+        # '';
       };
       # eclipse = {
       #   enable = true;
@@ -135,6 +157,7 @@
       #   # plugins = [ "cdt" ];
       # };
     };
+    # xsession.enable = true;
     services.gpg-agent = {
       enable = true;
       enableSshSupport = true;
