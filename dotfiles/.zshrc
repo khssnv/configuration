@@ -5,13 +5,21 @@
 # ZSH_THEME="wezm"
 
 # plugins=(
+#   ssh-agent
 #   git
 # )
+
+# zstyle :omz:plugins:ssh-agent agent-forwarding on
+# zstyle :omz:plugins:ssh-agent identities id_ed25519
+# zstyle :omz:plugins:ssh-agent lifetime 4h
 
 # source $ZSH/oh-my-zsh.sh
 unsetopt no_match
 unsetopt SHARE_HISTORY
 
+# PROMPT='${ret_status}%{$fg_bold[green]%}%p %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%} %D %T % %{$reset_color%}'
+# export LANG=en_US.UTF-8
+# export LC_ALL=en_US.UTF-8
 export SUDO_EDITOR=$(which nvim)
 
 alias tl="tmux ls"

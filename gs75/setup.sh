@@ -1,2 +1,3 @@
-cp ./home.nix ~/.config/nixpkgs
+# cp ./home.nix ~/.config/nixpkgs
+ln -s $(pwd)/home.nix ~/.config/nixpkgs/home.nix
 echo "https://github.com/rycee/home-manager"

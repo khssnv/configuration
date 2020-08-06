@@ -36,6 +36,7 @@
     discord
   ];
   programs = {
+    command-not-found.enable = true;
     tmux = {
       enable = true;
       extraConfig = ''
@@ -54,10 +55,15 @@
       enableCompletion = true;
       oh-my-zsh = {
         enable = true;
-        theme = "bira";
-        plugins = [ "git" ];
+        theme = "candy";
+        plugins = [ "git" "ssh-agent" ];
+        # extra config for plugins
+        # extraConfig = ''
+        #   zstyle :omz:plugins:ssh-agent identities id_rsa id_ed25519
+        # '';
       };
-	    initExtra = (builtins.readFile /home/khassanov/Workspace/configuration/dotfiles/.zshrc);
+      # extra config for zsh itself
+      initExtra = (builtins.readFile /home/khassanov/Workspace/configuration/dotfiles/.zshrc);
     };
     neovim = {
       enable = true;
