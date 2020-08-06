@@ -2,7 +2,7 @@
 
 let
 
-  home = import ./home.nix {};
+  home = import ./home.nix { inherit pkgs; inherit config; };
 
 in
 
@@ -69,11 +69,11 @@ in
   services.xserver.xkbOptions = "eurosign:e";
 
   services.xserver.videoDrivers = [ "modesetting" "nvidia" ];
-  hardware.nvidia.prime = {
-    sync.enable = true;
-    nvidiaBusId = "PCI:1:0:0";
-    intelBusId = "PCI:0:2:0";
-  };
+  # hardware.nvidia.prime = {
+  #   sync.enable = true;
+  #   nvidiaBusId = "PCI:1:0:0";
+  #   intelBusId = "PCI:0:2:0";
+  # };
 
   # Enable touchpad support.
   services.xserver.libinput.enable = true;
@@ -90,7 +90,8 @@ in
     shell = pkgs.zsh;
   };
 
-  home-manager.users.khassanov = { config, pkgs, ... }: home;
+  # home-manager.users.khassanov = { config, pkgs, ... }: home;
+  home-manager.users.khassanov = home;
 
   # home-manager.users.khassanov = { pkgs, ... }: {
   #   nixpkgs.config.allowUnfree = true;
