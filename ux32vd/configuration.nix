@@ -1,10 +1,16 @@
 { config, pkgs, ... }:
 
+let
+
+  home = import ./home.nix {};
+
+in
+
 {
   imports =
     [
-      <home-manager/nixos>
       ./hardware-configuration.nix
+      <home-manager/nixos>
     ];
 
   boot.loader.systemd-boot.enable = true;
@@ -84,87 +90,89 @@
     shell = pkgs.zsh;
   };
 
-  home-manager.users.khassanov = { pkgs, ... }: {
-    nixpkgs.config.allowUnfree = true;
-    home.packages = with pkgs; [ 
-      ark # KDE archive manager
-      bmon
-      gparted
-      libreoffice
-      htop
-      ncdu # disk usage
-      # (eclipses.eclipseWithPlugins {
-      #   eclipse = eclipses.eclipse-cpp;
-      #   jvmArgs = [ "-Xmx2048m" ];
-      #   plugins = with eclipses.plugins;
-      #     [ cdt ];
-      # })
-      kate
-      spotify
+  home-manager.users.khassanov = { config, pkgs, ... }: home;
 
-      # instant messaging and calls
-      riot-desktop
-      skype
-      slack
-      zoom-us
-      tdesktop
-      discord
-    ];
-    programs = {
-      tmux = {
-        enable = true;
-        extraConfig = ''
-	        source /home/khassanov/Workspace/configuration/dotfiles/.tmux.conf
-	      '';
-      };
-      chromium.enable = true;
-      git = {
-      	enable = true;
-        includes = [{ path = "/home/khassanov/Workspace/configuration/dotfiles/.gitconfig"; }];
-      };
-      # bash.enable = true;
-      zsh = {
-        enable = true;
-        enableAutosuggestions = true;
-        enableCompletion = true;
-        oh-my-zsh = {
-          enable = true;
-          theme = "bira";
-          plugins = [ "git" ];
-        };
-	      initExtra = (builtins.readFile /home/khassanov/Workspace/configuration/dotfiles/.zshrc);
-      };
-      neovim = {
-        enable = true;
-        viAlias = true;
-        vimAlias = true;
-        vimdiffAlias = true;
-        withPython = true;
-        withPython3 = true;
-        withRuby = true;
-        withNodeJs = true;
-        configure.customRC = (builtins.readFile /home/khassanov/Workspace/configuration/dotfiles/.vimrc);
-        # configure.customRC = ''
-        #   if filereadable($HOME . "/.vimrc")
-        #     source ~/.vimrc
-        #   endif
-        # '';
-      };
-      # eclipse = {
-      #   enable = true;
-      #   jvmArgs = [ "-Xmx2048m" ];
-      #   plugins = with eclipses.plugins; [ cdt ];
-      #   # plugins = [ "cdt" ];
-      # };
-    };
-    # xsession.enable = true;
-    services.gpg-agent = {
-      enable = true;
-      enableSshSupport = true;
-    };
-  };
+  # home-manager.users.khassanov = { pkgs, ... }: {
+  #   nixpkgs.config.allowUnfree = true;
+  #   home.packages = with pkgs; [ 
+  #     ark # KDE archive manager
+  #     bmon
+  #     gparted
+  #     libreoffice
+  #     htop
+  #     ncdu # disk usage
+  #     # (eclipses.eclipseWithPlugins {
+  #     #   eclipse = eclipses.eclipse-cpp;
+  #     #   jvmArgs = [ "-Xmx2048m" ];
+  #     #   plugins = with eclipses.plugins;
+  #     #     [ cdt ];
+  #     # })
+  #     kate
+  #     spotify
 
-  system.stateVersion = "20.03";
+  #     # instant messaging and calls
+  #     riot-desktop
+  #     skype
+  #     slack
+  #     zoom-us
+  #     tdesktop
+  #     discord
+  #   ];
+  #   programs = {
+  #     tmux = {
+  #       enable = true;
+  #       extraConfig = ''
+	#         source /home/khassanov/Workspace/configuration/dotfiles/.tmux.conf
+	#       '';
+  #     };
+  #     chromium.enable = true;
+  #     git = {
+  #     	enable = true;
+  #       includes = [{ path = "/home/khassanov/Workspace/configuration/dotfiles/.gitconfig"; }];
+  #     };
+  #     # bash.enable = true;
+  #     zsh = {
+  #       enable = true;
+  #       enableAutosuggestions = true;
+  #       enableCompletion = true;
+  #       oh-my-zsh = {
+  #         enable = true;
+  #         theme = "bira";
+  #         plugins = [ "git" ];
+  #       };
+	#       initExtra = (builtins.readFile /home/khassanov/Workspace/configuration/dotfiles/.zshrc);
+  #     };
+  #     neovim = {
+  #       enable = true;
+  #       viAlias = true;
+  #       vimAlias = true;
+  #       vimdiffAlias = true;
+  #       withPython = true;
+  #       withPython3 = true;
+  #       withRuby = true;
+  #       withNodeJs = true;
+  #       configure.customRC = (builtins.readFile /home/khassanov/Workspace/configuration/dotfiles/.vimrc);
+  #       # configure.customRC = ''
+  #       #   if filereadable($HOME . "/.vimrc")
+  #       #     source ~/.vimrc
+  #       #   endif
+  #       # '';
+  #     };
+  #     # eclipse = {
+  #     #   enable = true;
+  #     #   jvmArgs = [ "-Xmx2048m" ];
+  #     #   plugins = with eclipses.plugins; [ cdt ];
+  #     #   # plugins = [ "cdt" ];
+  #     # };
+  #   };
+  #   # xsession.enable = true;
+  #   services.gpg-agent = {
+  #     enable = true;
+  #     enableSshSupport = true;
+  #   };
+  # };
+
+  # system.stateVersion = "20.03";
 
 }
 

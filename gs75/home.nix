@@ -15,7 +15,7 @@
     # ark # KDE archive manager
     bmon
     gparted
-    # libreoffice
+    libreoffice
     htop
     ncdu # disk usage
     # (eclipses.eclipseWithPlugins {
@@ -24,7 +24,7 @@
     #   plugins = with eclipses.plugins;
     #     [ cdt ];
     # })
-    # kate
+    kate
     spotify
 
     # instant messaging and calls
@@ -89,5 +89,5 @@
     enableSshSupport = true;
   };
 
-  home.stateVersion = "20.09";
+  # home.stateVersion = "20.03";
 }
