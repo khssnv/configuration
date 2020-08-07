@@ -17,11 +17,20 @@
 unsetopt no_match
 unsetopt SHARE_HISTORY
 
+HOSTNAME=`hostname`
+
+# echo "Hostname is $HOSTNAME"
+if [ "$HOSTNAME" = "gs75" ]; then
+    source /opt/ros/melodic/setup.zsh
+fi
+
 # PROMPT='${ret_status}%{$fg_bold[green]%}%p %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%} %D %T % %{$reset_color%}'
 # export LANG=en_US.UTF-8
 # export LC_ALL=en_US.UTF-8
 export SUDO_EDITOR=$(which nvim)
 
+alias ipython="ipython --profile=myprofile"
+alias ccy="catkin clean -y"
 alias tl="tmux ls"
 alias ta="tmux a -t"
 alias tn="tmux new -s"
