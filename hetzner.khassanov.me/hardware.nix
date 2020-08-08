@@ -18,11 +18,11 @@
   };
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/a9f01841-cce9-439f-bfcf-bc08146cd417";
-    fsType = "ext4";
+    device = "/dev/disk/by-uuid/ceb2628d-3e46-43ea-9549-b137be36d8eb";
+    fsType = "btrfs";
   };
 
-  swapDevices = [ { device = "/dev/disk/by-uuid/7bdf3841-c2cf-4791-9019-2287fd6060bc"; } ];
+  swapDevices = [ { device = "/dev/disk/by-uuid/1c13b814-0e2a-4ab9-8a3f-3737ebb1f02d"; } ];
 
   zramSwap.enable = true;
   nix.maxJobs = lib.mkDefault 1;
