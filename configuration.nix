@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 let
 
@@ -7,11 +7,12 @@ let
 in
 {
   imports = [
-      "./${host}/hardware.nix"
-      "./${host}/network.nix" { hostname = host; };
-      "./${host}/programs.nix"
-      "./${host}/services.nix"
-      ./users.nix
+    (/etc/nixos + "/${host}/hardware.nix")
+    (import (/etc/nixos + "/${host}/network.nix") ({ hostname = host; })) 
+    # (/etc/nixos + "/${host}/network.nix")
+    (/etc/nixos + "/${host}/programs.nix")
+    (/etc/nixos + "/${host}/services.nix")
+    ./users.nix
   ];
 
   nixpkgs.config.allowUnfree = true;

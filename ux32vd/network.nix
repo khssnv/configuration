@@ -1,6 +1,8 @@
+{ hostname, ... }:
+
 {
   networking = {
-    hostName = "hetzner.khassanov.me";
+    hostName = "${hostname}";
     firewall = {
       enable = true;
       allowPing = true;
@@ -19,5 +21,7 @@
         # 42000
       ];
     };
+    networkmanager.enable = true;
+    interfaces.wlp3s0.useDHCP = true;
   };
 }

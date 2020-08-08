@@ -4,6 +4,7 @@ let
 
   home = import ./home.nix { inherit config; inherit pkgs; };
 
+in
 {
   imports = [ <home-manager/nixos> ];
 
