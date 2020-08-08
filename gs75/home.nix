@@ -1,10 +1,31 @@
 { config, pkgs, ... }:
 
 {
+
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
   home.username = "khassanov";
   home.homeDirectory = "/home/khassanov";
+
+  # home.sessionVariables.LOCALES_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
+  # home.sessionVariables = {
+  #   # see: https://github.com/NixOS/nixpkgs/issues/38991#issuecomment-400657551
+  #   LOCALE_ARCHIVE_2_11 = "/usr/bin/locale/locale-archive";
+  #   LOCALE_ARCHIVE_2_27 = "${pkgs.glibcLocales}/lib/locale/locale-archive";
+  # };
+
+  # home.language = let
+  #   en = "en_US.UTF-8";
+  #   ru = "ru_RU.UTF-8";
+  #   es = "es_ES.UTF-8";
+  # in {
+  #   address = ru;
+  #   monetary = ru;
+  #   paper = ru;
+  #   time = en;
+  #   base = en;
+  # };
+  # https://gist.github.com/peti/2c818d6cb49b0b0f2fd7c300f8386bc3
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
@@ -34,6 +55,7 @@
     zoom-us
     tdesktop
     discord
+    # zsh
   ];
   programs = {
     command-not-found.enable = true;
