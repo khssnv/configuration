@@ -13,6 +13,16 @@
 # zstyle :omz:plugins:ssh-agent identities id_ed25519
 # zstyle :omz:plugins:ssh-agent lifetime 4h
 
+source /etc/os-release
+
+case $NAME in
+  "NixOS");;
+  "Ubuntu")
+    source ~/.nix-profile/etc/profile.d/nix.sh # nix
+    export NIX_PATH=$HOME/.nix-defexpr/channels${NIX_PATH:+:}$NIX_PATH # home-manager
+  ;;
+esac
+
 # source $ZSH/oh-my-zsh.sh
 unsetopt no_match
 unsetopt SHARE_HISTORY
