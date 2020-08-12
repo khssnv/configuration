@@ -78,7 +78,7 @@
       oh-my-zsh = {
         enable = true;
         theme = "candy";
-        plugins = [ "git" "ssh-agent" ];
+        plugins = [ "git" "ssh-agent" "docker-compose" ];
         # extra config for plugins
         # extraConfig = ''
         #   zstyle :omz:plugins:ssh-agent identities id_rsa id_ed25519
