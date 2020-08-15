@@ -2,6 +2,12 @@ set nocompatible "vi compatibility
 syntax on
 set nowrap "scroll instead of one more line
 set encoding=utf8
+set cmdheight=2
+set nobackup
+set nowritebackup
+set hidden
+set updatetime=300
+set shortmess+=c
 
 " strings number
 set number
@@ -45,6 +51,7 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.config/nvim/plugged')
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'dense-analysis/ale'         "Universal linter
 Plug 'taketwo/vim-ros'
 Plug 'LnL7/vim-nix'
