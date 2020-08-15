@@ -4,6 +4,7 @@ let
 
   home = import ./home.nix { inherit config; inherit pkgs; };
 
+in
 {
   imports = [ <home-manager/nixos> ];
 
@@ -13,7 +14,7 @@ let
     home = "/home/khassanov";
     description = "Alisher A. Khassanov";
     extraGroups = [ "wheel" "networkmanager" ];
-    # shell = pkgs.zsh;
+    shell = pkgs.zsh;
     # openssh.authorizedKeys.keys = import ./keys.nix;
   };
 
