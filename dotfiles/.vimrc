@@ -35,6 +35,8 @@ set expandtab                   "convert tabs to spaces
 let g:indentLine_setConceal = 0
 set showtabline=0
 
+set clipboard+=unnamedplus "share clipboard with x11
+
 set keymap=russian-jcukenwin
 set iminsert=0
 set imsearch=0
