@@ -46,6 +46,14 @@ alias ta="tmux a -t"
 alias tn="tmux new -s"
 alias c="xclip -selection clipboard"
 alias v="xclip -o"
+alias cbpy3="catkin build --cmake-args \
+-DCMAKE_CXX_STANDARD=17 \
+-DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+-DCMAKE_BUILD_TYPE=RelWithDebInfo \
+-DPYTHON_EXECUTABLE=/usr/bin/python3 \
+-DPYTHON_INCLUDE_DIR=/usr/include/python3.6m \
+-DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.6m.so"
+alias cbc="catkin build clean -y"
 
 # moshs () {
 #     mosh "$@" -- screen -dR alisher
