@@ -98,3 +98,7 @@ map <C-n> :NERDTreeToggle<CR>
 map <C-m> :TagbarToggle<CR>
 
 colorscheme jellybeans
+
+autocmd BufNewFile,BufRead *.v,*.vs set syntax=verilog
+autocmd BufNewFile,BufRead *.launch set syntax=xml
+autocmd BufNewFile,BufRead *.urs,*.script set syntax=python
