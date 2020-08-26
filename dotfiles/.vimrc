@@ -57,6 +57,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'dense-analysis/ale'         "Universal linter
 Plug 'taketwo/vim-ros'
 Plug 'LnL7/vim-nix'
+Plug 'de-vri-es/vim-urscript'
 
 " Utility
 Plug 'nanotech/jellybeans.vim', { 'tag': 'v1.7' }
@@ -67,7 +68,7 @@ call plug#end()
 " ALE linter
 "let g:ale_enabled = 0
 let g:ale_lint_on_save = 0
-let g:ale_lint_on_text_changed = 'never' 
+let g:ale_lint_on_text_changed = 'never'
 "let g:ale_lint_on_enter = 0
 let g:ale_sign_column_always = 1
 let g:ale_linters_explicit = 1 "Only run linters named in ale_linters settings
@@ -101,4 +102,5 @@ colorscheme jellybeans
 
 autocmd BufNewFile,BufRead *.v,*.vs set syntax=verilog
 autocmd BufNewFile,BufRead *.launch set syntax=xml
-autocmd BufNewFile,BufRead *.urs,*.script set syntax=python
+"autocmd BufNewFile,BufRead *.urs,*.script set syntax=python
+autocmd BufWritePre * %s/\s\+$//e
