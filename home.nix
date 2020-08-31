@@ -32,7 +32,7 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  home.packages = with pkgs; [ 
+  home.packages = with pkgs; [
     # ark # KDE archive manager
     bmon
     gparted
@@ -78,7 +78,7 @@
       oh-my-zsh = {
         enable = true;
         theme = "candy";
-        plugins = [ "git" "ssh-agent" "docker-compose" ];
+        plugins = [ "git" "ssh-agent" "docker" "docker-compose" "vagrant" ];
         # extra config for plugins
         # extraConfig = ''
         #   zstyle :omz:plugins:ssh-agent identities id_rsa id_ed25519
