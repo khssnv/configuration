@@ -33,7 +33,7 @@ set shiftround                  "round spaces to nearest shiftwidth multiple
 set nojoinspaces                "don't convert spaces to tabs
 set expandtab                   "convert tabs to spaces
 let g:indentLine_setConceal = 0
-set showtabline=0
+set showtabline=1
 
 set clipboard+=unnamedplus "share clipboard with x11
 
@@ -98,9 +98,12 @@ let g:ycm_semantic_triggers = {
 map <C-n> :NERDTreeToggle<CR>
 map <C-m> :TagbarToggle<CR>
 
-map gn :bn<cr>
-map gp :bp<cr>
-map gd :bd<cr>
+map gn :bn<CR>
+map gp :bp<CR>
+map gd :bd<CR>
+
+map ZW :wqa<CR>
+map ZA :qa!<CR>
 
 colorscheme jellybeans
 
