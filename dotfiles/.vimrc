@@ -98,6 +98,10 @@ let g:ycm_semantic_triggers = {
 map <C-n> :NERDTreeToggle<CR>
 map <C-m> :TagbarToggle<CR>
 
+map gn :bn<cr>
+map gp :bp<cr>
+map gd :bd<cr>
+
 colorscheme jellybeans
 
 autocmd BufNewFile,BufRead *.v,*.vs set syntax=verilog
