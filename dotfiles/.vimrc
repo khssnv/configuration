@@ -58,6 +58,8 @@ Plug 'dense-analysis/ale'         "Universal linter
 Plug 'taketwo/vim-ros'
 Plug 'LnL7/vim-nix'
 Plug 'de-vri-es/vim-urscript'
+Plug 'craigemery/vim-autotag'
+Plug 'universal-ctags/ctags'
 
 " Utility
 Plug 'nanotech/jellybeans.vim', { 'tag': 'v1.7' }
@@ -111,3 +113,7 @@ autocmd BufNewFile,BufRead *.v,*.vs set syntax=verilog
 autocmd BufNewFile,BufRead *.launch set syntax=xml
 "autocmd BufNewFile,BufRead *.urs,*.script set syntax=python
 autocmd BufWritePre * %s/\s\+$//e
+
+" update tags on save python files
+autocmd BufWritePost *.py silent! !ctags -R --python-kinds=-i --languages=python 2&gt; /dev/null &amp;
+set tags=./tags,tags;$HOME

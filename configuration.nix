@@ -8,7 +8,7 @@ in
 {
   imports = [
     (/etc/nixos + "/${host}/hardware.nix")
-    (import (/etc/nixos + "/${host}/network.nix") ({ hostname = host; })) 
+    (import (/etc/nixos + "/${host}/network.nix") ({ hostname = host; }))
     # (/etc/nixos + "/${host}/network.nix")
     (/etc/nixos + "/${host}/programs.nix")
     (/etc/nixos + "/${host}/services.nix")
@@ -27,6 +27,7 @@ in
     htop
     wget
     neovim
+    universal-ctags
   ];
 
   system = {
