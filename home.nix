@@ -39,6 +39,7 @@
     libreoffice
     htop
     ncdu # disk usage
+    spectacle
     # (eclipses.eclipseWithPlugins {
     #   eclipse = eclipses.eclipse-cpp;
     #   jvmArgs = [ "-Xmx2048m" ];
