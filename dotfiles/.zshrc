@@ -32,7 +32,12 @@ HOSTNAME=`hostname`
 # echo "Hostname is $HOSTNAME"
 if [ "$HOSTNAME" = "gs75" ]; then
     source /opt/ros/melodic/setup.zsh
+elif [ "$HOSTNAME" = "pizza-pc" ]; then
+    ROS_DISTRO=melodic
+    source /opt/ros/$ROS_DISTRO/setup.zsh
+    source /home/khassanov/Workspace/REMY_Robotics/Pizza_Restaurant/pizza_restaurant/devel/setup.zsh
 fi
+
 
 # PROMPT='${ret_status}%{$fg_bold[green]%}%p %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%} %D %T % %{$reset_color%}'
 # export LANG=en_US.UTF-8
@@ -58,7 +63,7 @@ alias cbc="catkin build clean -y"
 # moshs () {
 #     mosh "$@" -- screen -dR alisher
 # }
-# 
+#
 # mosh-tmux () {
 #     mosh "$@" -- tmux new -ADs mosh-session
 # }
@@ -75,7 +80,7 @@ alias cbc="catkin build clean -y"
 # if [ -d $CARGO_BIN ]; then
 #   export PATH="$CARGO_BIN:$PATH"
 # fi
-# 
+#
 # NPM_HOME="$HOME/.npm-global/bin"
 # if [ -d $NPM_HOME ]; then
 #   export PATH="$NPM_HOME:$PATH"
