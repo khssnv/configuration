@@ -88,9 +88,11 @@
         theme = "candy";
         plugins = [ "git" "ssh-agent" "docker" "docker-compose" "vagrant" "man" ];
         # extra config for plugins
-        # extraConfig = ''
-        #   zstyle :omz:plugins:ssh-agent identities id_rsa id_ed25519
-        # '';
+        extraConfig = ''
+          zstyle :omz:plugins:ssh-agent identities id_ed25519
+          zstyle :omz:plugins:ssh-agent agent-forwarding on
+          zstyle :omz:plugins:ssh-agent lifetime 24h
+        '';
       };
       # extra config for zsh itself
       initExtra = (builtins.readFile /home/khassanov/Workspace/configuration/dotfiles/.zshrc);
