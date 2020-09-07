@@ -62,6 +62,13 @@
     command-not-found.enable = true;
     tmux = {
       enable = true;
+      plugins = with pkgs; [
+        tmuxPlugins.cpu
+        {
+          plugin = tmuxPlugins.resurrect;
+          extraConfig = "set -g @resurrect-strategy-nvim 'session'";
+        }
+      ];
       extraConfig = ''
 	      source /home/khassanov/Workspace/configuration/dotfiles/.tmux.conf
 	    '';
