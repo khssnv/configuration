@@ -36,9 +36,12 @@
     # ark # KDE archive manager
     bmon
     gparted
+    goldendict
     libreoffice
     htop
     ncdu # disk usage
+    okular
+    opera
     spectacle
     # (eclipses.eclipseWithPlugins {
     #   eclipse = eclipses.eclipse-cpp;
@@ -47,6 +50,7 @@
     #     [ cdt ];
     # })
     kate
+    ktorrent
     spotify
 
     # instant messaging and calls
