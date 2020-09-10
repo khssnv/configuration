@@ -16,8 +16,9 @@ rm /home/$USER/.config/nixpkgs/home.nix
 mkdir ~/Workspace && cd ~/Workspace
 git clone https://github.com/khssnv/configuration.git
 cd configuration
-ln -s ~/Workspace/configurationi/home.nix ~/.config/nixpkgs/home.nix
+ln -s ~/Workspace/configuration/home.nix ~/.config/nixpkgs/home.nix
 home-manager switch
+command -v zsh | sudo tee -a /etc/shells
 sudo chsh -s "$(command -v zsh)" "${USER}"
 ```
 
