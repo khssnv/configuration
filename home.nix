@@ -1,11 +1,15 @@
 { config, pkgs, ... }:
 
+let
+  username = "khassanov";
+
+in
 {
 
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
-  home.username = "khassanov";
-  home.homeDirectory = "/home/khassanov";
+  home.username = username;
+  home.homeDirectory = "/home/${username}";
 
   # home.sessionVariables.LOCALES_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
   # home.sessionVariables = {
@@ -33,10 +37,11 @@
   nixpkgs.config.allowUnfree = true;
 
   home.packages = with pkgs; [
-    # ark # KDE archive manager
+    ark # KDE archive manager
     bmon
     gparted
     goldendict
+    ledger-live-desktop
     libreoffice
     htop
     ncdu # disk usage
@@ -74,13 +79,13 @@
         }
       ];
       extraConfig = ''
-	      source /home/khassanov/Workspace/configuration/dotfiles/.tmux.conf
+	      source /home/${username}/Workspace/configuration/dotfiles/.tmux.conf
 	    '';
     };
     chromium.enable = true;
     git = {
     	enable = true;
-      includes = [{ path = "/home/khassanov/Workspace/configuration/dotfiles/.gitconfig"; }];
+      includes = [{ path = "/home/${username}/Workspace/configuration/dotfiles/.gitconfig"; }];
     };
     # bash.enable = true;
     zsh = {
@@ -99,7 +104,7 @@
         '';
       };
       # extra config for zsh itself
-      initExtra = (builtins.readFile /home/khassanov/Workspace/configuration/dotfiles/.zshrc);
+      initExtra = (builtins.readFile (builtins.toPath "/home/${username}/Workspace/configuration/dotfiles/.zshrc"));
     };
     neovim = {
       enable = true;
@@ -110,7 +115,7 @@
       withPython3 = true;
       withRuby = true;
       withNodeJs = true;
-      configure.customRC = (builtins.readFile /home/khassanov/Workspace/configuration/dotfiles/.vimrc);
+      configure.customRC = (builtins.readFile (builtins.toPath "/home/${username}/Workspace/configuration/dotfiles/.vimrc"));
     };
     # eclipse = {
     #   enable = true;
