@@ -85,6 +85,7 @@ in
     chromium.enable = true;
     git = {
     	enable = true;
+      package = pkgs.gitAndTools.gitFull;
       includes = [{ path = "/home/${username}/Workspace/configuration/dotfiles/.gitconfig"; }];
     };
     # bash.enable = true;
