@@ -63,8 +63,9 @@ alias cbpy3="catkin build --cmake-args \
 -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.6m.so"
 alias cbc="catkin build clean -y"
 alias rosne="source /opt/ros/noetic/setup.zsh"
-alias ros2fe="source /opt/ros/foxy/setup.zsh &&
-source /usr/share/colcon_cd/function/colcon_cd.sh"
+alias ros2fe="source /opt/ros/foxy/setup.zsh && source /usr/share/colcon_cd/function/colcon_cd.sh"
+alias zsh_hide_git="git config --add oh-my-zsh.hide-status 1 && git config --add oh-my-zsh.hide-dirty 1"
+
 
 # moshs () {
 #     mosh "$@" -- screen -dR alisher
