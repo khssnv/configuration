@@ -11,3 +11,4 @@
   hist = log --pretty=format:\"%h %ad | %ae | %s%d\" --graph --date=short
   type = cat-file -t
   dump = cat-file -p
+  first = rev-list --max-parents=0 HEAD
