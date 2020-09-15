@@ -109,7 +109,7 @@ in
         '';
       };
       # extra config for zsh itself
-      initExtra = (builtins.readFile (builtins.toPath "/home/${username}/Workspace/configuration/dotfiles/.zshrc"));
+      initExtra = builtins.readFile ./dotfiles/.zshrc;
     };
     neovim = {
       enable = true;
@@ -120,7 +120,7 @@ in
       withPython3 = true;
       withRuby = true;
       withNodeJs = true;
-      configure.customRC = (builtins.readFile (builtins.toPath "/home/${username}/Workspace/configuration/dotfiles/.vimrc"));
+      configure.customRC = builtins.readFile ./dotfiles/.vimrc;
     };
     # eclipse = {
     #   enable = true;
