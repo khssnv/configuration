@@ -39,8 +39,10 @@ in
   home.packages = with pkgs; [
     ark # KDE archive manager
     bmon
+    # gitkraken
     gparted
     goldendict
+    # gource
     ledger-live-desktop
     libreoffice
     htop
@@ -65,6 +67,7 @@ in
     zoom-us
     tdesktop
     discord
+    xclip
     # zsh
   ];
   programs = {
@@ -87,6 +90,7 @@ in
     	enable = true;
       package = pkgs.gitAndTools.gitFull;
       includes = [{ path = "/home/${username}/Workspace/configuration/dotfiles/.gitconfig"; }];
+      lfs.enable = true;
     };
     # bash.enable = true;
     zsh = {
