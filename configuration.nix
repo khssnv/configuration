@@ -38,5 +38,7 @@ in
   nix = {
     trustedUsers = [ "khassanov" ];
   };
+
+  virtualisation.docker.enable = true;
 }
 

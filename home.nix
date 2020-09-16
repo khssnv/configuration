@@ -39,6 +39,8 @@ in
   home.packages = with pkgs; [
     ark # KDE archive manager
     bmon
+    docker
+    docker-compose
     # gitkraken
     gparted
     goldendict

@@ -13,7 +13,7 @@ in
     uid = 1000;
     home = "/home/khassanov";
     description = "Alisher A. Khassanov";
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [ "wheel" "networkmanager" "docker" ];
     shell = pkgs.zsh;
     # openssh.authorizedKeys.keys = import ./keys.nix;
   };
