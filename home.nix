@@ -38,6 +38,7 @@ in
 
   home.packages = with pkgs; [
     ark # KDE archive manager
+    busybox
     bmon
     docker
     docker-compose
@@ -71,6 +72,7 @@ in
     discord
     xclip
     # zsh
+    unrar
   ];
   programs = {
     command-not-found.enable = true;
