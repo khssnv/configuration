@@ -37,9 +37,9 @@ in
   nixpkgs.config.allowUnfree = true;
 
   home.packages = with pkgs; [
-    ark # KDE archive manager
-    busybox
-    bmon
+    ark # kde archive manager
+    busybox # cli utilities
+    bmon # network usage monitor
     docker
     docker-compose
     # gitkraken
@@ -50,29 +50,32 @@ in
     libreoffice
     htop
     ncdu # disk usage
-    okular
+    okular # kde pdf viewer
     opera
-    spectacle
+    spectacle # kde screenshots
     # (eclipses.eclipseWithPlugins {
     #   eclipse = eclipses.eclipse-cpp;
     #   jvmArgs = [ "-Xmx2048m" ];
     #   plugins = with eclipses.plugins;
     #     [ cdt ];
     # })
-    kate
-    ktorrent
+    kate # kde notes
+    ktorrent # kde torrents
+    steam
     spotify
 
     # instant messaging and calls
-    element-desktop
+    element-desktop # matrix messaging
     skype
     slack
     zoom-us
-    tdesktop
+    tdesktop # telegram
+    vlc
     discord
     xclip
     # zsh
     unrar
+    webcamoid
   ];
   programs = {
     command-not-found.enable = true;
