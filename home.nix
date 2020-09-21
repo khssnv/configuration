@@ -50,6 +50,7 @@ in
     libreoffice
     htop
     ncdu # disk usage
+    # nvtop
     okular # kde pdf viewer
     opera
     spectacle # kde screenshots

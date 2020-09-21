@@ -11,7 +11,7 @@ in
     (import (/etc/nixos + "/${host}/network.nix") ({ hostname = host; }))
     # (/etc/nixos + "/${host}/network.nix")
     (/etc/nixos + "/${host}/programs.nix")
-    (/etc/nixos + "/${host}/services.nix")
+    (import ./services.nix { inherit config; inherit pkgs; hostname = host; })
     ./users.nix
   ];
 

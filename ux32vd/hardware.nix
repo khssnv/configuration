@@ -5,6 +5,7 @@
     [ <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
     ];
 
+  # boot.kernelModules = [ "kvm-intel" "nvidiaLegacy390" ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
   boot.initrd.availableKernelModules = [ "ehci_pci" "ahci" "usb_storage" "sd_mod" "rtsx_usb_sdmmc" ];
@@ -44,10 +45,18 @@
   sound.enable = true;
   hardware.pulseaudio.enable = true;
   hardware.ledger.enable = true;
-  # hardware.nvidia.prime = {
-  #   sync.enable = true;
-  #   nvidiaBusId = "PCI:1:0:0";
-  #   intelBusId = "PCI:0:2:0";
+  hardware.nvidia.prime = {
+    # sync.enable = true;
+    # offload.enable = true;
+    nvidiaBusId = "PCI:1:0:0";
+    intelBusId = "PCI:0:2:0";
+  };
+  # hardware.opengl = {
+  #   driSupport32Bit = true;
+  #   extraPackages = [
+  #     pkgs.libGL_driver
+  #     pkgs.linuxPackages.nvidia_x11_legacy390.out
+  #   ];
   # };
 }
 
