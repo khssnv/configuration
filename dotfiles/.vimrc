@@ -8,9 +8,7 @@ set nowritebackup
 set hidden
 set updatetime=300
 set shortmess+=c
-
-" strings number
-set number
+set number "strings number
 set ruler
 
 if exists('+termguicolors')
@@ -19,9 +17,7 @@ if exists('+termguicolors')
   set termguicolors
 endif
 
-"set rtp+=~/.vim/bundle/jellybeans.vim
 set backspace=indent,eol,start
-
 set laststatus=2
 
 " set TAB space
@@ -53,18 +49,19 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.config/nvim/plugged')
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'LnL7/vim-nix'               "Nix highlights
+Plug 'cespare/vim-toml'           "TOML highlights
+Plug 'craigemery/vim-autotag'     "Automatic ctags
+Plug 'de-vri-es/vim-urscript'     "URScript highlights
 Plug 'dense-analysis/ale'         "Universal linter
+Plug 'lyokha/vim-xkbswitch'       "When CMD mode switch to US kb
+Plug 'majutsushi/tagbar'          "A tab with tags
+Plug 'nanotech/jellybeans.vim'    "Color scheme
+Plug 'neoclide/coc.nvim', {'branch': 'release'} "IntelliSense for vim
+Plug 'preservim/nerdtree'         "A tab with filesystem
 Plug 'taketwo/vim-ros'
-Plug 'LnL7/vim-nix'
-Plug 'de-vri-es/vim-urscript'
-Plug 'craigemery/vim-autotag'
+Plug 'tpope/vim-fugitive'         "Use git from vim
 Plug 'universal-ctags/ctags'
-
-" Utility
-Plug 'nanotech/jellybeans.vim', { 'tag': 'v1.7' }
-Plug 'preservim/nerdtree'
-Plug 'majutsushi/tagbar'
 call plug#end()
 
 " ALE linter
@@ -117,3 +114,14 @@ autocmd BufWritePre * %s/\s\+$//e
 " update tags on save python files
 autocmd BufWritePost *.py silent! !ctags -R --python-kinds=-i --languages=python 2&gt; /dev/null &amp;
 set tags=./tags,tags;$HOME
+
+" Configuration for 'vim-xkbswitch' plugin
+let g:XkbSwitchEnabled = 1
+let g:XkbSwitchNLayout = 'us'
+set ttimeoutlen=50
+let g:XkbSwitchSkipFt = [ 'nerdtree' ]
+let g:XkbSwitchLib = $HOME.'/.nix-profile/lib/libxkbswitch.so'
+
+" Toggle search highlight
+"set hlsearch! "no highliting by default
+nnoremap <F3> :set hlsearch!<CR>
