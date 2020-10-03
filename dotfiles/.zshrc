@@ -1,20 +1,16 @@
-# export ZSH="/home/khassanov/.oh-my-zsh"
-
-# ZSH_THEME="bira"
-# ZSH_THEME="robbyrussell"
-# ZSH_THEME="wezm"
-
-# plugins=(
-#   ssh-agent
-#   git
-# )
-
-# zstyle :omz:plugins:ssh-agent agent-forwarding on
-# zstyle :omz:plugins:ssh-agent identities id_ed25519
-# zstyle :omz:plugins:ssh-agent lifetime 4h
-
 source /etc/os-release
+unsetopt no_match
+unsetopt SHARE_HISTORY
+# PROMPT='${ret_status}%{$fg_bold[green]%}%p %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%} %D %T % %{$reset_color%}'
+# export LANG=en_US.UTF-8
+# export LC_ALL=en_US.UTF-8
 
+# Vim is default editor
+export VISUAL=vim
+export EDITOR="$VISUAL"
+export SUDO_EDITOR=$(which nvim)
+
+# OS specific
 case $NAME in
   "NixOS");;
   "Ubuntu")
@@ -23,13 +19,8 @@ case $NAME in
   ;;
 esac
 
-# source $ZSH/oh-my-zsh.sh
-unsetopt no_match
-unsetopt SHARE_HISTORY
-
+# Host specific
 HOSTNAME=`hostname`
-
-# echo "Hostname is $HOSTNAME"
 if [ "$HOSTNAME" = "gs75" ]; then
     source /opt/ros/melodic/setup.zsh
 elif [ "$HOSTNAME" = "pizza-pc" ]; then
@@ -38,22 +29,15 @@ elif [ "$HOSTNAME" = "pizza-pc" ]; then
     source /home/khassanov/Workspace/REMY_Robotics/Pizza_Restaurant/pizza_restaurant/devel/setup.zsh
 fi
 
-if [ ! -S ~/.ssh/ssh_auth_sock ] && [ -S "$SSH_AUTH_SOCK" ]; then
-    ln -sf $SSH_AUTH_SOCK ~/.ssh/ssh_auth_sock
-fi
-
-# PROMPT='${ret_status}%{$fg_bold[green]%}%p %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$fg_bold[blue]%} %D %T % %{$reset_color%}'
-# export LANG=en_US.UTF-8
-# export LC_ALL=en_US.UTF-8
-export SUDO_EDITOR=$(which nvim)
-
+# Aliases
 alias ipython="ipython --profile=myprofile"
-alias ccy="catkin clean -y"
 alias tl="tmux ls"
 alias ta="tmux a -t"
 alias tn="tmux new -s"
 alias c="xclip -selection clipboard"
 alias v="xclip -o"
+alias ccy="catkin clean -y"
+alias cbc="catkin build clean -y"
 alias cbpy3="catkin build --cmake-args \
 -DCMAKE_CXX_STANDARD=17 \
 -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
@@ -61,11 +45,10 @@ alias cbpy3="catkin build --cmake-args \
 -DPYTHON_EXECUTABLE=/usr/bin/python3 \
 -DPYTHON_INCLUDE_DIR=/usr/include/python3.6m \
 -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.6m.so"
-alias cbc="catkin build clean -y"
 alias rosne="source /opt/ros/noetic/setup.zsh"
 alias ros2fe="source /opt/ros/foxy/setup.zsh && source /usr/share/colcon_cd/function/colcon_cd.sh"
-alias zsh_hide_git="git config --add oh-my-zsh.hide-status 1 && git config --add oh-my-zsh.hide-dirty 1"
-
+alias zsh_hide_git="git config --add oh-my-zsh.hide-status 1 \
+&& git config --add oh-my-zsh.hide-dirty 1"
 
 # moshs () {
 #     mosh "$@" -- screen -dR alisher
@@ -75,30 +58,16 @@ alias zsh_hide_git="git config --add oh-my-zsh.hide-status 1 && git config --add
 #     mosh "$@" -- tmux new -ADs mosh-session
 # }
 
-# ROS1_ENV="/opt/ros/melodic/setup.zsh"
-# ROS2_ENV="/opt/ros/dashing/setup.zsh"
-# if [ -e "$ROS1_ENV" ]; then
-#   source $ROS1_ENV
-# elif [ -e $ROS2_ENV ]; then
-#   source $ROS2_ENV
-# fi
-
-# CARGO_BIN="$HOME/.cargo/bin"
-# if [ -d $CARGO_BIN ]; then
-#   export PATH="$CARGO_BIN:$PATH"
-# fi
-#
-# NPM_HOME="$HOME/.npm-global/bin"
-# if [ -d $NPM_HOME ]; then
-#   export PATH="$NPM_HOME:$PATH"
-# fi
-
-
+# SSH agent
 # temporary solution for Z shell agent forwarding issue
 # without it I have `SSH_AUTH_SOCK=/run/user/1001/gnupg/S.gpg-agent.ssh`
 # instead of `SSH_AUTH_SOCK=/tmp/ssh-wpIvELmtyl/agent.3250` for some reason.
 # Solution took from:
 # https://superuser.com/questions/141044/sharing-the-same-ssh-agent-among-multiple-login-sessions
+
+if [ ! -S ~/.ssh/ssh_auth_sock ] && [ -S "$SSH_AUTH_SOCK" ]; then
+    ln -sf $SSH_AUTH_SOCK ~/.ssh/ssh_auth_sock
+fi
 
 function sshagent_findsockets {
     find /tmp -uid $(id -u) -type s -name agent.\* 2>/dev/null
