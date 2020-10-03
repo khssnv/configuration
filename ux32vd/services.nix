@@ -2,6 +2,7 @@
 
 {
   services = {
+    teamviewer.enable = true;
     xserver = {
       enable = true;
       layout = "us";

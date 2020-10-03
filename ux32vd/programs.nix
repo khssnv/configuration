@@ -12,6 +12,7 @@ let
 in
 {
   environment.systemPackages = with pkgs; [
+    buildah
     virtualboxWithExtpack
     # nvidia-offload
     # linuxPackages.nvidia_x11
@@ -30,6 +31,9 @@ in
     enable = true;
     enableExtensionPack = true;
   };
+
+  virtualisation.podman.enable = true;
+  virtualisation.docker.enable = true;
 
   users.extraGroups.vboxusers.members = [ "khassanov" ];
   nixpkgs.config.allowUnfree = true;

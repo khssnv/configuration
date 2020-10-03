@@ -10,14 +10,12 @@ in
   # paths it should manage.
   home.username = username;
   home.homeDirectory = "/home/${username}";
-
   # home.sessionVariables.LOCALES_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
   # home.sessionVariables = {
   #   # see: https://github.com/NixOS/nixpkgs/issues/38991#issuecomment-400657551
   #   LOCALE_ARCHIVE_2_11 = "/usr/bin/locale/locale-archive";
   #   LOCALE_ARCHIVE_2_27 = "${pkgs.glibcLocales}/lib/locale/locale-archive";
   # };
-
   # home.language = let
   #   en = "en_US.UTF-8";
   #   ru = "ru_RU.UTF-8";
@@ -30,53 +28,42 @@ in
   #   base = en;
   # };
   # https://gist.github.com/peti/2c818d6cb49b0b0f2fd7c300f8386bc3
-
-  # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
-
   nixpkgs.config.allowUnfree = true;
-
   home.packages = with pkgs; [
     ark # kde archive manager
-    busybox # cli utilities
     bmon # network usage monitor
+    coreutils
+    discord
     docker
     docker-compose
-    # gitkraken
+    element-desktop # matrix messaging
+    gimp
+    goldendict # dictionary lookup
     gparted
-    goldendict
-    # gource
+    htop
+    kate # kde notes
+    kcalc
+    ktorrent # kde torrents
     ledger-live-desktop
     libreoffice
-    htop
     ncdu # disk usage
-    # nvtop
+    nvtop # htop-like monitoring tool for GPU
     okular # kde pdf viewer
     opera
-    spectacle # kde screenshots
-    # (eclipses.eclipseWithPlugins {
-    #   eclipse = eclipses.eclipse-cpp;
-    #   jvmArgs = [ "-Xmx2048m" ];
-    #   plugins = with eclipses.plugins;
-    #     [ cdt ];
-    # })
-    kate # kde notes
-    ktorrent # kde torrents
-    steam
-    spotify
-
-    # instant messaging and calls
-    element-desktop # matrix messaging
     skype
     slack
-    zoom-us
+    spectacle # kde screenshots
+    spotify
+    steam
     tdesktop # telegram
-    vlc
-    discord
-    xclip
-    # zsh
+    teamviewer
     unrar
-    webcamoid
+    vlc
+    webcamoid # kde webcamera app
+    xclip
+    xkb-switch # switch keyboard layout from command line
+    zoom-us
   ];
   programs = {
     command-not-found.enable = true;
@@ -100,7 +87,6 @@ in
       includes = [{ path = "/home/${username}/Workspace/configuration/dotfiles/.gitconfig"; }];
       lfs.enable = true;
     };
-    # bash.enable = true;
     zsh = {
       enable = true;
       enableAutosuggestions = true;
@@ -142,6 +128,5 @@ in
     enable = true;
     enableSshSupport = true;
   };
-
   # home.stateVersion = "20.03";
 }

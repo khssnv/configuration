@@ -1,7 +1,6 @@
 { config, pkgs, ... }:
 
 let
-
   host = "ux32vd";
 
 in
@@ -39,6 +38,5 @@ in
     trustedUsers = [ "khassanov" ];
   };
 
-  virtualisation.docker.enable = true;
 }
 
