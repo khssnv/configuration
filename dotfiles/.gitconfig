@@ -3,12 +3,15 @@
   email = a.khssnv@gmail.com
 [core]
   autocrlf = input
+  editor = vim
 [alias]
   co = checkout
   ci = commit
   st = status
   br = branch
+  dc = diff --cached
   hist = log --pretty=format:\"%h %ad | %ae | %s%d\" --graph --date=short
   type = cat-file -t
   dump = cat-file -p
-  first = rev-list --max-parents=0 HEAD
+  first = rev-list --short --max-parents=0 HEAD
+  last = rev-parse --short HEAD
