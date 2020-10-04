@@ -42,6 +42,7 @@ in
     goldendict # dictionary lookup
     gparted
     htop
+    python38Packages.ipython
     kate # kde notes
     kcalc
     ktorrent # kde torrents
