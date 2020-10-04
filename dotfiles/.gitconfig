@@ -15,3 +15,5 @@
   dump = cat-file -p
   first = rev-list --short --max-parents=0 HEAD
   last = rev-parse --short HEAD
+[pull]
+  rebase = false
