@@ -17,3 +17,7 @@
   last = rev-parse --short HEAD
 [pull]
   rebase = false
+[merge]
+  tool = vimdif
+  conflictstyle = diff3
+
