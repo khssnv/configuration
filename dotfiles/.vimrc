@@ -54,6 +54,7 @@ Plug 'cespare/vim-toml'           "TOML highlights
 Plug 'craigemery/vim-autotag'     "Automatic ctags
 Plug 'de-vri-es/vim-urscript'     "URScript highlights
 Plug 'dense-analysis/ale'         "Universal linter
+Plug 'ekalinin/Dockerfile.vim'    "Dockerfile highlights
 Plug 'lyokha/vim-xkbswitch'       "When CMD mode switch to US kb
 Plug 'majutsushi/tagbar'          "A tab with tags
 Plug 'nanotech/jellybeans.vim'    "Color scheme
