@@ -40,7 +40,6 @@ in
     element-desktop # matrix messaging
     gimp
     goldendict # dictionary lookup
-    gparted
     htop
     python38Packages.ipython
     kate # kde notes
@@ -52,6 +51,7 @@ in
     nvtop # htop-like monitoring tool for GPU
     okular # kde pdf viewer
     opera
+    pciutils
     skype
     slack
     spectacle # kde screenshots
