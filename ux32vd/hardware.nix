@@ -37,7 +37,7 @@
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 
   time = {
-    timeZone = "Europe/Madrid";
+    timeZone = "Europe/Samara";
     hardwareClockInLocalTime = true;
   };
 

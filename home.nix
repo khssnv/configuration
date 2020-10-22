@@ -5,9 +5,6 @@ let
 
 in
 {
-
-  # Home Manager needs a bit of information about you and the
-  # paths it should manage.
   home.username = username;
   home.homeDirectory = "/home/${username}";
   # home.sessionVariables.LOCALES_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
@@ -41,7 +38,6 @@ in
     gimp
     goldendict # dictionary lookup
     htop
-    python38Packages.ipython
     kate # kde notes
     kcalc
     ktorrent # kde torrents
@@ -52,6 +48,7 @@ in
     okular # kde pdf viewer
     opera
     pciutils
+    python38Packages.ipython
     skype
     slack
     spectacle # kde screenshots
@@ -61,6 +58,7 @@ in
     teamviewer
     unrar
     vlc
+    vokoscreen
     webcamoid # kde webcamera app
     xclip
     xkb-switch # switch keyboard layout from command line
@@ -68,6 +66,24 @@ in
   ];
   programs = {
     command-not-found.enable = true;
+    git = {
+      enable = true;
+      package = pkgs.gitAndTools.gitFull;
+      includes = [{ path = "/home/${username}/Workspace/configuration/dotfiles/.gitconfig"; }];
+      lfs.enable = true;
+    };
+    google-chrome.enable = true;
+    neovim = {
+      enable = true;
+      viAlias = true;
+      vimAlias = true;
+      vimdiffAlias = true;
+      withPython = true;
+      withPython3 = true;
+      withRuby = true;
+      withNodeJs = true;
+      configure.customRC = builtins.readFile ./dotfiles/.vimrc;
+    };
     tmux = {
       enable = true;
       plugins = with pkgs; [
@@ -80,13 +96,6 @@ in
       extraConfig = ''
 	      source /home/${username}/Workspace/configuration/dotfiles/.tmux.conf
 	    '';
-    };
-    chromium.enable = true;
-    git = {
-    	enable = true;
-      package = pkgs.gitAndTools.gitFull;
-      includes = [{ path = "/home/${username}/Workspace/configuration/dotfiles/.gitconfig"; }];
-      lfs.enable = true;
     };
     zsh = {
       enable = true;
@@ -105,17 +114,6 @@ in
       };
       # extra config for zsh itself
       initExtra = builtins.readFile ./dotfiles/.zshrc;
-    };
-    neovim = {
-      enable = true;
-      viAlias = true;
-      vimAlias = true;
-      vimdiffAlias = true;
-      withPython = true;
-      withPython3 = true;
-      withRuby = true;
-      withNodeJs = true;
-      configure.customRC = builtins.readFile ./dotfiles/.vimrc;
     };
     # eclipse = {
     #   enable = true;
