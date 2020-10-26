@@ -28,6 +28,7 @@ in
   programs.home-manager.enable = true;
   nixpkgs.config.allowUnfree = true;
   home.packages = with pkgs; [
+    # pianoteq
     ark # kde archive manager
     bmon # network usage monitor
     coreutils
@@ -48,7 +49,8 @@ in
     okular # kde pdf viewer
     opera
     pciutils
-    python38Packages.ipython
+    pipenv
+    python3Packages.ipython
     skype
     slack
     spectacle # kde screenshots
@@ -61,7 +63,6 @@ in
     vokoscreen
     webcamoid # kde webcamera app
     xclip
-    xkb-switch # switch keyboard layout from command line
     zoom-us
   ];
   programs = {
@@ -78,11 +79,36 @@ in
       viAlias = true;
       vimAlias = true;
       vimdiffAlias = true;
+      withNodeJs = true;
       withPython = true;
       withPython3 = true;
       withRuby = true;
-      withNodeJs = true;
-      configure.customRC = builtins.readFile ./dotfiles/.vimrc;
+      plugins = with pkgs.vimPlugins; [
+        # vim-ros
+        # vim-urscript
+        coc-nvim # requires :CocConfig
+        jellybeans-vim
+        nerdtree
+        tagbar
+        vim-fugitive
+        vim-gutentags
+        vim-nix
+        vim-toml
+        vim-xkbswitch
+        vimspector
+      ];
+      extraConfig = builtins.readFile ./dotfiles/.vimrc;
+      extraPackages = with pkgs; [
+        clang-tools # required by coc-nvim for C-family
+        rls # required by coc-nvim for Rust
+        universal-ctags
+        xkb-switch # required by vim-xkbswitch
+      ];
+      extraPython3Packages = (ps: with ps; [
+        pyls-black # required by coc-nvim
+        pyls-isort # required by coc-nvim
+        pyls-mypy # required by coc-nvim
+      ]);
     };
     tmux = {
       enable = true;

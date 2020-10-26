@@ -39,31 +39,14 @@ set imsearch=0
 highlight lCursor guifg=NONE guibg=Cyan
 
 " Install vim-plug automatically
-set runtimepath^=~/.config/nvim runtimepath+=~/.config/nvim/after
-let &packpath = &runtimepath
-
-if empty(glob('~/.config/nvim/autoload/plug.vim'))
-  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-
-call plug#begin('~/.config/nvim/plugged')
-Plug 'LnL7/vim-nix'               "Nix highlights
-Plug 'cespare/vim-toml'           "TOML highlights
-Plug 'craigemery/vim-autotag'     "Automatic ctags
-Plug 'de-vri-es/vim-urscript'     "URScript highlights
-Plug 'dense-analysis/ale'         "Universal linter
-Plug 'ekalinin/Dockerfile.vim'    "Dockerfile highlights
-Plug 'lyokha/vim-xkbswitch'       "When CMD mode switch to US kb
-Plug 'majutsushi/tagbar'          "A tab with tags
-Plug 'nanotech/jellybeans.vim'    "Color scheme
-Plug 'neoclide/coc.nvim', {'branch': 'release'} "IntelliSense for vim
-Plug 'preservim/nerdtree'         "A tab with filesystem
-Plug 'taketwo/vim-ros'
-Plug 'tpope/vim-fugitive'         "Use git from vim
-Plug 'universal-ctags/ctags'
-call plug#end()
+" set runtimepath^=~/.config/nvim runtimepath+=~/.config/nvim/after
+" let &packpath = &runtimepath
+"
+" if empty(glob('~/.config/nvim/autoload/plug.vim'))
+"   silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
+"     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+"   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+" endif
 
 " ALE linter
 "let g:ale_enabled = 0
@@ -96,7 +79,7 @@ let g:ycm_semantic_triggers = {
 \ }
 
 map <C-n> :NERDTreeToggle<CR>
-map <C-m> :TagbarToggle<CR>
+map <C-a> :TagbarToggle<CR>
 
 map gn :bn<CR>
 map gp :bp<CR>
@@ -126,3 +109,6 @@ let g:XkbSwitchLib = $HOME.'/.nix-profile/lib/libxkbswitch.so'
 " Toggle search highlight
 "set hlsearch! "no highliting by default
 nnoremap <F3> :set hlsearch!<CR>
+
+let g:vimspector_enable_mappings = 'HUMAN'
+packadd! vimspector
