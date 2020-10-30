@@ -29,6 +29,8 @@ in
   nixpkgs.config.allowUnfree = true;
   home.packages = with pkgs; [
     # pianoteq
+    # webcamoid # kde webcamera app
+    anydesk
     ark # kde archive manager
     bmon # network usage monitor
     coreutils
@@ -59,9 +61,10 @@ in
     tdesktop # telegram
     teamviewer
     unrar
+    vagrant
     vlc
     vokoscreen
-    webcamoid # kde webcamera app
+    wineWowPackages.staging
     xclip
     zoom-us
   ];
@@ -109,6 +112,9 @@ in
         pyls-isort # required by coc-nvim
         pyls-mypy # required by coc-nvim
       ]);
+    };
+    emacs = {
+      enable = true;
     };
     tmux = {
       enable = true;
