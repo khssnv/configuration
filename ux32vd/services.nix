@@ -5,12 +5,15 @@
     teamviewer.enable = true;
     xserver = {
       enable = true;
-      layout = "us";
+      layout = "us,ru";
       xkbOptions = "eurosign:e";
       videoDrivers = [ "intel" ];
       libinput.enable = true; # touchpad
-      displayManager.sddm.enable = true;
-      desktopManager.plasma5.enable = true;
+      desktopManager = {
+        xterm.enable = false;
+        xfce.enable = true;
+      };
+      displayManager.defaultSession = "xfce";
     };
   };
 }
