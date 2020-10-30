@@ -6,7 +6,7 @@
     firewall = {
       enable = true;
       allowPing = true;
-      allowedTCPPorts = [ 
+      allowedTCPPorts = [
         22 # ssh
         # 80 # http
         # 443 # https
@@ -23,5 +23,10 @@
     };
     networkmanager.enable = true;
     interfaces.wlp3s0.useDHCP = true;
+    # wireless = {
+    #   enable = true;
+    #   interfaces = [ "wlp3s0" ];
+    #   userControlled.enable = true;
+    # };
   };
 }

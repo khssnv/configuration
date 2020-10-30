@@ -147,8 +147,22 @@ in
     #   plugins = with eclipses.plugins; [ cdt ];
     #   # plugins = [ "cdt" ];
     # };
+    # rofi.enable = true;
   };
-  # xsession.enable = true;
+  # xsession = {
+  #   enable = true;
+  #   windowManager.xmonad = {
+  #     enable = true;
+  #     enableContribAndExtras = true;
+  #     extraPackages = haskellPackages: [
+  #       haskellPackages.xmonad-contrib
+  #       haskellPackages.xmonad-extras
+  #       haskellPackages.xmonad
+  #       haskellPackages.monad-logger
+  #     ];
+  #     config = ./dotfiles/.xmonad/xmonad.hs;
+  #   };
+  # };
   services.gpg-agent = {
     enable = true;
     enableSshSupport = true;
