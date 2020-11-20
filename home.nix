@@ -29,42 +29,41 @@ in
   nixpkgs.config.allowUnfree = true;
   home.packages = with pkgs; [
     # pianoteq
-    # webcamoid # kde webcamera app
     anydesk
-    ark # kde archive manager
     bmon # network usage monitor
     coreutils
     discord
     docker
     docker-compose
     element-desktop # matrix messaging
+    evince
     gimp
     goldendict # dictionary lookup
     htop
-    kate # kde notes
-    kcalc
-    ktorrent # kde torrents
+    # hubstaff
     ledger-live-desktop
     libreoffice
     ncdu # disk usage
     nvtop # htop-like monitoring tool for GPU
-    okular # kde pdf viewer
+    openshot-qt
     opera
     pciutils
     pipenv
     python3Packages.ipython
+    qalculate-gtk
     skype
     slack
-    spectacle # kde screenshots
     spotify
     steam
     tdesktop # telegram
     teamviewer
+    # tree # fails home-manager service
     unrar
     vagrant
     vlc
     vokoscreen
-    wineWowPackages.staging
+    # wineWowPackages.staging
+    wmctrl
     xclip
     zoom-us
   ];
@@ -76,7 +75,7 @@ in
       includes = [{ path = "/home/${username}/Workspace/configuration/dotfiles/.gitconfig"; }];
       lfs.enable = true;
     };
-    google-chrome.enable = true;
+    chromium.enable = true;
     neovim = {
       enable = true;
       viAlias = true;
@@ -89,32 +88,31 @@ in
       plugins = with pkgs.vimPlugins; [
         # vim-ros
         # vim-urscript
-        coc-nvim # requires :CocConfig
+        # vim-scheme
         jellybeans-vim
         nerdtree
         tagbar
         vim-fugitive
+        # vim-graphql
         vim-gutentags
         vim-nix
         vim-toml
         vim-xkbswitch
         vimspector
+        YouCompleteMe
       ];
       extraConfig = builtins.readFile ./dotfiles/.vimrc;
       extraPackages = with pkgs; [
         clang-tools # required by coc-nvim for C-family
-        rls # required by coc-nvim for Rust
+        rust-analyzer
         universal-ctags
         xkb-switch # required by vim-xkbswitch
       ];
-      extraPython3Packages = (ps: with ps; [
-        pyls-black # required by coc-nvim
-        pyls-isort # required by coc-nvim
-        pyls-mypy # required by coc-nvim
-      ]);
-    };
-    emacs = {
-      enable = true;
+      # extraPython3Packages = (ps: with ps; [
+      #   pyls-black # required by coc-nvim
+      #   pyls-isort # required by coc-nvim
+      #   pyls-mypy # required by coc-nvim
+      # ]);
     };
     tmux = {
       enable = true;
@@ -174,4 +172,24 @@ in
     enableSshSupport = true;
   };
   # home.stateVersion = "20.03";
+
+  programs.emacs.enable = true;
+  # spacemacs goes manually now
+  # git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
+  # home.file.".emacs.d" = {
+  #   # don't make the directory read only so that impure melpa can still happen
+  #   # for now
+  #   recursive = true;
+  #   # source = pkgs.fetchFromGitHub {
+  #   #   owner = "syl20bnr";
+  #   #   repo = "spacemacs";
+  #   #   rev = "d46eacd83842815b24afcb2e1fee5c80c38187c5";
+  #   #   sha256 = "1r8q7bnszkrxh4q9l78n6xgxflpc52hcd18d3n9kc5r8xma20387";
+  #   # };
+  #   source = builtins.fetchGit {
+  #     url = "https://github.com/syl20bnr/spacemacs";
+  #     ref = "master";
+  #   };
+  # };
+  # home.file.".spacemacs".source = ./dotfiles/.spacemacs.el;
 }

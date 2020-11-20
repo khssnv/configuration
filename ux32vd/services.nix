@@ -9,11 +9,8 @@
       xkbOptions = "eurosign:e";
       videoDrivers = [ "intel" ];
       libinput.enable = true; # touchpad
-      desktopManager = {
-        xterm.enable = false;
-        xfce.enable = true;
-      };
-      displayManager.defaultSession = "xfce";
+      displayManager.gdm.enable = true;
+      desktopManager.gnome3.enable = true;
     };
   };
 }
