@@ -28,7 +28,15 @@ in
   programs.home-manager.enable = true;
   nixpkgs.config.allowUnfree = true;
   home.packages = with pkgs; [
+    # hubstaff
     # pianoteq
+    # tree # fails home-manager service
+    # wineWowPackages.staging
+    goimports
+    go_bootstrap
+    # nodePackages.tern # wanted by emacs ts layer, but fail HM
+    # nodePackages.prettier
+
     anydesk
     bmon # network usage monitor
     coreutils
@@ -36,11 +44,13 @@ in
     docker
     docker-compose
     element-desktop # matrix messaging
+    # nheko # matrix messaging
     evince
+    # fractal
+    alacritty
     gimp
     goldendict # dictionary lookup
     htop
-    # hubstaff
     ledger-live-desktop
     libreoffice
     ncdu # disk usage
@@ -50,6 +60,9 @@ in
     pciutils
     pipenv
     python3Packages.ipython
+    # transmission
+    transmission-gtk
+    transmission-remote-gtk
     qalculate-gtk
     skype
     slack
@@ -57,12 +70,10 @@ in
     steam
     tdesktop # telegram
     teamviewer
-    # tree # fails home-manager service
     unrar
     vagrant
     vlc
     vokoscreen
-    # wineWowPackages.staging
     wmctrl
     xclip
     zoom-us
@@ -86,20 +97,22 @@ in
       withPython3 = true;
       withRuby = true;
       plugins = with pkgs.vimPlugins; [
+        # vim-graphql
         # vim-ros
-        # vim-urscript
         # vim-scheme
+        # vim-urscript
+        YouCompleteMe
+        fzf-vim
         jellybeans-vim
         nerdtree
         tagbar
         vim-fugitive
-        # vim-graphql
+        vim-go
         vim-gutentags
         vim-nix
         vim-toml
         vim-xkbswitch
         vimspector
-        YouCompleteMe
       ];
       extraConfig = builtins.readFile ./dotfiles/.vimrc;
       extraPackages = with pkgs; [
@@ -171,9 +184,30 @@ in
     enable = true;
     enableSshSupport = true;
   };
-  # home.stateVersion = "20.03";
+  home.stateVersion = "20.09";
 
-  programs.emacs.enable = true;
+  services.emacs.enable = true; # emacs daemon mode
+  programs.emacs = {
+    enable = true;
+    extraPackages = epkgs: [
+      # epkgs.pdf-tools # never works as expected
+      # nodePckages.tern
+      # pkgs.gocode
+      # pkgs.gocode-gomod
+      # epkgs.go-guru
+      # pkgs.goimports
+      # pkgs.go_bootstrap
+      # pkgs.goimports
+    ];
+  };
+  home.file.".emacs.d" = {
+    source = builtins.fetchGit {
+      url = "https://github.com/syl20bnr/spacemacs";
+      ref = "develop";
+    };
+    recursive = true;
+  };
+  home.file.".spacemacs".source = ./dotfiles/.spacemacs.el;
   # spacemacs goes manually now
   # git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
   # home.file.".emacs.d" = {

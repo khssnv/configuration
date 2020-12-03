@@ -1,4 +1,8 @@
 set nocompatible "vi compatibility
+
+nnoremap <SPACE> <Nop>
+map <Space> <Leader>
+
 syntax on
 set nowrap "scroll instead of one more line
 set encoding=utf8
@@ -38,7 +42,7 @@ set iminsert=0
 set imsearch=0
 highlight lCursor guifg=NONE guibg=Cyan
 
-" Install vim-plug automatically
+" " Install vim-plug automatically
 " set runtimepath^=~/.config/nvim runtimepath+=~/.config/nvim/after
 " let &packpath = &runtimepath
 "
@@ -47,6 +51,26 @@ highlight lCursor guifg=NONE guibg=Cyan
 "     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 "   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 " endif
+"
+" call plug#begin('~/.config/nvim/plugged')
+" Plug 'LnL7/vim-nix'               "Nix highlights
+" Plug 'cespare/vim-toml'           "TOML highlights
+" Plug 'craigemery/vim-autotag'     "Automatic ctags
+" Plug 'de-vri-es/vim-urscript'     "URScript highlights
+" Plug 'dense-analysis/ale'         "Universal linter
+" Plug 'ekalinin/Dockerfile.vim'    "Dockerfile highlights
+" Plug 'lyokha/vim-xkbswitch'       "When CMD mode switch to US kb
+" Plug 'majutsushi/tagbar'          "A tab with tags
+" Plug 'nanotech/jellybeans.vim'    "Color scheme
+" Plug 'neoclide/coc.nvim', {'branch': 'release'} "IntelliSense for vim
+" Plug 'preservim/nerdtree'         "A tab with filesystem
+" Plug 'taketwo/vim-ros'
+" Plug 'tpope/vim-fugitive'         "Use git from vim
+" Plug 'universal-ctags/ctags'
+" Plug 'puremourning/vimspector'
+" Plug 'neoclide/coc-python'
+" Plug 'neoclide/coc-rls'
+" call plug#end()
 
 " ALE linter
 "let g:ale_enabled = 0
@@ -69,6 +93,15 @@ nmap <C-l> :ALEToggle<CR>
 "packloadall
 "silent! helptags ALL
 
+" YouCompleteMe Python
+let g:ycm_python_interpreter_path = ''
+let g:ycm_python_sys_path = []
+let g:ycm_extra_conf_vim_data = [
+  \  'g:ycm_python_interpreter_path',
+  \  'g:ycm_python_sys_path'
+  \]
+let g:ycm_global_ycm_extra_conf = '/home/khassanov/Workspace/configuration/dotfiles/ycm_global_extra_conf.py'
+
 " Specials for C-family
 let g:ycm_clangd_binary_path = "/usr/bin/clangd" "YouCompleteMe for C-family
 
@@ -83,7 +116,7 @@ map <C-a> :TagbarToggle<CR>
 
 map gn :bn<CR>
 map gp :bp<CR>
-map gd :bd<CR>
+"map gd :bd<CR>
 
 map ZW :wqa<CR>
 map ZA :qa!<CR>
@@ -110,5 +143,28 @@ let g:XkbSwitchLib = $HOME.'/.nix-profile/lib/libxkbswitch.so'
 "set hlsearch! "no highliting by default
 nnoremap <F3> :set hlsearch!<CR>
 
-let g:vimspector_enable_mappings = 'HUMAN'
-packadd! vimspector
+" let g:vimspector_enable_mappings = 'HUMAN'
+" packadd! vimspector
+
+set foldmethod=indent
+set foldlevel=99
+
+au BufNewFile,BufRead *.py
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set textwidth=79 |
+    \ set expandtab |
+    \ set autoindent |
+    \ set fileformat=unix
+
+au BufNewFile,BufRead *.js, *.html, *.css
+    \ set tabstop=2 |
+    \ set softtabstop=2 |
+    \ set shiftwidth=2
+
+au BufNewFile,BufRead *.go
+    \ set autoindent |
+    \ set noexpandtab |
+    \ set tabstop=4 |
+    \ set shiftwidth=4
