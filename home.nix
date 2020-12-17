@@ -192,19 +192,23 @@ in
   };
   home.stateVersion = "20.09";
 
-  services.emacs.enable = true; # emacs daemon mode
+  services.emacs = {
+    enable = true; # emacs daemon mode
+    client.enable = true; # desktop icon
+  };
   programs.emacs = {
     enable = true;
-    extraPackages = epkgs: [
-      # epkgs.pdf-tools # never works as expected
-      # nodePckages.tern
-      # pkgs.gocode
-      # pkgs.gocode-gomod
-      # epkgs.go-guru
-      # pkgs.goimports
-      # pkgs.go_bootstrap
-      # pkgs.goimports
-    ];
+    # extraPackages = epkgs: [
+    #   # epkgs.pdf-tools # never works as expected
+    #   # nodePckages.tern
+    #   # pkgs.gocode
+    #   # pkgs.gocode-gomod
+    #   # epkgs.go-guru
+    #   # pkgs.goimports
+    #   # pkgs.go_bootstrap
+    #   # pkgs.goimports
+    #   # pkgs.node
+    # ];
   };
   home.file.".emacs.d" = {
     source = builtins.fetchGit {
@@ -214,22 +218,4 @@ in
     recursive = true;
   };
   home.file.".spacemacs".source = ./dotfiles/.spacemacs.el;
-  # spacemacs goes manually now
-  # git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
-  # home.file.".emacs.d" = {
-  #   # don't make the directory read only so that impure melpa can still happen
-  #   # for now
-  #   recursive = true;
-  #   # source = pkgs.fetchFromGitHub {
-  #   #   owner = "syl20bnr";
-  #   #   repo = "spacemacs";
-  #   #   rev = "d46eacd83842815b24afcb2e1fee5c80c38187c5";
-  #   #   sha256 = "1r8q7bnszkrxh4q9l78n6xgxflpc52hcd18d3n9kc5r8xma20387";
-  #   # };
-  #   source = builtins.fetchGit {
-  #     url = "https://github.com/syl20bnr/spacemacs";
-  #     ref = "master";
-  #   };
-  # };
-  # home.file.".spacemacs".source = ./dotfiles/.spacemacs.el;
 }
