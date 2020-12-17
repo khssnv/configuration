@@ -9,9 +9,13 @@
       xkbOptions = "eurosign:e";
       videoDrivers = [ "intel" ];
       libinput.enable = true; # touchpad
-      displayManager.gdm.enable = true;
+      displayManager.gdm = {
+        enable = true;
+        wayland = false;
+      };
       desktopManager.gnome3.enable = true;
     };
+    logind.lidSwitch = "ignore";
     prometheus = {
       enable = true;
       scrapeConfigs = [
