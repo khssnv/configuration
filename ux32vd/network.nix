@@ -12,6 +12,7 @@
         # 443 # https
         # 4001
         # 9090 # Prometheus UI
+        # 9100 # node-exporter
         # 31163
         # 30333
       ];

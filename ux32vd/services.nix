@@ -12,5 +12,37 @@
       displayManager.gdm.enable = true;
       desktopManager.gnome3.enable = true;
     };
+    prometheus = {
+      enable = true;
+      scrapeConfigs = [
+        {
+          job_name = "node";
+          scrape_interval = "10s";
+          static_configs = [
+            {
+              targets = [
+                "localhost:9100"
+              ];
+              labels = {
+                alias = "ux32vd.khassanov.me";
+              };
+            }
+          ];
+        }
+      ];
+      exporters = {
+        node = {
+          enable = true;
+          enabledCollectors = [
+            "cpu"
+            "cpufreq"
+            "diskstats"
+            "loadavg"
+            "meminfo"
+          ];
+        };
+      };
+    };
+  };
   };
 }
