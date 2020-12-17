@@ -48,5 +48,10 @@
       };
     };
   };
+  services.openvpn.servers = {
+    serverVPN  = {
+      autoStart = false;
+      config = '' config /home/khassanov/hetzner1.ovpn '';
+    };
   };
 }
