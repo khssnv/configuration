@@ -28,15 +28,19 @@ in
   programs.home-manager.enable = true;
   nixpkgs.config.allowUnfree = true;
   home.packages = with pkgs; [
-    # hubstaff
     # pianoteq
     # tree # fails home-manager service
     # wineWowPackages.staging
     goimports
     go_bootstrap
+    go-tools
+    gotools
+    nodejs
+    hubstaff
     # nodePackages.tern # wanted by emacs ts layer, but fail HM
     # nodePackages.prettier
 
+    alacritty
     anydesk
     bmon # network usage monitor
     coreutils
@@ -44,37 +48,38 @@ in
     docker
     docker-compose
     element-desktop # matrix messaging
-    # nheko # matrix messaging
     evince
-    # fractal
-    alacritty
     gimp
     goldendict # dictionary lookup
     htop
     ledger-live-desktop
     libreoffice
+    mongodb-compass
     ncdu # disk usage
     nvtop # htop-like monitoring tool for GPU
-    openshot-qt
+    obs-studio
+    # openshot-qt
     opera
+    pavucontrol
     pciutils
     pipenv
     python3Packages.ipython
-    # transmission
-    transmission-gtk
-    transmission-remote-gtk
+    python3Packages.pip
     qalculate-gtk
+    qemu
     skype
     slack
     spotify
     steam
     tdesktop # telegram
     teamviewer
+    transmission-gtk
+    umlet
     unrar
     vagrant
     vlc
     vokoscreen
-    wmctrl
+    wmctrl # X Window manager cli
     xclip
     zoom-us
   ];
@@ -106,6 +111,7 @@ in
         jellybeans-vim
         nerdtree
         tagbar
+        vim-gitgutter
         vim-fugitive
         vim-go
         vim-gutentags
