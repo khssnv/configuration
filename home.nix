@@ -40,6 +40,7 @@ in
     # nodePackages.tern # wanted by emacs ts layer, but fail HM
     # nodePackages.prettier
 
+    # openshot-qt
     alacritty
     anydesk
     bmon # network usage monitor
@@ -52,13 +53,15 @@ in
     gimp
     goldendict # dictionary lookup
     htop
+    kompose
+    kubectl
+    kubernetes
     ledger-live-desktop
     libreoffice
     mongodb-compass
     ncdu # disk usage
     nvtop # htop-like monitoring tool for GPU
     obs-studio
-    # openshot-qt
     opera
     pavucontrol
     pciutils
