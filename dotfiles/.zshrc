@@ -49,6 +49,18 @@ alias rosne="source /opt/ros/noetic/setup.zsh"
 alias ros2fe="source /opt/ros/foxy/setup.zsh && source /usr/share/colcon_cd/function/colcon_cd.sh"
 alias zsh_hide_git="git config --add oh-my-zsh.hide-status 1 \
 && git config --add oh-my-zsh.hide-dirty 1"
+alias k="kubectl"
+alias kg="kubectl get"
+alias ke="kubectl explain"
+alias kd="kubectl describe"
+alias kl="kubectl logs"
+alias kdel="kubectl delete"
+alias kpf="kubectl port-forward"
+alias kgc="kubectl config get-contexts"
+alias kuc="kubectl config use-context"
+alias kdbg="kubectl run -i --tty --rm debug --image=ubuntu --restart=Never -n infra -- sh"
+alias kddbg="kubectl delete po debug"
+alias kapi="kubectl api-resources"
 
 # moshs () {
 #     mosh "$@" -- screen -dR alisher
