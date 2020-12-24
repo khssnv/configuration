@@ -18,6 +18,6 @@
 [pull]
   rebase = false
 [merge]
-  tool = vimdif
+  tool = vimdiff
   conflictstyle = diff3
 
