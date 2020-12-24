@@ -66,6 +66,7 @@ in
     pavucontrol
     pciutils
     pipenv
+    postman
     python3Packages.ipython
     python3Packages.pip
     qalculate-gtk
@@ -221,4 +222,5 @@ in
     recursive = true;
   };
   home.file.".spacemacs".source = ./dotfiles/.spacemacs.el;
+  home.file."./config/alacritty/alacritty.yml".source = ./dotfiles/alacritty.yml;
 }
