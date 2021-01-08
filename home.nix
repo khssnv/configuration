@@ -50,6 +50,7 @@ in
     docker-compose
     element-desktop # matrix messaging
     evince
+    firefox
     gimp
     goldendict # dictionary lookup
     htop
@@ -58,6 +59,7 @@ in
     kubernetes
     ledger-live-desktop
     libreoffice
+    minikube
     mongodb-compass
     ncdu # disk usage
     nvtop # htop-like monitoring tool for GPU
@@ -82,7 +84,7 @@ in
     unrar
     vagrant
     vlc
-    vokoscreen
+    vokoscreen-ng
     wmctrl # X Window manager cli
     xclip
     zoom-us
