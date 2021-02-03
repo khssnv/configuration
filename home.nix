@@ -29,48 +29,55 @@ in
   nixpkgs.config.allowUnfree = true;
   home.packages = with pkgs; [
     # pianoteq
-    # tree # fails home-manager service
     # wineWowPackages.staging
-    goimports
-    go_bootstrap
-    go-tools
-    gotools
-    nodejs
-    hubstaff
     # nodePackages.tern # wanted by emacs ts layer, but fail HM
     # nodePackages.prettier
 
-    # openshot-qt
+    # tree # fails home-manager service
+    # python38Packages.ipython
+    (vagrant.override { withLibvirt = false; }) # temporary fix for xen issue
     alacritty
     anydesk
+    awscli2
     bmon # network usage monitor
+    brave
     coreutils
     discord
     docker
     docker-compose
+    eclipses.eclipse-cpp
     element-desktop # matrix messaging
     evince
     firefox
     gimp
+    go-tools
+    go_bootstrap
+    goimports
     goldendict # dictionary lookup
+    gotools
     htop
+    hubstaff
+    jetbrains.idea-ultimate
     kompose
     kubectl
     kubernetes
+    kubernetes-helm
     ledger-live-desktop
     libreoffice
     minikube
     mongodb-compass
     ncdu # disk usage
+    nodejs
     nvtop # htop-like monitoring tool for GPU
     obs-studio
+    openshot-qt
+    openssl
     opera
     pavucontrol
     pciutils
     pipenv
     postman
-    python3Packages.ipython
-    python3Packages.pip
+    python38Packages.pip
     qalculate-gtk
     qemu
     skype
@@ -79,14 +86,17 @@ in
     steam
     tdesktop # telegram
     teamviewer
-    transmission-gtk
+    termdown
+    transmission-gtk # torrents
     umlet
     unrar
-    vagrant
+    viber
+    virt-manager # qemu GUI
     vlc
     vokoscreen-ng
     wmctrl # X Window manager cli
     xclip
+    yarn
     zoom-us
   ];
   programs = {
@@ -114,13 +124,15 @@ in
         # vim-urscript
         YouCompleteMe
         fzf-vim
+        indentLine
         jellybeans-vim
         nerdtree
         tagbar
-        vim-gitgutter
         vim-fugitive
+        vim-gitgutter
         vim-go
         vim-gutentags
+        vim-json
         vim-nix
         vim-toml
         vim-xkbswitch
@@ -224,5 +236,6 @@ in
     recursive = true;
   };
   home.file.".spacemacs".source = ./dotfiles/.spacemacs.el;
-  home.file."./config/alacritty/alacritty.yml".source = ./dotfiles/alacritty.yml;
+  home.file."./.config/alacritty/alacritty.yml".source = ./dotfiles/alacritty.yml;
+  home.file.".ideavimrc".source = ./dotfiles/.ideavimrc;
 }
