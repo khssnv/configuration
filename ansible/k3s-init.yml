@@ -1,0 +1,7 @@
+- name: Setup k3s
+  hosts: k3s
+  become: yes
+  vars:
+    k3s_become: yes
+  roles:
+     - role: xanmanning.k3s

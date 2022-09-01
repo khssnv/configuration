@@ -1,0 +1,15 @@
+# Ubuntu 22.04
+# `ops` user with password
+# authorized_key set
+# root login prohibited
+
+- name: Initial setup
+  hosts: rockpix
+  become: yes
+  tasks:
+    - name: Setup passwordless sudo
+      lineinfile:
+        path: /etc/sudoers
+        state: present
+        regexp: "^%sudo"
+        line: "%sudo ALL=(ALL) NOPASSWD: ALL"
