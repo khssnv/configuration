@@ -13,3 +13,10 @@
         state: present
         regexp: "^%sudo"
         line: "%sudo ALL=(ALL) NOPASSWD: ALL"
+
+    - name: Install system packages
+      apt:
+        pkg:
+          - mosh
+          - htop
+          - vim
