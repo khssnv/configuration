@@ -1,0 +1,15 @@
+- hosts: wireguard
+  become: yes
+  tasks:
+    - name: Setup passwordless sudo
+      lineinfile:
+        path: /etc/sudoers
+        state: present
+        regexp: "^%sudo"
+        line: "%sudo ALL=(ALL) NOPASSWD: ALL"
+
+- name: Create VPN network
+  hosts: wireguard
+  become: yes
+  roles:
+    - githubixx.ansible_role_wireguard
