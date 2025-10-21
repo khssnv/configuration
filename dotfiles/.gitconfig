@@ -1,23 +1,29 @@
 [user]
-  name = Alisher A. Khassanov
-  email = a.khssnv@gmail.com
+	email = a.khssnv@gmail.com
+	name = Alisher A. Khassanov
+	signingkey = /home/khassanov/.ssh/id_ed25519.pub
 [core]
-  autocrlf = input
-  editor = vim
+	editor = code --wait
+[gpg]
+	format = ssh
+[init]
+	defaultBranch = main
+[commit]
+	gpgsign = true
 [alias]
-  co = checkout
-  ci = commit
-  st = status
-  br = branch
-  dc = diff --cached
-  hist = log --pretty=format:\"%h %ad | %ae | %s%d\" --graph --date=short
-  type = cat-file -t
-  dump = cat-file -p
-  first = rev-list --short --max-parents=0 HEAD
-  last = rev-parse --short HEAD
-[pull]
-  rebase = false
-[merge]
-  tool = vimdiff
-  conflictstyle = diff3
-
+	branches = "!git for-each-ref --sort=-authordate --format='%(authordate:iso8601) %(refname:short)' refs/heads/ | head -n 10"
+	first = rev-list --short --max-parents=0 HEAD
+	last = rev-parse --short HEAD
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/
+[url "ssh://git@gitlab.com/"]
+	insteadOf = https://gitlab.com/
+[url "ssh://git@bitbucket.org/"]
+	insteadOf = https://bitbucket.org/
+[push]
+	defaultForceWithLease = true
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
