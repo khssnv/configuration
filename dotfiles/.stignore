@@ -1,0 +1,81 @@
+// --- Directories ---
+(?d)data
+(?d)scratch
+(?d)build
+(?d)coverage
+(?d).cache
+(?d).tmp
+(?d)tmp
+
+// --- Logs ---
+*.log
+*.log.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+// --- JavaScript ---
+(?d)dist
+(?d)node_modules
+(?d).next
+(?d).nuxt
+(?d).svelte-kit
+(?d).vite
+(?d).parcel-cache
+
+// --- Rust ---
+(?d)target
+
+// --- Python ---
+(?d).venv
+(?d)venv
+(?d)__pycache__
+*.pyc
+(?d).pytest_cache
+(?d).mypy_cache
+(?d).ruff_cache
+(?d).tox
+(?d).nox
+
+// --- Haskell ---
+(?d).stack-work
+(?d)dist-newstyle
+
+// --- Zig ---
+(?d)zig-cache
+(?d)zig-out
+
+// --- ROS (catkin / colcon) ---
+(?d)build
+(?d)install
+(?d)log
+
+// --- Nix ---
+(?d)result
+(?d)result-*
+(?d).direnv
+
+// --- IDE / tooling ---
+.DS_Store
+
+// --- Executables and libs ---
+*.exe
+*.dll
+*.so
+*.dylib
+*.a
+*.o
+
+// --- Archives ---
+*.zip
+*.tar
+*.gz
+*.bz2
+*.xz
+*.7z
+
+// --- Databases ---
+*.db
+*.sqlite
+*.sqlite3
