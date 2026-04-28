@@ -1,0 +1,199 @@
+# TODO: support for truenas
+---
+- name: Bootstrap hosts
+  hosts: static_all:proxmox_all_running:proxmox_nodes:!truenas
+  become: true
+  gather_facts: true
+
+  vars:
+    ntp_servers:
+      - pool.ntp.org
+    ubuntu_essential_packages:
+      - apt-transport-https
+      - ca-certificates
+      - software-properties-common
+    ubuntu_useful_packages:
+      - curl
+      - htop
+      - neovim
+      - screen
+      - unzip
+      - wget
+
+  tasks:
+    - name: Set UTC time
+      block:
+        - name: Set timezone to UTC
+          community.general.timezone:
+            name: UTC
+
+        - name: Ensure /etc/timezone is consistent with UTC
+          ansible.builtin.copy:
+            dest: /etc/timezone
+            content: |
+              Etc/UTC
+            mode: "0644"
+          when: ansible_facts['os_family'] == 'Debian'
+
+    - name: Configure time synchronization
+      # LXC containers use the hypervisor clock
+      when: >-
+        not (
+          ansible_facts.get('virtualization_role') == 'guest' and
+          ansible_facts.get('virtualization_type') == 'lxc'
+        )
+      block:
+        - name: Gather service facts
+          ansible.builtin.service_facts:
+
+        - name: Set preferred time sync service fact
+          ansible.builtin.set_fact:
+            time_sync_service: >-
+              {{
+                'chrony'
+                if ansible_facts.services.get('chrony.service', {}).get('state') == 'running' else
+                'chronyd'
+                if ansible_facts.services.get('chronyd.service', {}).get('state') == 'running' else
+                'systemd-timesyncd'
+                if ansible_facts.services.get('systemd-timesyncd.service', {}).get('state') == 'running' else
+                'chrony'
+                if ansible_facts.services.get('chrony.service') else
+                'chronyd'
+                if ansible_facts.services.get('chronyd.service') else
+                'systemd-timesyncd'
+                if ansible_facts.services.get('systemd-timesyncd.service') else
+                ''
+              }}
+
+        - name: Fail if no supported time sync service is installed
+          ansible.builtin.fail:
+            msg: >-
+              No supported time sync service found. Expected one of:
+              systemd-timesyncd, chrony, chronyd
+          when:
+            - ansible_facts['service_mgr'] == 'systemd'
+            - time_sync_service == ''
+
+        - name: Ensure chrony pool is present in chrony.conf
+          ansible.builtin.lineinfile:
+            path: /etc/chrony/chrony.conf
+            regexp: '^pool\s+{{ item | regex_escape() }}(\s|$)'
+            line: "pool {{ item }} iburst"
+            insertafter: '^(pool|server)\s+'
+          loop: "{{ ntp_servers }}"
+          when: time_sync_service in ['chrony', 'chronyd']
+          notify: Restart selected time sync service
+
+        - name: Ensure systemd-timesyncd drop-in directory exists
+          ansible.builtin.file:
+            path: /etc/systemd/timesyncd.conf.d
+            state: directory
+            mode: "0755"
+          when: time_sync_service == 'systemd-timesyncd'
+
+        - name: Configure systemd-timesyncd servers
+          ansible.builtin.copy:
+            dest: /etc/systemd/timesyncd.conf.d/99-ansible.conf
+            mode: "0644"
+            content: |
+              [Time]
+              NTP={{ ntp_servers | join(' ') }}
+          when: time_sync_service == 'systemd-timesyncd'
+          notify: Restart selected time sync service
+
+        - name: Ensure selected time sync service is enabled and running
+          ansible.builtin.systemd_service:
+            name: "{{ time_sync_service }}"
+            state: started
+            enabled: true
+          when:
+            - ansible_facts['service_mgr'] == 'systemd'
+            - time_sync_service != ''
+
+        - name: Flush time sync handlers
+          ansible.builtin.meta: flush_handlers
+
+        - name: Check chrony tracking
+          ansible.builtin.command: chronyc tracking
+          register: chrony_tracking
+          changed_when: false
+          failed_when: false
+          retries: 10
+          delay: 6
+          until: "'Leap status     : Not synchronised' not in chrony_tracking.stdout"
+          when: time_sync_service in ['chrony', 'chronyd']
+
+        - name: Fail if chrony is still not synchronised
+          ansible.builtin.fail:
+            msg: "{{ chrony_tracking.stdout }}"
+          when:
+            - time_sync_service in ['chrony', 'chronyd']
+            - "'Leap status     : Not synchronised' in chrony_tracking.stdout"
+
+        - name: Check systemd-timesyncd synchronisation
+          ansible.builtin.command: timedatectl show --property=NTPSynchronized --value
+          register: timesyncd_sync
+          changed_when: false
+          failed_when: false
+          retries: 10
+          delay: 6
+          until: timesyncd_sync.stdout == 'yes'
+          when: time_sync_service == 'systemd-timesyncd'
+
+        - name: Fail if systemd-timesyncd is still not synchronised
+          ansible.builtin.fail:
+            msg: "systemd-timesyncd is not synchronised: {{ timesyncd_sync.stdout | default('unknown') }}"
+          when:
+            - time_sync_service == 'systemd-timesyncd'
+            - timesyncd_sync.stdout != 'yes'
+
+    - name: Apt update, dist-upgrade, autoremove
+      when: ansible_facts['os_family'] == 'Debian'
+      ansible.builtin.apt:
+        autoremove: true
+        cache_valid_time: 3600
+        update_cache: true
+        update_cache_retries: 5
+        update_cache_retry_max_delay: 12
+        upgrade: dist
+
+    - name: Install common Ubuntu packages
+      when: ansible_facts['distribution'] == "Ubuntu"
+      block:
+        - name: Install essential Ubuntu packages
+          ansible.builtin.apt:
+            state: present
+            pkg: "{{ ubuntu_essential_packages }}"
+
+        - name: Install useful Ubuntu packages
+          ansible.builtin.apt:
+            state: present
+            pkg: "{{ ubuntu_useful_packages }}"
+
+    - name: Check whether reboot is required
+      when: ansible_facts.pkg_mgr == 'apt'
+      ansible.builtin.stat:
+        path: /var/run/reboot-required
+      register: reboot_required
+
+    - name: Reboot if required
+      when:
+        - ansible_facts.pkg_mgr == 'apt'
+        - reboot_required.stat.exists
+        - "'proxmox_nodes' not in group_names" # TODO: reboot gracefully
+      ansible.builtin.reboot:
+        msg: Reboot initiated by Ansible after package upgrades
+        connect_timeout: 5
+        reboot_timeout: 300
+
+    # TODO
+    - name: Run Proxmox VE post-install procedures
+      when: "'proxmox_nodes' in group_names"
+      ansible.builtin.debug:
+        msg: "TODO"
+
+  handlers:
+    - name: Restart selected time sync service
+      ansible.builtin.systemd_service:
+        name: "{{ time_sync_service }}"
+        state: restarted
