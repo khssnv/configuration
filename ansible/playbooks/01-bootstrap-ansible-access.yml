@@ -1,7 +1,7 @@
-# TODO: support for proxmox_nodes, truenas
+# TODO: support for truenas
 ---
 - name: Add user for Ansible operations
-  hosts: static_all:proxmox_all_running:!proxmox_nodes:!truenas
+  hosts: static_all:proxmox_all_running:proxmox_nodes:!truenas
   become: true
   gather_facts: true
 
@@ -30,6 +30,11 @@
         key: "{{ item }}"
         state: present
       loop: "{{ authorized_keys }}"
+
+    - name: Ensure sudo is installed
+      ansible.builtin.package:
+        name: sudo
+        state: present
 
     - name: Allow passwordless sudo for ansible user
       ansible.builtin.copy:
