@@ -15,5 +15,4 @@ keyed_groups:
     separator: "_"
 
 compose:
-  ansible_user: "'ansible'"
   ansible_host: proxmox_name

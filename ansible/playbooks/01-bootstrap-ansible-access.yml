@@ -2,11 +2,11 @@
 ---
 - name: Add user for Ansible operations
   hosts: static_all:proxmox_all_running:!proxmox_nodes:!truenas
-  remote_user: "{{ ansible_bootstrap_user }}"
   become: true
   gather_facts: true
 
   vars:
+    ansible_user: "{{ ansible_bootstrap_user }}"
     user_name: ansible
     user_group: ansible
     authorized_keys:
