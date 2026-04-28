@@ -1,0 +1,37 @@
+---
+all:
+  children:
+    # Group by provider
+    vpsza500:
+      hosts:
+        1.vpsza500:
+          ansible_host: 1.vpsza500.khassanov.xyz
+          ansible_bootstrap_user: root
+    hostkey:
+      hosts:
+        1.hostkey:
+          ansible_host: 1.hostkey.khassanov.xyz
+          ansible_bootstrap_user: root
+        2.hostkey:
+          ansible_host: 2.hostkey.khassanov.xyz
+          ansible_bootstrap_user: root
+    # Group with all hosts of the static inventory
+    static_all:
+      children:
+        vpsza500:
+        hostkey:
+    # Group by purpose
+    vpn:
+      children:
+        kz.net:
+          hosts:
+            1.vpsza500:
+        net:
+          hosts:
+            1.hostkey:
+        ru.net:
+          hosts:
+            2.hostkey:
+    gateway:
+      hosts:
+        1.vpsza500:

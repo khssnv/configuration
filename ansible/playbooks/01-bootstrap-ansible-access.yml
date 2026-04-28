@@ -1,0 +1,60 @@
+# TODO: support for proxmox_nodes, truenas
+---
+- name: Add user for Ansible operations
+  hosts: static_all:proxmox_all_running:!proxmox_nodes:!truenas
+  remote_user: "{{ ansible_bootstrap_user }}"
+  become: true
+  gather_facts: true
+
+  vars:
+    user_name: ansible
+    user_group: ansible
+    authorized_keys:
+      - "{{ lookup('ansible.builtin.file', lookup('ansible.builtin.env', 'HOME') ~ '/.ssh/id_ed25519.pub') | trim }}"
+
+  tasks:
+    - name: Create ansible group
+      ansible.builtin.group:
+        name: "{{ user_group }}"
+
+    - name: Create ansible user
+      ansible.builtin.user:
+        name: "{{ user_name }}"
+        group: "{{ user_group }}"
+        create_home: true
+        state: present
+
+    - name: Install authorized keys
+      ansible.posix.authorized_key:
+        user: "{{ user_name }}"
+        key: "{{ item }}"
+        state: present
+      loop: "{{ authorized_keys }}"
+
+    - name: Allow passwordless sudo for ansible user
+      ansible.builtin.copy:
+        dest: "/etc/sudoers.d/{{ user_name }}"
+        content: "{{ user_name }} ALL=(ALL) NOPASSWD:ALL\n"
+        owner: root
+        group: root
+        mode: "0440"
+        validate: /usr/sbin/visudo -cf %s
+
+    - name: Secure SSH config
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      loop:
+        - { regexp: '^#?KbdInteractiveAuthentication', line: 'KbdInteractiveAuthentication no' }
+        - { regexp: '^#?PasswordAuthentication', line: 'PasswordAuthentication no' }
+        - { regexp: '^#?PermitEmptyPasswords', line: 'PermitEmptyPasswords no' }
+        - { regexp: '^#?PermitRootLogin', line: 'PermitRootLogin prohibit-password' }
+        - { regexp: '^#?PubkeyAuthentication', line: 'PubkeyAuthentication yes' }
+      notify: Restart sshd
+
+  handlers:
+    - name: Restart sshd
+      ansible.builtin.service:
+        name: "{{ 'ssh' if ansible_os_family == 'Debian' else 'sshd' }}"
+        state: restarted

@@ -1,0 +1,19 @@
+---
+plugin: community.proxmox.proxmox
+url: https://knas9.lan:8006
+validate_certs: false
+user: ansible@pve
+token_id: ansible-token
+want_facts: true
+
+groups:
+  proxmox: true
+
+keyed_groups:
+  - key: proxmox_tags_parsed
+    prefix: tag
+    separator: "_"
+
+compose:
+  ansible_user: "'ansible'"
+  ansible_host: proxmox_name
