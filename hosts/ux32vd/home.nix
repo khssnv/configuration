@@ -10,8 +10,8 @@
 {
   imports = [
     ./agents.nix
+    ./gnome.nix
     ./goldendict.nix
-    ./plasma.nix
     ./syncthing.nix
     ./vscode.nix
   ];
@@ -20,16 +20,29 @@
     username = userName;
     homeDirectory = "/home/${userName}";
     stateVersion = "26.05";
+    file.".gitconfig".source = ../../dotfiles/.gitconfig;
+
+    sessionVariables.GIT_EDITOR = pkgs.writeShellScript "git-editor" ''
+      if [[ "''${TERM_PROGRAM:-}" == "vscode" ]]; then
+        exec ${lib.getExe config.programs.vscode.package} --wait "$@"
+      else
+        exec ${lib.getExe pkgs.nano} "$@"
+      fi
+    '';
 
     packages = with pkgs; [
       anki
       pkgsUnstable.bitwarden-desktop # Stable still depends on EOL Electron 39.
-      brave
       element-desktop
+      git
+      gnome-boxes
       lmstudio
+      papers
+      remmina
       ripgrep
       slack
       telegram-desktop
+      transmission_4-gtk
       wget
       xclip # Used by the `c` and `v` shell aliases.
       zulip
@@ -67,6 +80,8 @@
   programs = {
     bash.enable = true;
 
+    brave.enable = true;
+
     firefox = {
       enable = true;
 
@@ -78,10 +93,24 @@
 
     home-manager.enable = true;
 
-    # programs.plasma is in plasma.nix.
-
     keepassxc = {
       enable = true;
+      package = pkgs.symlinkJoin {
+        name = "keepassxc-with-chromium-native-messaging-host";
+        paths = [
+          pkgs.keepassxc
+          (pkgs.writeTextDir "etc/chromium/native-messaging-hosts/org.keepassxc.keepassxc_browser.json" (
+            builtins.toJSON {
+              name = "org.keepassxc.keepassxc_browser";
+              description = "KeePassXC integration with native messaging support";
+              path = lib.getExe' pkgs.keepassxc "keepassxc-proxy";
+              type = "stdio";
+              allowed_origins = [ "chrome-extension://oboonakemofpalcgghocfoadofidjkkk/" ];
+            }
+          ))
+        ];
+        meta.mainProgram = "keepassxc";
+      };
 
       settings.Browser = {
         Enabled = true;
@@ -101,14 +130,6 @@
         enable = true;
         theme = "ys";
       };
-
-      # Use VSCode as git editor when in its integrated terminal, nano otherwise.
-      # Consider removing when migrated git config from a dotfile to nix.
-      initContent = ''
-        if [ "$TERM_PROGRAM" = "vscode" ]; then
-          git config --global core.editor "code --wait"
-        fi
-      '';
     };
 
     # programs.vscode is in vscode.nix: the package is assembled there rather
@@ -124,11 +145,12 @@
       "x-scheme-handler/http" = "brave-browser.desktop";
       "x-scheme-handler/https" = "brave-browser.desktop";
       "x-scheme-handler/chromium" = "brave-browser.desktop";
-      # kdePackages.kate ships both Kate and KWrite desktop files.
-      "text/plain" = "org.kde.kwrite.desktop";
-      "text/markdown" = "org.kde.kwrite.desktop";
+      "text/plain" = "org.gnome.TextEditor.desktop";
+      "text/markdown" = "org.gnome.TextEditor.desktop";
     };
   };
+
+  home.file."${config.xdg.configHome}/BraveSoftware/Brave-Browser/NativeMessagingHosts".force = true;
 
   xdg.configFile =
     let
@@ -153,25 +175,18 @@
         };
     in
     {
+      "autostart/org.keepassxc.KeePassXC.desktop" = autostart {
+        name = "KeePassXC";
+        exec = "${lib.getExe config.programs.keepassxc.package} --minimized";
+        icon = "keepassxc";
+        startupWMClass = "keepassxc";
+      };
+
       "autostart/org.telegram.desktop.desktop" = autostart {
         name = "Telegram";
         exec = "${pkgs.telegram-desktop}/bin/Telegram -startintray";
         icon = "org.telegram.desktop";
         startupWMClass = "TelegramDesktop";
-      };
-
-      "autostart/element-desktop.desktop" = autostart {
-        name = "Element";
-        exec = "${pkgs.element-desktop}/bin/element-desktop --hidden";
-        icon = "element";
-        startupWMClass = "Element";
-      };
-
-      "autostart/zulip.desktop" = autostart {
-        name = "Zulip";
-        exec = "${pkgs.zulip}/bin/zulip";
-        icon = "zulip";
-        startupWMClass = "Zulip";
       };
     };
 }

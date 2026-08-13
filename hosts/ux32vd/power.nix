@@ -10,8 +10,8 @@
 #
 #   - logind ignores both events, which covers what happens outside of a
 #     desktop session (display manager, TTYs);
-#   - PowerDevil ignores both events inside a Plasma session, where it may take
-#     an inhibitor lock and handle them itself;
+#   - GNOME Settings Daemon ignores both events inside a session, where it may
+#     take an inhibitor lock and handle them itself;
 #   - acpid then defines what the power button actually does.
 #
 # Net effect: closing the lid does nothing on any power source, a single press
@@ -24,19 +24,10 @@
     HandlePowerKey = "ignore";
   };
 
-  home-manager.users.${userName} = {
-    programs.plasma.powerdevil =
-      let
-        profile = {
-          whenLaptopLidClosed = "doNothing";
-          powerButtonAction = "nothing";
-        };
-      in
-      {
-        AC = profile;
-        battery = profile;
-        lowBattery = profile;
-      };
+  home-manager.users.${userName}.dconf.settings."org/gnome/settings-daemon/plugins/power" = {
+    power-button-action = "nothing";
+    sleep-inactive-ac-type = "nothing";
+    sleep-inactive-battery-type = "nothing";
   };
 
   # Neither logind nor desktop power managers know about double presses, so

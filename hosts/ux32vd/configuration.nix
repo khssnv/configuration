@@ -17,11 +17,13 @@
   ];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot = {
+    loader.systemd-boot.enable = true;
+    loader.efi.canTouchEfiVariables = true;
 
-  boot.initrd.luks.devices."luks-efbfbd18-6370-44b1-a4d0-1de3f0ea6b66".device =
-    "/dev/disk/by-uuid/efbfbd18-6370-44b1-a4d0-1de3f0ea6b66";
+    initrd.luks.devices."luks-efbfbd18-6370-44b1-a4d0-1de3f0ea6b66".device =
+      "/dev/disk/by-uuid/efbfbd18-6370-44b1-a4d0-1de3f0ea6b66";
+  };
 
   zramSwap.enable = true;
 
@@ -43,19 +45,25 @@
     xkb.layout = "us,ru,kz";
   };
 
-  services.libinput.touchpad.naturalScrolling = true;
+  services.displayManager.gdm.enable = true;
+  services.desktopManager.gnome.enable = true;
 
-  services.displayManager.sddm.enable = true;
-  security.pam.services.sddm.kwallet.enable = true;
-  services.desktopManager.plasma6.enable = true;
+  # Expose the built-in ACPI ambient light sensor to GNOME. Its power plugin
+  # enables ambient brightness control by default when this proxy is present.
+  hardware.sensor.iio.enable = true;
 
-  programs.kdeconnect.enable = true;
+  # GSConnect implements KDE Connect protocol for GNOME. This NixOS option
+  # installs the extension and opens the protocol ports in the firewall.
+  programs.kdeconnect = {
+    enable = true;
+    package = pkgs.gnomeExtensions.gsconnect;
+  };
 
   # Set your time zone.
   time.timeZone = "Asia/Almaty";
 
-  # Static location for geoclue2 (used by e.g. KDE's day/night theme
-  # switcher for real sunrise/sunset). Coordinates are the Asia/Almaty
+  # Static location for desktop features using sunrise/sunset. Coordinates are
+  # the Asia/Almaty
   # representative point from tzdata's zone1970.tab ("+4315+07657"), not an
   # exact address. Setting enableStatic disables the wifi/nmea/3g/cdma/
   # modem-gps sources, so no network request (e.g. nearby wifi APs) is ever

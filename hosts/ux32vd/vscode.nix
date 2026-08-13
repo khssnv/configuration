@@ -19,13 +19,15 @@
       extensions = with pkgs.vscode-extensions; [
         jnoortheen.nix-ide
       ];
+
+      userSettings."window.autoDetectColorScheme" = true;
     };
 
     package =
       let
         vscodeExtras =
           ps: with ps; {
-            git = git; # GitLens, Git Graph and other Git integrations.
+            inherit git; # GitLens, Git Graph and other Git integrations.
 
             nix = [
               nixd # jnoortheen.nix-ide language server.

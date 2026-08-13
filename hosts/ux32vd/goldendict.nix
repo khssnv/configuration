@@ -179,21 +179,6 @@
     packages = [ pkgs.goldendict-ng ];
   };
 
-  programs.plasma.window-rules = [
-    {
-      description = "Keep GoldenDict-ng above other windows";
-      match.window-class = {
-        value = "goldendict";
-        type = "substring";
-        match-whole = false;
-      };
-      apply.above = {
-        value = true;
-        apply = "force";
-      };
-    }
-  ];
-
   xdg.configFile."autostart/io.github.xiaoyifang.goldendict_ng.desktop".text = ''
     [Desktop Entry]
     Type=Application

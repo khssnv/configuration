@@ -27,7 +27,7 @@ let
 in
 {
   # Mount TrueNAS shares on first access without delaying boot when the NAS is
-  # unavailable. The local paths are usable by Dolphin and other applications.
+  # unavailable. The local paths are usable by file managers and other apps.
   fileSystems."/mnt/truenas/shared-ssd" = {
     device = "//truenas.lan/shared-ssd";
     fsType = "cifs";

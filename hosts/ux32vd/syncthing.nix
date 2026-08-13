@@ -1,85 +1,40 @@
-# Syncthing runs as a user service after login. Its native Plasma widget uses
-# the daemon's default config and API location without a separate tray service.
+# Syncthing runs as a user service after login.
 {
-  config,
   lib,
   pkgs,
   ...
 }:
 
-let
-  # TODO
-  remote = {
-    enable = false;
-    id = "REPLACE_WITH_REMOTE_DEVICE_ID";
-    addresses = [
-      "tcp://REPLACE_WITH_REMOTE_HOST:22000"
-      "dynamic"
-    ];
-  };
-
-  # TODO
-  receiveFromRemote = {
-    enable = false;
-    id = "REPLACE_WITH_RECEIVE_FOLDER_ID";
-    relativePath = "Sync/REPLACE_WITH_RECEIVE_PATH";
-  };
-
-  # TODO
-  sendToRemote = {
-    enable = false;
-    id = "REPLACE_WITH_SEND_FOLDER_ID";
-    relativePath = "Sync/REPLACE_WITH_SEND_PATH";
-  };
-
-  enabled = folder: remote.enable && folder.enable;
-in
 {
-  home.packages = [
-    # Provides martchus.syncthingplasmoid, enabled in plasma.nix. The minimal
-    # Syncthing Tray package does not include the Plasma integration.
-    pkgs.syncthingtray
-  ];
-
-  home.file =
-    lib.optionalAttrs (enabled receiveFromRemote) {
-      "${receiveFromRemote.relativePath}/.stignore".source = ../../dotfiles/.stignore;
-    }
-    // lib.optionalAttrs (enabled sendToRemote) {
-      "${sendToRemote.relativePath}/.stignore".source = ../../dotfiles/.stignore;
-    };
+  # Syncthing refuses a symlinked .stignore, so copy a regular file instead of
+  # managing it with home.file.
+  home.activation.installSyncthingIgnore = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    ${lib.getExe' pkgs.coreutils "install"} -Dm644 ${../../dotfiles/.stignore} "$HOME/Workspace/github.com/.stignore"
+  '';
 
   services.syncthing = {
     enable = true;
 
     settings = {
-      options.relaysEnabled = false;
+      devices.truenas = {
+        id = "M5SSSMH-PPOUKC6-BJDJGK3-GBVAPKD-MTCSSJL-YPIDJSA-353WMNO-CP27FA5";
+        addresses = [ "tcp://truenas.lan:22000" ];
+      };
 
-      devices = lib.optionalAttrs remote.enable {
-        remote = {
-          inherit (remote) id addresses;
+      folders = {
+        "github.com" = rec {
+          label = path;
+          path = "~/Workspace/github.com";
+          devices = [ "truenas" ];
         };
       };
 
-      folders =
-        lib.optionalAttrs (enabled receiveFromRemote) {
-          receive-from-remote = {
-            inherit (receiveFromRemote) id;
-            label = "Receive from remote";
-            path = "${config.home.homeDirectory}/${receiveFromRemote.relativePath}";
-            type = "receiveonly";
-            devices = [ "remote" ];
-          };
-        }
-        // lib.optionalAttrs (enabled sendToRemote) {
-          send-to-remote = {
-            inherit (sendToRemote) id;
-            label = "Send to remote";
-            path = "${config.home.homeDirectory}/${sendToRemote.relativePath}";
-            type = "sendonly";
-            devices = [ "remote" ];
-          };
-        };
+      options = {
+        globalAnnounceEnabled = false;
+        localAnnounceEnabled = false;
+        natEnabled = false;
+        relaysEnabled = false;
+      };
     };
   };
 }
