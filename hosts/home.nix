@@ -35,6 +35,7 @@
       element-desktop
       git
       gnome-boxes
+      just
       lmstudio
       papers
       remmina
