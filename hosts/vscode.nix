@@ -1,20 +1,12 @@
 {
   pkgs,
   lib,
-  config,
-  hostName,
   ...
 }:
 
 {
   programs.vscode = {
     enable = true;
-
-    # argvSettings would normally symlink this into /nix/store
-    # (read-only), and VSCode errors with EROFS every launch trying to
-    # rewrite it. Point it at a plain writable file outside the store
-    # instead (see the host-specific dotfiles/argv.json).
-    argvSettings = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Workspace/github.com/khssnv/configuration/hosts/${hostName}/dotfiles/argv.json";
 
     profiles.default = {
       extensions = with pkgs.vscode-extensions; [
@@ -69,7 +61,8 @@
         postBuild = ''
           rm "$out/bin/code"
           makeWrapper ${lib.getExe vscodeFhs} "$out/bin/code" \
-            --set-default RUST_SRC_PATH ${pkgs.rustPlatform.rustLibSrc}
+            --set-default RUST_SRC_PATH ${pkgs.rustPlatform.rustLibSrc} \
+            --add-flags "--password-store=gnome-libsecret"
         '';
 
         inherit (vscodeFhs) meta;
