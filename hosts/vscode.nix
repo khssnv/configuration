@@ -2,6 +2,7 @@
   pkgs,
   lib,
   config,
+  hostName,
   ...
 }:
 
@@ -12,8 +13,8 @@
     # argvSettings would normally symlink this into /nix/store
     # (read-only), and VSCode errors with EROFS every launch trying to
     # rewrite it. Point it at a plain writable file outside the store
-    # instead (see hosts/d25/dotfiles/argv.json).
-    argvSettings = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Workspace/github.com/khssnv/configuration/hosts/d25/dotfiles/argv.json";
+    # instead (see the host-specific dotfiles/argv.json).
+    argvSettings = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/Workspace/github.com/khssnv/configuration/hosts/${hostName}/dotfiles/argv.json";
 
     profiles.default = {
       extensions = with pkgs.vscode-extensions; [
