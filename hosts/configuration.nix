@@ -14,6 +14,10 @@
     plugins = [ pkgs.networkmanager-openvpn ];
   };
 
+  # Desktop and laptop hardware commonly needs redistributable firmware for
+  # Wi-Fi, Bluetooth, audio DSPs, and CPU microcode.
+  hardware.enableRedistributableFirmware = true;
+
   services.xserver = {
     enable = true;
     xkb.layout = "us,ru,kz";
