@@ -177,7 +177,12 @@
     {
       "autostart/org.keepassxc.KeePassXC.desktop" = autostart {
         name = "KeePassXC";
-        exec = "${lib.getExe config.programs.keepassxc.package} --minimized";
+        exec = pkgs.writeShellScript "keepassxc-autostart" ''
+          # Let GNOME apply the monitor layout and fractional scale before Qt
+          # determines KeePassXC's initial screen DPI.
+          ${lib.getExe' pkgs.coreutils "sleep"} 5
+          exec ${lib.getExe config.programs.keepassxc.package} --minimized
+        '';
         icon = "keepassxc";
         startupWMClass = "keepassxc";
       };
