@@ -69,6 +69,12 @@
           systemModule = ./ux32vd/configuration.nix;
           homeModule = ./ux32vd/home.nix;
         };
+
+        x1 = mkHost {
+          hostName = "x1";
+          systemModule = ./x1/configuration.nix;
+          homeModule = ./x1/home.nix;
+        };
       };
     };
 }
