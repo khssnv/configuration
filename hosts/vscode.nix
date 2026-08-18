@@ -1,20 +1,12 @@
 {
-  pkgs,
   lib,
+  pkgs,
   ...
 }:
 
 {
   programs.vscode = {
     enable = true;
-
-    profiles.default = {
-      extensions = with pkgs.vscode-extensions; [
-        jnoortheen.nix-ide
-      ];
-
-      userSettings."window.autoDetectColorScheme" = true;
-    };
 
     package =
       let
