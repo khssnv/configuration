@@ -3,6 +3,7 @@
 {
   imports = [
     ../configuration.nix
+    ./benq-display-pilot-2.nix
     ./hardware-configuration.nix
   ];
 
