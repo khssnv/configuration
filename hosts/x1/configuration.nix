@@ -7,7 +7,10 @@
   ];
 
   boot = {
-    loader.systemd-boot.enable = true;
+    loader.systemd-boot = {
+      enable = true;
+      consoleMode = "1";
+    };
     loader.efi.canTouchEfiVariables = true;
   };
 
