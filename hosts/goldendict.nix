@@ -12,6 +12,7 @@
 #   pipeline and temporary-file subshell).
 {
   config,
+  hostName,
   lib,
   pkgs,
   ...
@@ -176,7 +177,34 @@
         )
       '';
 
-    packages = [ pkgs.goldendict-ng ];
+    packages =
+      let
+        bootstrapDictionaries = pkgs.writeShellScriptBin "bootstrap-goldendict-dictionaries" ''
+          set -euo pipefail
+
+          readonly source_directory="/mnt/truenas/shared-hdd/Transmission/GoldenDict_Dicts"
+          readonly destination_directory="''${HOME}/.local/share/goldendict/dictionaries/GoldenDict_Dicts"
+
+          if [[ ! -d "$source_directory" ]]; then
+            printf 'GoldenDict dictionary source is unavailable: %s\n' "$source_directory" >&2
+            exit 1
+          fi
+
+          ${pkgs.coreutils}/bin/install -d "$destination_directory"
+          ${pkgs.rsync}/bin/rsync \
+            --archive \
+            --info=progress2 \
+            "$source_directory/" \
+            "$destination_directory/"
+
+          printf 'GoldenDict dictionaries copied to %s\n' "$destination_directory"
+        '';
+      in
+      with pkgs;
+      [
+        goldendict-ng
+        bootstrapDictionaries
+      ];
   };
 
   xdg.configFile."autostart/io.github.xiaoyifang.goldendict_ng.desktop".text = ''
