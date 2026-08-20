@@ -4,7 +4,6 @@
   imports = [
     ../configuration.nix
     ./hardware-configuration.nix
-    ./power.nix
   ];
 
   boot = {
