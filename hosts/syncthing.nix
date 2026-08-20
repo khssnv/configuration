@@ -21,14 +21,6 @@
         addresses = [ "tcp://truenas.lan:22000" ];
       };
 
-      folders = {
-        "github.com" = rec {
-          label = path;
-          path = "~/Workspace/github.com";
-          devices = [ "truenas" ];
-        };
-      };
-
       options = {
         globalAnnounceEnabled = false;
         localAnnounceEnabled = false;
