@@ -31,7 +31,24 @@
 
     packages = with pkgs; [
       anki
-      pkgsUnstable.bitwarden-desktop # Stable still depends on EOL Electron 39.
+      (
+        let
+          # Bitwarden 2026.7.0 cannot access the clipboard through GNOME's Wayland
+          # portal. Run only Bitwarden through XWayland until the upstream fix ships.
+          bitwarden = pkgs.symlinkJoin {
+            name = "bitwarden-desktop-x11";
+            paths = [ pkgsUnstable.bitwarden-desktop ]; # Stable still depends on EOL Electron 39.
+            nativeBuildInputs = [ pkgs.makeWrapper ];
+            postBuild = ''
+              wrapProgram $out/bin/bitwarden \
+                --unset WAYLAND_DISPLAY \
+                --unset XDG_CURRENT_DESKTOP \
+                --set ELECTRON_OZONE_PLATFORM_HINT x11
+            '';
+          };
+        in
+        bitwarden
+      )
       element-desktop
       git
       gnome-boxes
