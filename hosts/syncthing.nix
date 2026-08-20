@@ -21,6 +21,14 @@
         addresses = [ "tcp://truenas.lan:22000" ];
       };
 
+      folders = {
+        "KeePassXC" = rec {
+          label = path;
+          path = "~/Documents/Secrets/KeePassXC";
+          devices = [ "truenas" ];
+        };
+      };
+
       options = {
         globalAnnounceEnabled = false;
         localAnnounceEnabled = false;
