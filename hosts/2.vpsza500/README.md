@@ -8,6 +8,6 @@
 
 ```console
 nixos-rebuild switch \
-  --flake .#generic \     
+  --flake .#2.vpsza500 \
   --target-host root@2.vpsza500.khassanov.xyz
 ```

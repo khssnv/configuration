@@ -37,7 +37,7 @@
     efiSupport = true;
     efiInstallAsRemovable = true;
   };
-    services.openssh = {
+  services.openssh = {
     enable = true;
     settings = {
       PermitRootLogin = "prohibit-password";
@@ -52,9 +52,23 @@
     pkgs.htop
   ];
 
-  users.users.root.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKLB7lnUc9iy4UYdAl5q2qmrB1VEuRMcucluAe6WFpYV a.khssnv@gmail.com"
-  ];
+  users.users =
+    let
+      sshPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKLB7lnUc9iy4UYdAl5q2qmrB1VEuRMcucluAe6WFpYV a.khssnv@gmail.com";
+    in
+    {
+      alisher = {
+        isNormalUser = true;
+        description = "Alisher Khassanov";
+        shell = pkgs.zsh;
+        extraGroups = [ "wheel" ];
+        openssh.authorizedKeys.keys = [ sshPublicKey ];
+      };
+
+      root.openssh.authorizedKeys.keys = [ sshPublicKey ];
+    };
+
+  programs.zsh.enable = true;
 
   system.stateVersion = "24.05";
 }
