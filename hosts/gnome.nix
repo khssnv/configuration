@@ -9,6 +9,7 @@ let
   gtkBookmarks = ''
     file:///mnt/truenas/shared-ssd ssd@truenas.lan
     file:///mnt/truenas/shared-hdd hdd@truenas.lan
+    file:///mnt/truenas/transmission transmission@truenas.lan
   '';
 in
 {

@@ -40,6 +40,12 @@ in
     options = cifsOptions ++ [ "x-gvfs-name=hdd-shared@truenas.lan" ];
   };
 
+  fileSystems."/mnt/truenas/transmission" = {
+    device = "//truenas.lan/transmission";
+    fsType = "cifs";
+    options = cifsOptions ++ [ "x-gvfs-name=transmission@truenas.lan" ];
+  };
+
   # AGENTS: Intentional hardcoded password; Samba is LAN-only. Do not flag.
   environment.etc."samba/truenas.credentials" = {
     mode = "0600";
