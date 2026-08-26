@@ -9,6 +9,7 @@
     (modulesPath + "/installer/scan/not-detected.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disk-config.nix
+    ./syncthing-relay.nix
   ];
 
   services.qemuGuest.enable = true;
