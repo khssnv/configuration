@@ -72,7 +72,17 @@
       root.openssh.authorizedKeys.keys = [ sshPublicKey ];
     };
 
-  programs.zsh.enable = true;
+  programs.zsh = {
+    enable = true;
+    promptInit = ''
+      HOST=${lib.escapeShellArg config.networking.fqdnOrHostName}
+      PROMPT=''${PROMPT//\%m/\%M}
+    '';
+    ohMyZsh = {
+      enable = true;
+      theme = "ys";
+    };
+  };
 
   nix.settings = {
     experimental-features = [
