@@ -1,5 +1,6 @@
 {
   modulesPath,
+  config,
   lib,
   pkgs,
   ...
@@ -15,6 +16,8 @@
   services.qemuGuest.enable = true;
 
   networking = {
+    hostName = "2";
+    domain = "vpsza500.khassanov.xyz";
     useDHCP = false;
     interfaces.ens3.ipv4.addresses = [
       {
@@ -70,6 +73,18 @@
     };
 
   programs.zsh.enable = true;
+
+  nix.settings = {
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+    trusted-users = [ "alisher" ];
+  };
+
+  nixpkgs.config.allowUnfree = true;
+
+  zramSwap.enable = true;
 
   system.stateVersion = "24.05";
 }

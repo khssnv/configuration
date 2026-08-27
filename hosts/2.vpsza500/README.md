@@ -17,7 +17,8 @@
     ```console
     nixos-rebuild switch \
       --flake .#2.vpsza500 \
-      --target-host root@2.vpsza500.khassanov.xyz
+      --target-host alisher@2.vpsza500.khassanov.xyz \
+      --ask-sudo-password
     ```
 
 1. Get relay ID on the remote machine from logs.
