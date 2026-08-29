@@ -79,3 +79,10 @@ pnpm-debug.log*
 *.db
 *.sqlite
 *.sqlite3
+
+// --- KeePassXC / Syncthing ---
+*.sync-conflict-*.kdbx
+*.kdbx.tmp
+*.kdbx.lock
+*.kdbx.bak
+*.kdbx.old

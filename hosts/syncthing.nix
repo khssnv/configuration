@@ -5,11 +5,14 @@
   ...
 }:
 
+let
+  keepassxcPath = "Documents/Secrets/KeePassXC";
+in
 {
   # Syncthing refuses a symlinked .stignore, so copy a regular file instead of
   # managing it with home.file.
   home.activation.installSyncthingIgnore = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    ${lib.getExe' pkgs.coreutils "install"} -Dm644 ${../dotfiles/.stignore} "$HOME/Workspace/github.com/.stignore"
+    ${lib.getExe' pkgs.coreutils "install"} -Dm644 ${../dotfiles/.stignore} "$HOME/${keepassxcPath}/.stignore"
   '';
 
   services.syncthing = {
@@ -24,7 +27,7 @@
       folders = {
         "KeePassXC" = rec {
           label = path;
-          path = "~/Documents/Secrets/KeePassXC";
+          path = "~/${keepassxcPath}";
           devices = [ "truenas" ];
         };
       };
