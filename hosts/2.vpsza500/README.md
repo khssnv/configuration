@@ -26,3 +26,14 @@
     ```console
     journalctl -u syncthing-relay.service -b | grep -i id
     ```
+
+## Syncthing Relay
+
+Add the relay in Syncthing GUI:
+`Actions -> Settings -> Connections -> Sync Protocol Listen Addresses`.
+
+Keep existing listen addresses and append:
+
+```text
+relay://2.vpsza500.khassanov.xyz:22067/?id=<relay-device-id>&token=<token-from-syncthing-relay.nix>
+```
