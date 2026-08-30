@@ -17,6 +17,7 @@ in
     deja-dup
     gnome-tweaks
     gnomeExtensions.appindicator
+    gnomeExtensions.caffeine
     gnomeExtensions.dash-to-dock
     gnomeExtensions.night-theme-switcher
     gnomeExtensions.no-overview
@@ -97,6 +98,7 @@ in
         disable-user-extensions = false;
         enabled-extensions = [
           pkgs.gnomeExtensions.appindicator.extensionUuid
+          pkgs.gnomeExtensions.caffeine.extensionUuid
           pkgs.gnomeExtensions.dash-to-dock.extensionUuid
           pkgs.gnomeExtensions.gsconnect.extensionUuid
           pkgs.gnomeExtensions.night-theme-switcher.extensionUuid
