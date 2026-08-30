@@ -10,6 +10,7 @@
   boot = {
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
+    initrd.luks.devices."luks-d5bab83e-ca6a-465a-bd76-545b83ca306d".device = "/dev/disk/by-uuid/d5bab83e-ca6a-465a-bd76-545b83ca306d";
   };
 
   networking.hostName = hostName;
@@ -24,6 +25,21 @@
     staticLongitude = 76.95;
     staticAltitude = 800;
     staticAccuracy = 20000;
+  };
+
+  # Keep remote rebuilds and long-running desktop tasks from being interrupted
+  # by GNOME or other services requesting sleep.
+  services.logind.settings.Login = {
+    HandleSuspendKey = "ignore";
+    HandleHibernateKey = "ignore";
+    IdleAction = "ignore";
+  };
+
+  systemd.sleep.settings.Sleep = {
+    AllowSuspend = false;
+    AllowHibernation = false;
+    AllowHybridSleep = false;
+    AllowSuspendThenHibernate = false;
   };
 
   # Keep host lifecycle versions local even while their current values match.
