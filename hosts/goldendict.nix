@@ -182,7 +182,7 @@
         bootstrapDictionaries = pkgs.writeShellScriptBin "bootstrap-goldendict-dictionaries" ''
           set -euo pipefail
 
-          readonly source_directory="/mnt/truenas/shared-hdd/Transmission/GoldenDict_Dicts"
+          readonly source_directory="/mnt/truenas/transmission/GoldenDict_Dicts"
           readonly destination_directory="''${HOME}/.local/share/goldendict/dictionaries/GoldenDict_Dicts"
 
           if [[ ! -d "$source_directory" ]]; then
