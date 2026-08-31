@@ -1,9 +1,12 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 
+let
+  idleDelay = 3600;
+in
 {
   imports = [
     ../home.nix
-    ./gnome.nix
+    (import ./gnome.nix { inherit idleDelay lib; })
   ];
 
   home = {
@@ -12,4 +15,6 @@
 
     packages = [ pkgs.zed-editor ];
   };
+
+  programs.keepassxc.settings.Security.LockDatabaseIdleSeconds = idleDelay;
 }
