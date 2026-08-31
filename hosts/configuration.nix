@@ -93,6 +93,7 @@
   environment.systemPackages = with pkgs; [
     vim
     curl
+    zoom-us
   ];
 
   services.openssh = {
