@@ -52,8 +52,10 @@
       element-desktop
       git
       gnome-boxes
+      htop
       just
       lmstudio
+      ncdu
       papers
       remmina
       ripgrep
