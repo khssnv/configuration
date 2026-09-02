@@ -50,6 +50,7 @@
         bitwarden
       )
       element-desktop
+      gimp
       git
       gnome-boxes
       htop
