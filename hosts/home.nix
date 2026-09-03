@@ -136,6 +136,12 @@
         Enabled = true;
         UpdateBinaryPath = false;
       };
+
+      settings.GUI = {
+        MinimizeOnStartup = true;
+        MinimizeToTray = true;
+        ShowTrayIcon = true;
+      };
     };
 
     zsh = {
