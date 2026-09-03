@@ -1,10 +1,10 @@
-{ hostName, ... }:
+{ hostName, userName, ... }:
 
 {
   imports = [
     ../configuration.nix
-    ./benq-display-pilot-2.nix
     ./hardware-configuration.nix
+    ./modules/benq-display-pilot-2
   ];
 
   boot = {
@@ -14,6 +14,15 @@
   };
 
   networking.hostName = hostName;
+
+  services.benqDisplayPilot2 = {
+    enable = true;
+    user = userName;
+    autostart = {
+      enable = true;
+      startMinimizedToTray = true;
+    };
+  };
 
   # Static location for desktop features using sunrise/sunset. Coordinates are
   # the Asia/Almaty representative point from tzdata's zone1970.tab
