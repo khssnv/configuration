@@ -20,3 +20,14 @@ bootstrap-goldendict-dictionaries
 ```
 
 Defined in [goldendict.nix](goldendict.nix).
+
+#### Wallpapers
+
+Copies GNOME wallpapers from NAS. The light wallpaper is used for the light
+theme, and the dark wallpaper is used for the dark theme.
+
+```console
+bootstrap-wallpapers
+```
+
+Defined in [wallpaper.nix](wallpaper.nix).

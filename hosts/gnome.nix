@@ -13,6 +13,8 @@ let
   '';
 in
 {
+  imports = [ ./wallpaper.nix ];
+
   home.packages = with pkgs; [
     deja-dup
     gnome-tweaks
