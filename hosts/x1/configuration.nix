@@ -1,4 +1,4 @@
-{ hostName, ... }:
+{ hostName, pkgs, ... }:
 
 {
   imports = [
@@ -15,6 +15,8 @@
   };
 
   networking.hostName = hostName;
+
+  services.printing.drivers = [ pkgs.brlaser ];
 
   # Static location for desktop features using sunrise/sunset. Coordinates are
   # the Asia/Almaty representative point from tzdata's zone1970.tab
