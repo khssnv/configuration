@@ -213,11 +213,5 @@
         startupWMClass = "keepassxc";
       };
 
-      "autostart/org.telegram.desktop.desktop" = autostart {
-        name = "Telegram";
-        exec = "${pkgs.telegram-desktop}/bin/Telegram -startintray";
-        icon = "org.telegram.desktop";
-        startupWMClass = "TelegramDesktop";
-      };
     };
 }
