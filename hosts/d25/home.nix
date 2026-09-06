@@ -6,6 +6,7 @@ in
 {
   imports = [
     ../home.nix
+    ./cursor.nix
     (import ./gnome.nix { inherit idleDelay lib; })
   ];
 
