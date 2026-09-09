@@ -29,6 +29,7 @@ in
   programs = {
     claude-code = {
       enable = true;
+      context = ../dotfiles/agents.md;
 
       inherit skills;
     };
@@ -36,6 +37,7 @@ in
     codex = {
       enable = true;
       package = pkgsUnstable.codex;
+      context = ../dotfiles/agents.md;
 
       inherit skills;
     };
