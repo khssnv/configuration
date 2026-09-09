@@ -14,6 +14,17 @@
           ps: with ps; {
             inherit git; # GitLens, Git Graph and other Git integrations.
 
+            go = [
+              delve # golang.go debugger (`dlv`).
+              go # golang.go toolchain, formatter and test runner.
+              go-tools # golang.go Staticcheck.
+              gomodifytags # golang.go struct tag generator.
+              gopls # golang.go language server.
+              gotests # golang.go test generator.
+              gotools # golang.go import tools, including `goimports`.
+              impl # golang.go interface implementation generator.
+            ];
+
             nix = [
               nixd # jnoortheen.nix-ide language server.
               nixfmt # jnoortheen.nix-ide formatter.
