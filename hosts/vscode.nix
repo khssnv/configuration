@@ -14,6 +14,10 @@
           ps: with ps; {
             inherit git; # GitLens, Git Graph and other Git integrations.
 
+            csharp = [
+              dotnet-sdk # ms-dotnettools.csharp language server, debugger and test runner.
+            ];
+
             go = [
               delve # golang.go debugger (`dlv`).
               go # golang.go toolchain, formatter and test runner.
@@ -23,6 +27,12 @@
               gotests # golang.go test generator.
               gotools # golang.go import tools, including `goimports`.
               impl # golang.go interface implementation generator.
+            ];
+
+            java = [
+              jdk # vscjava.vscode-java-pack language server, debugger and build tools.
+              gradle # vscjava.vscode-java-pack Gradle integration.
+              maven # vscjava.vscode-java-pack Maven integration.
             ];
 
             nix = [
