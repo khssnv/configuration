@@ -71,6 +71,7 @@
     description = "Alisher Khassanov";
     shell = pkgs.zsh;
     extraGroups = [
+      "docker"
       "networkmanager"
       "wheel"
     ];
@@ -104,4 +105,6 @@
       KbdInteractiveAuthentication = false;
     };
   };
+
+  virtualisation.docker.enable = true;
 }
