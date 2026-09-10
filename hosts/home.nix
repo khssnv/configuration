@@ -7,6 +7,22 @@
   ...
 }:
 
+let
+  compressPdf = pkgs.writeShellScriptBin "compress-pdf" ''
+    set -euo pipefail
+
+    export PATH=${
+      lib.makeBinPath [
+        pkgs.coreutils
+        pkgs.ghostscript
+        pkgs.jq
+        pkgs.qpdf
+      ]
+    }:''${PATH:-}
+
+    exec ${pkgs.bash}/bin/bash ${../x/compress-pdf/compress-pdf.sh} "$@"
+  '';
+in
 {
   imports = [
     ./agents.nix
@@ -49,6 +65,7 @@
         in
         bitwarden
       )
+      compressPdf
       element-desktop
       gimp
       git
