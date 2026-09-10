@@ -18,6 +18,12 @@
               dotnet-sdk # ms-dotnettools.csharp language server, debugger and test runner.
             ];
 
+            docker = [
+              docker-client # ms-azuretools.vscode-docker Docker CLI.
+              docker-compose # ms-azuretools.vscode-docker Compose commands.
+              docker-buildx # ms-azuretools.vscode-docker Buildx commands.
+            ];
+
             go = [
               delve # golang.go debugger (`dlv`).
               go # golang.go toolchain, formatter and test runner.
