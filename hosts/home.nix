@@ -160,6 +160,7 @@ in
       };
 
       settings.GUI = {
+        MinimizeOnClose = true;
         MinimizeOnStartup = true;
         MinimizeToTray = true;
         ShowTrayIcon = true;

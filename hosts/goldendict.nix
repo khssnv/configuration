@@ -7,7 +7,8 @@
 # - Select that group for main and popup lookups (`select_managed_group`).
 # - Disable background full-text indexing (`disable_full_text_search`).
 # - Start the autostarted GUI in the system tray without opening the main
-#   window (`configure_tray_startup`).
+#   window and keep the app running in the tray when its window is closed
+#   (`configure_tray_behavior`).
 # - Preserve unmanaged state and commit only changed XML atomically (the final
 #   pipeline and temporary-file subshell).
 {
@@ -125,7 +126,7 @@
             --update "/config/preferences/fullTextSearch/enabled" --value 0
         }
 
-        configure_tray_startup() {
+        configure_tray_behavior() {
           ${commands.xmlstarlet} ed \
             --subnode "/config[not(preferences)]" \
               --type elem --name preferences \
@@ -134,7 +135,10 @@
             --update "/config/preferences/enableTrayIcon" --value 1 \
             --subnode "/config/preferences[not(startToTray)]" \
               --type elem --name startToTray --value 1 \
-            --update "/config/preferences/startToTray" --value 1
+            --update "/config/preferences/startToTray" --value 1 \
+            --subnode "/config/preferences[not(closeToTray)]" \
+              --type elem --name closeToTray --value 1 \
+            --update "/config/preferences/closeToTray" --value 1
         }
 
         # Read XML from stdin and select the managed group for both interfaces.
@@ -164,7 +168,7 @@
           ensure_dictionary_path "$config_file" \
             | replace_managed_group "$en_ru_id" "$ru_en_id" \
             | disable_full_text_search \
-            | configure_tray_startup \
+            | configure_tray_behavior \
             | select_managed_group \
             > "$temporary_file"
 
