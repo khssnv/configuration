@@ -80,6 +80,7 @@ in
       slack
       telegram-desktop
       transmission_4-gtk
+      vlc
       wget
       xclip # Used by the `c` and `v` shell aliases.
       zulip
