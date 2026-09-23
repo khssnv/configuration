@@ -28,6 +28,7 @@ in
     ./agents.nix
     ./gnome.nix
     ./goldendict.nix
+    ./simple-scan.nix
     ./syncthing.nix
     ./vscode.nix
   ];
