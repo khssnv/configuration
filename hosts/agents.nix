@@ -29,6 +29,7 @@ in
   programs = {
     claude-code = {
       enable = true;
+      package = pkgsUnstable.claude-code;
       context = ../dotfiles/agents.md;
 
       inherit skills;

@@ -46,7 +46,12 @@
                 useUserPackages = true;
                 extraSpecialArgs = {
                   inherit hostName inputs userName;
-                  pkgsUnstable = nixpkgs-unstable.legacyPackages.x86_64-linux;
+                  # Instantiated rather than taken from legacyPackages so the
+                  # unstable set gets the same unfree allowance as the system.
+                  pkgsUnstable = import nixpkgs-unstable {
+                    system = "x86_64-linux";
+                    config.allowUnfree = true;
+                  };
                 };
                 users.${userName} = import homeModule;
                 backupFileExtension = "home-manager.backup";

@@ -1,4 +1,5 @@
 {
+  config,
   lib,
   pkgs,
   ...
@@ -142,7 +143,7 @@
             ];
 
             misc = [
-              claude-code # anthropic.claude-code CLI integration.
+              config.programs.claude-code.package # anthropic.claude-code CLI integration.
               chromium # yzane.markdown-pdf Chromium runtime.
               graphviz # tintinweb.graphviz-interactive-preview and PlantUML diagrams.
               openscad # Leathong.openscad-language-support and URDF previews.
