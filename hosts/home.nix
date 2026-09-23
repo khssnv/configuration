@@ -56,8 +56,11 @@ in
             name = "bitwarden-desktop-x11";
             paths = [ pkgsUnstable.bitwarden-desktop ]; # Stable still depends on EOL Electron 39.
             nativeBuildInputs = [ pkgs.makeWrapper ];
+            # Electron reads the color scheme from the XDG portal once on
+            # startup, so a login-time start before the portal is up stays light.
             postBuild = ''
               wrapProgram $out/bin/bitwarden \
+                --run '${pkgs.glib.bin}/bin/gdbus wait --session --timeout 30 org.freedesktop.portal.Desktop || true' \
                 --unset WAYLAND_DISPLAY \
                 --unset XDG_CURRENT_DESKTOP \
                 --set ELECTRON_OZONE_PLATFORM_HINT x11

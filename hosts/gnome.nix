@@ -177,6 +177,14 @@ in
     };
   };
 
+  # Qt's default gtk3 platform theme guesses the startup color scheme from the
+  # GTK theme name (light "Yaru") and ignores GNOME's color-scheme until it
+  # changes. The portal theme reads color-scheme on startup.
+  qt = {
+    enable = true;
+    platformTheme.name = "xdgdesktopportal";
+  };
+
   xdg.configFile = {
     "gtk-3.0/bookmarks".text = gtkBookmarks;
     "gtk-4.0/bookmarks".text = gtkBookmarks;
