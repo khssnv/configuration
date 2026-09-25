@@ -147,6 +147,42 @@
             - time_sync_service == 'systemd-timesyncd'
             - timesyncd_sync.stdout != 'yes'
 
+    - name: Create admin user
+      block:
+        - name: Create admin user
+          ansible.builtin.user:
+            name: "{{ admin_user }}"
+            shell: /bin/bash
+            create_home: true
+            groups:
+              - sudo
+              - adm
+            append: true
+            password_lock: true
+            state: present
+
+        - name: Install authorized keys for admin user
+          ansible.posix.authorized_key:
+            user: "{{ admin_user }}"
+            key: "{{ item }}"
+            state: present
+          loop:
+            - "{{ lookup('ansible.builtin.file', lookup('ansible.builtin.env', 'HOME') ~ '/.ssh/id_ed25519.pub') | trim }}"
+
+        - name: Ensure sudo is installed
+          ansible.builtin.package:
+            name: sudo
+            state: present
+
+        - name: Allow passwordless sudo for admin user
+          ansible.builtin.copy:
+            dest: "/etc/sudoers.d/{{ admin_user }}"
+            content: "{{ admin_user }} ALL=(ALL) NOPASSWD:ALL\n"
+            owner: root
+            group: root
+            mode: "0440"
+            validate: /usr/sbin/visudo -cf %s
+
     - name: Apt update, dist-upgrade, autoremove
       when: ansible_facts['os_family'] == 'Debian'
       ansible.builtin.apt:
