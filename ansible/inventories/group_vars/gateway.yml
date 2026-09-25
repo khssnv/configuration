@@ -1,0 +1,33 @@
+---
+# githubixx.ansible_role_wireguard
+wireguard_addresses:
+  - 10.200.0.1/32
+wireguard_endpoint: "{{ ansible_host }}"
+wireguard_port: 51820
+wireguard_persistent_keepalive: 25
+
+wg_nextcloud_tunnel_ip: "{{ hostvars['nextcloud'].wireguard_addresses | first | ansible.utils.ipaddr('address') }}"
+
+# ufw
+ufw_allow_rules:
+  - port: "22"
+    proto: tcp
+  - port: "{{ wireguard_port }}"
+    proto: udp
+  - port: "443"
+    proto: tcp
+
+# geerlingguy.nginx
+nginx_package_name:
+  - nginx
+  - libnginx-mod-stream
+nginx_remove_default_vhost: true
+nginx_extra_conf_options: |
+  include /etc/nginx/modules-enabled/*.conf;
+
+  stream {
+      server {
+          listen 443;
+          proxy_pass {{ wg_nextcloud_tunnel_ip }}:443;
+      }
+  }

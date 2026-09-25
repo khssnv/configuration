@@ -1,6 +1,18 @@
+roles:
+  - name: geerlingguy.docker
+    version: 8.0.0
+  - name: geerlingguy.nginx
+    version: 3.3.0
+  - name: githubixx.ansible_role_wireguard
+    version: 19.1.0
+  - name: ome.nfs_mount
+    version: 1.5.0
+
 collections:
   - name: ansible.posix
     version: 2.1.0
+  - name: ansible.utils
+    version: 6.0.2
   - name: community.docker
     version: 5.0.0
   - name: community.general

@@ -1,0 +1,39 @@
+---
+- name: Attach Nextcloud AIO appdata mount
+  hosts: nextcloud
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: Read Nextcloud config
+      ansible.builtin.slurp:
+        src: /var/lib/docker/volumes/nextcloud_aio_nextcloud/_data/config/config.php
+      register: nextcloud_config
+
+    - name: Set Nextcloud appdata target path
+      ansible.builtin.set_fact:
+        nextcloud_aio_appdata_target: >-
+          {{ nextcloud_aio_datadir }}/appdata_{{ nextcloud_config.content | b64decode
+          | regex_search('instanceid\W+(\w+)', '\1') | first }}
+
+    - name: Add appdata bind mount to fstab
+      ansible.posix.mount:
+        path: "{{ nextcloud_aio_appdata_target }}"
+        src: "{{ nextcloud_aio_appdata_source }}"
+        fstype: none
+        opts: "bind,_netdev,x-systemd.requires-mounts-for={{ nextcloud_aio_appdata_source }}"
+        state: mounted
+
+    - name: Start Docker only after appdata is mounted
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/docker.service.d/nextcloud-appdata.conf
+        content: |
+          [Unit]
+          RequiresMountsFor={{ nextcloud_aio_appdata_target }}
+        mode: "0644"
+      notify: Reload systemd
+
+  handlers:
+    - name: Reload systemd
+      ansible.builtin.systemd_service:
+        daemon_reload: true

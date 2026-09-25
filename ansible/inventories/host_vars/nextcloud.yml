@@ -1,0 +1,29 @@
+---
+# githubixx.ansible_role_wireguard
+wireguard_addresses:
+  - 10.200.0.2/32
+wireguard_endpoint: ""
+wireguard_as_spoke: true
+
+nextcloud_admin_cidr: 192.168.0.0/16
+
+# ufw
+ufw_allow_rules:
+  - port: "22"
+    proto: tcp
+    from_ip: "{{ nextcloud_admin_cidr }}"
+
+# ome.nfs_mount
+nfs_version: 4.2
+nfs_mount_opts: noatime
+nfs_share_mounts:
+  - path: "{{ nextcloud_aio_appdata_source }}"
+    location: "{{ nextcloud_nfs_server }}:/mnt/sata-ssd/nextcloud/appdata"
+  - path: "{{ nextcloud_aio_datadir }}"
+    location: "{{ nextcloud_nfs_server }}:/mnt/sata-hdd/nextcloud/datadir"
+
+# nextcloud
+nextcloud_aio_datadir: /mnt/nextcloud/datadir
+nextcloud_aio_appdata_source: /mnt/nextcloud/appdata
+nextcloud_aio_database_nfs_export: /mnt/sata-ssd/nextcloud/database
+nextcloud_nfs_server: truenas.lan

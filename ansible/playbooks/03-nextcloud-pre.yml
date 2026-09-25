@@ -1,0 +1,97 @@
+---
+- name: Configure wireguard tunnel
+  hosts: "gateway:nextcloud"
+  become: true
+
+  roles:
+    - role: githubixx.ansible_role_wireguard
+
+- name: Configure firewall
+  hosts: "gateway:nextcloud"
+  become: true
+
+  tasks:
+    - name: Install UFW
+      ansible.builtin.package:
+        name: ufw
+        state: present
+
+    - name: Allow incoming connections
+      community.general.ufw:
+        rule: allow
+        port: "{{ item.port }}"
+        proto: "{{ item.proto }}"
+        from_ip: "{{ item.from_ip | default(omit) }}"
+      loop: "{{ ufw_allow_rules }}"
+
+    - name: Enable UFW
+      community.general.ufw:
+        state: enabled
+
+- name: Configure `gateway` ingress
+  hosts: gateway
+  become: true
+
+  roles:
+    - role: geerlingguy.nginx
+
+- name: Install required packages for Nextcloud AIO
+  hosts: nextcloud
+  become: true
+
+  roles:
+    - geerlingguy.docker
+
+- name: Connect NFS storage
+  hosts: nextcloud
+  become: true
+
+  roles:
+    - role: ome.nfs_mount
+
+  post_tasks:
+    - name: Start Docker only after NFS shares are mounted
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/docker.service.d/nextcloud-storage.conf
+        content: |
+          [Unit]
+          RequiresMountsFor={{ nfs_share_mounts | map(attribute='path') | join(' ') }}
+        mode: "0644"
+      notify: Reload systemd
+
+    - name: Create database volume on NFS
+      community.docker.docker_volume:
+        name: nextcloud_aio_database
+        driver: local
+        driver_options:
+          type: nfs
+          o: "addr={{ nextcloud_nfs_server }},nfsvers={{ nfs_version }},rw,hard,noatime"
+          device: ":{{ nextcloud_aio_database_nfs_export }}"
+        state: present
+
+  handlers:
+    - name: Reload systemd
+      ansible.builtin.systemd_service:
+        daemon_reload: true
+
+- name: Start Nextcloud AIO
+  hosts: nextcloud
+  become: true
+
+  vars:
+    nextcloud_lan_ip: "{{ ansible_facts.all_ipv4_addresses | ansible.utils.ipaddr(nextcloud_admin_cidr) | first }}"
+
+  tasks:
+    - name: Start Nextcloud AIO mastercontainer
+      community.docker.docker_container:
+        name: nextcloud-aio-mastercontainer
+        image: ghcr.io/nextcloud-releases/all-in-one:latest
+        init: true
+        restart_policy: always
+        published_ports:
+          - "{{ nextcloud_lan_ip }}:8080:8080"
+        volumes:
+          - nextcloud_aio_mastercontainer:/mnt/docker-aio-config
+          - /var/run/docker.sock:/var/run/docker.sock:ro
+        env:
+          NEXTCLOUD_DATADIR: "{{ nextcloud_aio_datadir }}"
