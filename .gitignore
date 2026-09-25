@@ -1,6 +1,25 @@
 .env*
 !.env.example
 
+# Ansible
+# =======
+
+# Ansible retry files
+*.retry
+
+# Vault passwords / secrets
+.vault_pass
+.vault-password
+vault-password*
+*.vault-pass
+
+# Ansible local/cache
+.ansible/
+.cache/
+
+# Molecule
+.molecule/
+
 # Terraform.gitignore
 # ===================
 #
