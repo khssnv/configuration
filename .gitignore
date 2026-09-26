@@ -1,6 +1,9 @@
 .env*
 !.env.example
 
+x/*
+!x/.gitkeep
+
 # Ansible
 # =======
 
