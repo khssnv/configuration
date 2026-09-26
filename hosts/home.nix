@@ -29,6 +29,7 @@ in
     ./gnome.nix
     ./goldendict.nix
     ./simple-scan.nix
+    ./starship.nix
     ./syncthing.nix
     ./vscode.nix
   ];
@@ -180,10 +181,8 @@ in
         v = "xclip -o";
       };
 
-      oh-my-zsh = {
-        enable = true;
-        theme = "ys";
-      };
+      # Starship supplies the prompt; keep Oh My Zsh's other features.
+      oh-my-zsh.enable = true;
     };
 
     # programs.vscode is in vscode.nix: the package is assembled there rather
