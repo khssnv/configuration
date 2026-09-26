@@ -20,7 +20,7 @@ let
       ]
     }:''${PATH:-}
 
-    exec ${pkgs.bash}/bin/bash ${../x/compress-pdf/compress-pdf.sh} "$@"
+    exec ${pkgs.bash}/bin/bash ${../scripts/compress-pdf.sh} "$@"
   '';
 in
 {
