@@ -16,6 +16,11 @@
       url = "github:JuliusBrussee/caveman";
       flake = false;
     };
+
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -35,7 +40,7 @@
           homeModule,
         }:
         nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit hostName userName; };
+          specialArgs = { inherit hostName inputs userName; };
 
           modules = [
             {

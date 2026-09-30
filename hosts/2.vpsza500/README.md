@@ -26,10 +26,15 @@
     Set the interface name, `address`, `prefixLength` and `defaultGateway` in
     the `networking` section accordingly.
 
+1. Follow
+    [Re-encrypt for a new host key](../README.md#re-encrypt-for-a-new-host-key)
+    to re-encrypt secrets for the new SSH host key in case the old one is lost.
+
 1. Install NixOS. The installation repartitions `/dev/vda`.
 
     ```console
     nix run github:nix-community/nixos-anywhere -- \
+      --copy-host-keys \
       --flake .#2.vpsza500 \
       --target-host root@2.vpsza500.khassanov.xyz
     ```
@@ -38,34 +43,50 @@ See nixos-anywhere docs at <https://nix-community.github.io/nixos-anywhere/quick
 
 ## Apply configuration remotely
 
-1. Generate and set `token` in [syncthing-relay.nix](syncthing-relay.nix).
-
-    ```console
-    nix run nixpkgs#openssl -- rand -base64 48
-    ```
-
-1. Apply configuration remotely.
-
-    ```console
-    nixos-rebuild switch \
-      --flake .#2.vpsza500 \
-      --target-host alisher@2.vpsza500.khassanov.xyz \
-      --ask-sudo-password
-    ```
-
-1. Get relay ID on the remote machine from logs.
-
-    ```console
-    journalctl -u syncthing-relay.service -b | grep -i id
-    ```
+```console
+nixos-rebuild switch \
+  --flake .#2.vpsza500 \
+  --target-host alisher@2.vpsza500.khassanov.xyz \
+  --ask-sudo-password
+```
 
 ## Syncthing Relay
 
-Add the relay in Syncthing GUI:
+NixOS desktops get the relay address from [syncthing.nix](../syncthing.nix).
+The relay ID changes on reinstallation, update `relayId` there. Get the ID on
+the remote machine:
+
+```console
+journalctl -u syncthing-relay.service -b | grep -i id
+```
+
+On other devices, add the relay in Syncthing GUI:
 `Actions -> Settings -> Connections -> Sync Protocol Listen Addresses`.
 
 Keep existing listen addresses and append:
 
 ```text
-relay://2.vpsza500.khassanov.xyz:22067/?id=<relay-device-id>&token=<token-from-syncthing-relay.nix>
+relay://2.vpsza500.khassanov.xyz:22067/?id=<relay-device-id>&token=<token>
 ```
+
+Print the token from the `hosts` directory:
+
+```console
+sops decrypt --extract '["syncthing-relay"]["token"]' secrets.yaml
+```
+
+### Rotate the token
+
+The token is `syncthing-relay/token` in [secrets.yaml](../secrets.yaml). Set a
+new one from the `hosts` directory, then apply this host and the desktops. The
+desktops pick up the new token only when `syncthing-init` runs again, on login
+or on restart.
+
+```console
+printf '"%s"' "$(nix run nixpkgs#openssl -- rand -hex 32)" \
+  | sops set --value-stdin secrets.yaml '["syncthing-relay"]["token"]'
+# on each desktop after applying
+systemctl --user restart syncthing-init.service
+```
+
+On other devices, replace the token in the relay listen address.
