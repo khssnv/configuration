@@ -21,12 +21,12 @@
     useDHCP = false;
     interfaces.ens3.ipv4.addresses = [
       {
-        address = "93.171.232.142";
+        address = "92.38.49.12";
         prefixLength = 23;
       }
     ];
     defaultGateway = {
-      address = "93.171.232.1";
+      address = "92.38.48.1";
       interface = "ens3";
     };
     nameservers = [
@@ -96,5 +96,5 @@
 
   zramSwap.enable = true;
 
-  system.stateVersion = "24.05";
+  system.stateVersion = "26.05";
 }
