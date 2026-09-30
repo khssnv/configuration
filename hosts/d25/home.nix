@@ -18,7 +18,10 @@ in
     # Keep host lifecycle versions local even while their current values match.
     stateVersion = "26.05";
 
-    packages = [ pkgs.zed-editor ];
+    packages = [
+      pkgs.zed-editor
+      (pkgs.callPackage ./pkgs/trik-studio/package.nix { })
+    ];
   };
 
   programs.keepassxc.settings.Security.LockDatabaseIdleSeconds = idleDelay;
