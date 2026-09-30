@@ -38,6 +38,15 @@
           specialArgs = { inherit hostName userName; };
 
           modules = [
+            {
+              nixpkgs.overlays = [
+                (_final: prev: {
+                  nautilus = prev.nautilus.overrideAttrs (oldAttrs: {
+                    patches = (oldAttrs.patches or [ ]) ++ [ ./nautilus-backspace-up.diff ];
+                  });
+                })
+              ];
+            }
             systemModule
             home-manager.nixosModules.home-manager
             {

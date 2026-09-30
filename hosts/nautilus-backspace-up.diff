@@ -1,0 +1,21 @@
+From: Jeremy Bicha <jeremy.bicha@canonical.com>
+Date: Wed, 23 Feb 2022 08:06:34 -0500
+Subject: Restore Backspace for going to parent folder
+
+This restores the behaviour from Nautilus <= 3.4.
+---
+ src/nautilus-window-slot.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/nautilus-window-slot.c b/src/nautilus-window-slot.c
+--- a/src/nautilus-window-slot.c
++++ b/src/nautilus-window-slot.c
+@@ -1375,6 +1375,7 @@ nautilus_window_slot_init (NautilusWindowSlot *self)
+     ADD_SHORTCUT_FOR_ACTION (self->shortcuts, "slot.search-global", "<control><shift>f");
+     ADD_SHORTCUT_FOR_ACTION (self->shortcuts, "slot.reload", "F5|<ctrl>r|Refresh|Reload");
+     ADD_SHORTCUT_FOR_ACTION (self->shortcuts, "slot.stop", "Stop");
++    ADD_SHORTCUT_FOR_ACTION (self->shortcuts, "slot.up", "BackSpace");
+     ADD_SHORTCUT_FOR_ACTION (self->shortcuts, "slot.up", "<alt>Up");
+     ADD_SHORTCUT_FOR_ACTION (self->shortcuts, "slot.down", "<alt>Down");
+     ADD_SHORTCUT_FOR_ACTION (self->shortcuts, "slot.bookmark-current-directory", "<control>d|AddFavorite");
+
