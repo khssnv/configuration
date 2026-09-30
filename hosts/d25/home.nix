@@ -28,6 +28,8 @@ in
 
   # Replaces the entry Bitwarden writes itself, which points at the unwrapped
   # store path and bypasses the wrapper from ../home.nix.
+  # Bitwarden blocks hibernation while running (memfd_secret).
+  # Track upstream fix: https://github.com/bitwarden/clients/issues/21661
   xdg.configFile."autostart/bitwarden.desktop" = {
     force = true;
     text = ''
