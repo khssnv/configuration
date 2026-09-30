@@ -26,7 +26,10 @@
     };
   };
 
-  hardware.ddcciBacklight.enable = true;
+  hardware.ddcciBacklight = {
+    enable = true;
+    monitors = [ "BenQ RD280UG" ];
+  };
 
   # Static location for desktop features using sunrise/sunset. Coordinates are
   # the Asia/Almaty representative point from tzdata's zone1970.tab
