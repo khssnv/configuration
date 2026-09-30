@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   pkgsUnstable,
@@ -25,6 +26,7 @@ let
 in
 {
   imports = [
+    inputs.sops-nix.homeManagerModules.sops
     ./agents.nix
     ./gnome.nix
     ./goldendict.nix
@@ -83,6 +85,7 @@ in
       remmina
       ripgrep
       slack
+      sops
       telegram-desktop
       transmission_4-gtk
       vlc
@@ -187,6 +190,11 @@ in
 
     # programs.vscode is in vscode.nix: the package is assembled there rather
     # than merely configured.
+  };
+
+  sops = {
+    age.sshKeyPaths = [ "${config.home.homeDirectory}/.ssh/id_ed25519" ];
+    defaultSopsFile = ./secrets.yaml;
   };
 
   xdg.mimeApps = {
