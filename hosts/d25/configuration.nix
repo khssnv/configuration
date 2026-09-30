@@ -40,6 +40,15 @@
     staticAccuracy = 20000;
   };
 
+  # USB UPS (Eaton 5E), see README.md. UPower falls back to its defaults
+  # unless the thresholds are in descending order. Mice, keyboards and
+  # touchpads use UPower's fixed thresholds instead.
+  services.upower = {
+    percentageLow = 70;
+    percentageCritical = 60;
+    percentageAction = 50;
+  };
+
   # Keep host lifecycle versions local even while their current values match.
   system.stateVersion = "26.05";
 }
