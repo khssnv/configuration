@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  pkgsUnstable,
   ...
 }:
 
@@ -48,7 +49,7 @@ in
       [Desktop Entry]
       Type=Application
       Name=Telegram
-      Exec=${pkgs.telegram-desktop}/bin/Telegram -startintray
+      Exec=${pkgsUnstable.telegram-desktop}/bin/Telegram -startintray
       Icon=org.telegram.desktop
       Terminal=false
       StartupWMClass=TelegramDesktop
