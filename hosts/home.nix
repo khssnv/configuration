@@ -86,7 +86,7 @@ in
       ripgrep
       slack
       sops
-      telegram-desktop
+      pkgsUnstable.telegram-desktop
       transmission_4-gtk
       vlc
       wget
