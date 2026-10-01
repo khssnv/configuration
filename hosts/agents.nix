@@ -24,6 +24,16 @@ in
 {
   home.packages = [
     pkgs.pi-coding-agent # `pi`, the agent little-coder is built on.
+
+    # Token usage and cost reports from the agents' local session logs, which
+    # the VS Code extensions share with the CLIs. Absent from stable.
+    #
+    # Main commans:
+    # ccusage daily --by-agent
+    # ccusage monthly
+    # ccusage session
+    # ccusage claude blocks
+    pkgsUnstable.ccusage
   ];
 
   programs = {
