@@ -22,6 +22,7 @@ in
     packages = [
       pkgs.zed-editor
       (pkgs.callPackage ./pkgs/trik-studio/package.nix { })
+      (pkgs.callPackage ./pkgs/rotki.nix { })
     ];
   };
 
