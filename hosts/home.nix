@@ -79,6 +79,7 @@ in
       gnome-boxes
       htop
       just
+      pkgsUnstable.ledger-live-desktop
       lmstudio
       ncdu
       papers

@@ -97,6 +97,9 @@
     zoom-us
   ];
 
+  # udev rules for Ledger hardware wallets.
+  hardware.ledger.enable = true;
+
   services.openssh = {
     enable = true;
     settings = {
