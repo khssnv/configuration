@@ -92,6 +92,7 @@ in
       vlc
       wget
       xclip # Used by the `c` and `v` shell aliases.
+      yt-dlp
       zulip
     ];
 
