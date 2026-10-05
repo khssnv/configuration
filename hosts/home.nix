@@ -34,6 +34,7 @@ in
     ./starship.nix
     ./syncthing.nix
     ./vscode.nix
+    ./worktrunk.nix
   ];
 
   home = {
