@@ -1,0 +1,3 @@
+# Local extension: wt-copy-local also copies untracked files and unstaged changes.
+# See docs/worktrunk.md or wt-copy-local --help.
+*

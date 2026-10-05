@@ -6,7 +6,6 @@
 
 {
   inputs,
-  lib,
   pkgs,
   pkgsUnstable,
   ...
@@ -35,21 +34,7 @@ in
     # ccusage session
     # ccusage claude blocks
     pkgsUnstable.ccusage
-
-    # `wt`, git worktree management for running agents in parallel. Stable lags
-    # far behind upstream.
-    pkgsUnstable.worktrunk
   ];
-
-  # TODO: switch to `programs.worktrunk` once on Home Manager 26.11, which
-  # generates this file from `settings`.
-  xdg.configFile."worktrunk/config.toml".source =
-    (pkgs.formats.toml { }).generate "worktrunk-config.toml"
-      {
-        # Group worktrees under `~/code/myproject.worktrees/` instead of the
-        # default `~/code/myproject.<branch>` siblings.
-        worktree-path = "{{ repo_path }}/../{{ repo }}.worktrees/{{ branch | sanitize }}";
-      };
 
   programs = {
     claude-code = {
@@ -67,10 +52,5 @@ in
 
       inherit skills;
     };
-
-    # Lets `wt switch` change the shell's directory; also adds completions.
-    zsh.initContent = ''
-      eval "$(${lib.getExe pkgsUnstable.worktrunk} config shell init zsh)"
-    '';
   };
 }

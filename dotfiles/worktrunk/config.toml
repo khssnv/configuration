@@ -1,0 +1,8 @@
+# Group worktrees under a directory beside the repository.
+worktree-path = "{{ repo_path }}/../{{ repo }}.worktrees/{{ branch | sanitize }}"
+
+[[pre-start]]
+local = "wt-copy-local {{ primary_worktree_path }} {{ worktree_path }}"
+
+[[pre-start]]
+ignored = "wt step copy-ignored --from {{ primary_worktree_path }} --require-include"
