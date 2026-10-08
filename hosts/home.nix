@@ -54,8 +54,8 @@ in
       anki
       (
         let
-          # Bitwarden 2026.7.0 cannot access the clipboard through GNOME's Wayland
-          # portal. Run only Bitwarden through XWayland until the upstream fix ships.
+          # Keep Electron and Bitwarden's native clipboard on X11: GNOME does
+          # not provide the Wayland data-control protocol used by arboard.
           bitwarden = pkgs.symlinkJoin {
             name = "bitwarden-desktop-x11";
             paths = [ pkgsUnstable.bitwarden-desktop ]; # Stable still depends on EOL Electron 39.
@@ -67,7 +67,7 @@ in
                 --run '${pkgs.glib.bin}/bin/gdbus wait --session --timeout 30 org.freedesktop.portal.Desktop || true' \
                 --unset WAYLAND_DISPLAY \
                 --unset XDG_CURRENT_DESKTOP \
-                --set ELECTRON_OZONE_PLATFORM_HINT x11
+                --add-flags '--ozone-platform=x11'
             '';
           };
         in
