@@ -145,6 +145,15 @@ in
       };
     };
 
+    gh = {
+      enable = true;
+      extensions = [ pkgs.gh-poi ];
+      settings = {
+        git_protocol = "ssh";
+        telemetry = "disabled";
+      };
+    };
+
     home-manager.enable = true;
 
     keepassxc = {
