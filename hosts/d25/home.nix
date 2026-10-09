@@ -20,6 +20,13 @@ in
     stateVersion = "26.05";
 
     packages = [
+      pkgs.libreoffice-fresh
+      pkgs.hunspell
+      pkgs.hunspellDicts.en_US # American English dictionary for LibreOffice.
+      pkgs.hunspellDicts.en_GB-large # British English dictionary for LibreOffice., both -ise and -ize spellings.
+      pkgs.hunspellDicts.ru_RU # Russian dictionary for LibreOffice.
+      pkgs.hyphenDicts.en_US # American English hyphenation for LibreOffice.
+      pkgs.hyphenDicts.ru_RU # Russian hyphenation for LibreOffice.
       pkgs.zed-editor
       (pkgs.callPackage ./pkgs/trik-studio/package.nix { })
       (pkgs.callPackage ./pkgs/rotki.nix { })

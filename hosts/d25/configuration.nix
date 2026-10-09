@@ -1,4 +1,9 @@
-{ hostName, userName, ... }:
+{
+  hostName,
+  pkgs,
+  userName,
+  ...
+}:
 
 {
   imports = [
@@ -16,6 +21,14 @@
   };
 
   networking.hostName = hostName;
+
+  # Liberation is already included in the default system fonts.
+  fonts.packages = with pkgs; [
+    carlito # Metric-compatible replacement for Calibri.
+    caladea # Metric-compatible replacement for Cambria.
+    noto-fonts-lgc-plus # Latin, Greek, Cyrillic, symbols, and math fonts.
+    noto-fonts-color-emoji # Color emoji.
+  ];
 
   services.benqDisplayPilot2 = {
     enable = true;
