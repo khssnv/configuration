@@ -30,14 +30,15 @@ in
 
   # Replaces the entry Bitwarden writes itself, which points at the unwrapped
   # store path and bypasses the wrapper from ../home.nix.
-  # Bitwarden blocks hibernation while running (memfd_secret).
-  # Track upstream fix: https://github.com/bitwarden/clients/issues/21661
+  # Disable autostart until Bitwarden no longer blocks hibernation (memfd_secret).
+  # Check before re-enabling: https://github.com/bitwarden/clients/issues/21661
   xdg.configFile."autostart/bitwarden.desktop" = {
     force = true;
     text = ''
       [Desktop Entry]
       Type=Application
       Name=Bitwarden
+      Hidden=true
       Exec=${config.home.profileDirectory}/bin/bitwarden --autostart
       Icon=bitwarden
       Terminal=false
