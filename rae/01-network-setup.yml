@@ -1,0 +1,362 @@
+---
+# Configure USB and Wi-Fi networking on RAE (Luxonis OS 1.14), based on
+# https://docs.luxonis.com/hardware/rae/get-started/.
+- name: Configure RAE networking
+  hosts: rae
+  # RAE is managed with raw commands only: its Python 3.8 is older than
+  # ansible-core modules support.
+  gather_facts: false
+
+  vars:
+    wifi_interface: wlp1s0
+
+  pre_tasks:
+    - name: Require a single RAE for network setup
+      ansible.builtin.assert:
+        that: ansible_play_hosts_all | length == 1
+        fail_msg: Select one RAE with --limit rae-alpha or --limit rae-beta; keep at most one factory-reset RAE USB network link active.
+        quiet: true
+
+    - name: Select the initial USB address
+      # Keep the inventory address for subsequent runs. After factory reset,
+      # pass -e initial_host=192.168.197.55 instead of overriding ansible_host.
+      ansible.builtin.set_fact:
+        ansible_host: "{{ initial_host | default(usb_address) }}"
+
+  tasks:
+    - name: Prepare Wi-Fi credentials
+      block:
+        - name: Look up the current Wi-Fi network
+          # Prints the network name of the first active Wi-Fi connection.
+          ansible.builtin.shell: |
+            command -v nmcli >/dev/null || exit 0
+            for conn in $(nmcli -t -f UUID,TYPE connection show --active); do
+              case $conn in *:802-11-wireless) ;; *) continue ;; esac
+              nmcli -e no -g 802-11-wireless.ssid connection show "${conn%%:*}"
+              exit
+            done
+          delegate_to: localhost
+          changed_when: false
+          register: current_wifi
+          when: not wifi_ssid | default('')
+
+        - name: Ask for the Wi-Fi network name
+          # Enter accepts the current network shown in brackets.
+          ansible.builtin.pause:
+            prompt: >-
+              Wi-Fi network name{{ ' [' ~ current_wifi.stdout ~ ']' if current_wifi.stdout | length > 0 else '' }}
+          register: wifi_ssid_prompt
+          when: not wifi_ssid | default('')
+
+        - name: Use the entered Wi-Fi network name
+          ansible.builtin.set_fact:
+            wifi_ssid: "{{ wifi_ssid_prompt.user_input or current_wifi.stdout }}"
+          when: not wifi_ssid | default('')
+
+        - name: Check the Wi-Fi network name
+          ansible.builtin.assert:
+            that: wifi_ssid | length > 0
+            fail_msg: No Wi-Fi network name entered and this machine is not connected to Wi-Fi.
+            quiet: true
+
+        - name: Look up the Wi-Fi password in NetworkManager
+          # Prints the name and the password of the first connection to WIFI_SSID
+          # with a saved password.
+          ansible.builtin.shell: |
+            command -v nmcli >/dev/null || exit 0
+            for conn in $(nmcli -t -f UUID,TYPE connection show); do
+              case $conn in *:802-11-wireless) ;; *) continue ;; esac
+              uuid=${conn%%:*}
+              ssid=$(nmcli -e no -g 802-11-wireless.ssid connection show "$uuid") || continue
+              [ "$ssid" = "$WIFI_SSID" ] || continue
+              psk=$(nmcli -s -e no -g 802-11-wireless-security.psk connection show "$uuid") || continue
+              [ -n "$psk" ] || continue
+              nmcli -e no -g connection.id connection show "$uuid"
+              printf '%s\n' "$psk"
+              exit
+            done
+          environment:
+            WIFI_SSID: "{{ wifi_ssid }}"
+          delegate_to: localhost
+          changed_when: false
+          no_log: true
+          register: nm_wifi
+          when: wifi_password is not defined
+
+        - name: Report the Wi-Fi password source
+          ansible.builtin.debug:
+            msg: >-
+              Using the Wi-Fi password of NetworkManager connection
+              "{{ nm_wifi.stdout_lines[0] }}" on this machine.
+          when: nm_wifi.stdout_lines | default([]) | length == 2
+
+        - name: Use the Wi-Fi password from NetworkManager
+          ansible.builtin.set_fact:
+            wifi_password: "{{ nm_wifi.stdout_lines[1] }}"
+          no_log: true
+          when: nm_wifi.stdout_lines | default([]) | length == 2
+
+        - name: Ask for the Wi-Fi password
+          ansible.builtin.pause:
+            prompt: Wi-Fi password for "{{ wifi_ssid }}"
+            echo: false
+          register: wifi_password_prompt
+          when: wifi_password is not defined
+
+        - name: Use the entered Wi-Fi password
+          ansible.builtin.set_fact:
+            wifi_password: "{{ wifi_password_prompt.user_input }}"
+          no_log: true
+          when: wifi_password is not defined
+
+        - name: Check the Wi-Fi password
+          ansible.builtin.assert:
+            that:
+              - wifi_password | length >= 8
+              - wifi_password | length <= 63
+            fail_msg: WPA password must be 8 to 63 characters.
+            quiet: true
+
+        - name: Derive the WPA PSK
+          # Same result as wpa_passphrase, without the password on a command line.
+          ansible.builtin.command:
+            argv:
+              - "{{ ansible_playbook_python }}"
+              - -c
+              - >-
+                import hashlib, sys;
+                print(hashlib.pbkdf2_hmac("sha1", sys.stdin.buffer.read(),
+                sys.argv[1].encode(), 4096, 32).hex())
+              - "{{ wifi_ssid }}"
+            stdin: "{{ wifi_password }}"
+            stdin_add_newline: false
+          delegate_to: localhost
+          changed_when: false
+          no_log: true
+          register: wifi_psk
+
+    - name: Connect to RAE over USB
+      block:
+        - name: Ask to connect RAE
+          ansible.builtin.debug:
+            msg: Connect {{ inventory_hostname }} with USB-C; keep other factory-reset RAE USB network links inactive.
+
+        - name: Wait for RAE on USB
+          ansible.builtin.wait_for:
+            host: "{{ hostvars[inventory_hostname].ansible_host }}"
+            port: 22
+            msg: RAE did not appear at {{ hostvars[inventory_hostname].ansible_host }}.
+          delegate_to: localhost
+
+    - name: Restrict DHCP to USB before joining Wi-Fi
+      # Factory dnsmasq also serves Wi-Fi; replace it before enabling client mode.
+      # Keep the current USB subnet until SSH over Wi-Fi has been checked.
+      vars:
+        dhcp_address: "{{ ansible_host | regex_replace('[.][0-9]+$', '.54') }}"
+      # Reuse these tasks below with the individual USB DHCP address.
+      block: &usb_dhcp
+        - name: Configure DHCP on the USB bridge only
+          # Replace the factory config, including its Wi-Fi range and interface.
+          # Validate the candidate before replacing the active configuration.
+          ansible.builtin.raw: |
+            set -e
+            content={{ lookup('ansible.builtin.template', 'templates/dnsmasq.conf.j2') | quote }}
+            if [ "$(cat /etc/dnsmasq.conf 2>/dev/null)" != "$(printf %s "$content")" ]; then
+              candidate=$(mktemp /etc/dnsmasq.conf.XXXXXX)
+              trap 'rm -f "$candidate"' EXIT HUP INT TERM
+              printf %s "$content" > "$candidate"
+              chmod 0644 "$candidate"
+              # AppArmor may allow /etc/dnsmasq.conf but deny the temporary path.
+              printf %s "$content" | dnsmasq --test --conf-file=-
+              mv "$candidate" /etc/dnsmasq.conf
+              echo changed
+            fi
+          register: usb_dhcp_config
+          changed_when: "'changed' in usb_dhcp_config.stdout"
+
+        - name: Enable and apply USB DHCP
+          ansible.builtin.raw: |
+            set -e
+            if ! systemctl is-enabled --quiet dnsmasq.service; then
+              systemctl enable dnsmasq.service
+              echo changed
+            fi
+            if {{ 'true' if usb_dhcp_config.changed else 'false' }} ||
+              ! systemctl is-active --quiet dnsmasq.service; then
+              systemctl restart dnsmasq.service
+              echo changed
+            fi
+          register: usb_dhcp_service
+          changed_when: "'changed' in usb_dhcp_service.stdout"
+
+    - name: Configure Wi-Fi and verify SSH access
+      block:
+        - name: Set the hostname
+          # Before Wi-Fi, so DHCP requests carry the new hostname.
+          ansible.builtin.raw: |
+            set -e
+            if [ "$(hostname)" != {{ inventory_hostname | quote }} ]; then
+              hostnamectl set-hostname {{ inventory_hostname | quote }}
+              echo changed
+            fi
+          register: hostname_result
+          changed_when: "'changed' in hostname_result.stdout"
+
+        - name: Configure the Wi-Fi client
+          ansible.builtin.raw: |
+            mkdir -p {{ item.path | dirname }}
+            content={{ item.content | quote }}
+            if [ "$(cat {{ item.path }} 2>/dev/null)" != "$(printf %s "$content")" ]; then
+              (umask 077; printf %s "$content" > {{ item.path }})
+              chmod {{ item.mode }} {{ item.path }}
+              echo changed
+            fi
+          loop:
+            # Read by wpa_supplicant@.service.
+            - path: /etc/wpa_supplicant/wpa_supplicant-{{ wifi_interface }}.conf
+              mode: "0600"
+              content: |
+                ctrl_interface=/var/run/wpa_supplicant
+                network={
+                    ssid="{{ wifi_ssid }}"
+                    psk={{ wifi_psk.stdout }}
+                }
+            # Replaces the access point address from /lib/systemd/network/80-wifi.network.
+            - path: /etc/systemd/network/80-wifi.network
+              mode: "0644"
+              content: |
+                [Match]
+                Name={{ wifi_interface }}
+
+                [Network]
+                DHCP=ipv4
+
+                [DHCP]
+                UseDomains=true
+          loop_control:
+            label: "{{ item.path }}"
+          register: wifi_config
+          changed_when: "'changed' in wifi_config.stdout"
+          no_log: true
+          notify: Reload Wi-Fi configuration
+
+        - name: Switch Wi-Fi from access point to client mode
+          # wifi.service runs hostapd for the RAE-<ID> access point.
+          ansible.builtin.raw: |
+            set -e
+            if systemctl is-enabled --quiet wifi.service || systemctl is-active --quiet wifi.service; then
+              systemctl disable --now wifi.service
+              echo changed
+            fi
+            if ! systemctl is-enabled --quiet wpa_supplicant@{{ wifi_interface }}.service ||
+              ! systemctl is-active --quiet wpa_supplicant@{{ wifi_interface }}.service; then
+              systemctl enable --now wpa_supplicant@{{ wifi_interface }}.service
+              echo changed
+            fi
+          register: wifi_mode
+          changed_when: "'changed' in wifi_mode.stdout"
+
+        - name: Apply the Wi-Fi configuration
+          ansible.builtin.meta: flush_handlers
+
+        - name: Wait for a Wi-Fi address
+          ansible.builtin.raw: ip -4 -o address show dev {{ wifi_interface }}
+          register: wifi_address
+          until: wifi_address.stdout is search(' dynamic ')
+          retries: 30
+          delay: 2
+          changed_when: false
+
+        - name: Remember the Wi-Fi address
+          ansible.builtin.set_fact:
+            rae_wifi_address: "{{ wifi_address.stdout | regex_search('(?<=inet )[^/]+(?=/.* dynamic )') }}"
+
+        - name: Wait for SSH over Wi-Fi before changing USB
+          ansible.builtin.wait_for:
+            host: "{{ hostvars[inventory_hostname].rae_wifi_address }}"
+            port: 22
+            timeout: 60
+            msg: >-
+              RAE Wi-Fi SSH is unreachable. USB addressing has not changed.
+              Check that this machine can reach the RAE on the selected Wi-Fi network.
+          delegate_to: localhost
+
+    - name: Switch SSH from USB to Wi-Fi
+      block:
+        - name: Use Wi-Fi while changing USB
+          # Renumbering br0 drops USB SSH, so subsequent tasks must use Wi-Fi.
+          ansible.builtin.set_fact:
+            ansible_host: "{{ rae_wifi_address }}"
+
+        - name: Close the USB SSH connection
+          ansible.builtin.meta: reset_connection
+
+    - name: Configure the individual USB subnet
+      block:
+        - name: Persist the individual USB subnet
+          # The vendor service still creates the USB gadget and bridge. Its
+          # ExecStartPost replaces the factory address on every service start.
+          ansible.builtin.raw: |
+            set -e
+            mkdir -p {{ item.path | dirname | quote }}
+            content={{ item.content | quote }}
+            if [ "$(cat {{ item.path | quote }} 2>/dev/null)" != "$(printf %s "$content")" ]; then
+              printf %s "$content" > {{ item.path | quote }}
+              chmod {{ item.mode }} {{ item.path | quote }}
+              echo changed
+            fi
+          loop:
+            - path: /etc/scripts/configure-usb-network.sh
+              mode: "0755"
+              content: "{{ lookup('ansible.builtin.template', 'templates/usb-network.sh.j2') }}"
+            - path: /etc/systemd/system/usb-ethernet.service.d/network.conf
+              mode: "0644"
+              content: |
+                [Service]
+                ExecStartPost=/etc/scripts/configure-usb-network.sh
+          loop_control:
+            label: "{{ item.path }}"
+          register: usb_network_files
+          changed_when: "'changed' in usb_network_files.stdout"
+
+        - name: Reload the USB service definition
+          ansible.builtin.raw: systemctl daemon-reload
+          when: usb_network_files.changed
+          changed_when: true
+
+        - name: Apply the individual USB subnet over Wi-Fi
+          # Do not restart the vendor service: recreating the gadget is unnecessary.
+          ansible.builtin.raw: /etc/scripts/configure-usb-network.sh
+          register: usb_network
+          changed_when: "'changed' in usb_network.stdout"
+
+        - name: Serve DHCP on the individual USB subnet
+          vars:
+            dhcp_address: "{{ usb_host_address }}"
+          block: *usb_dhcp
+
+        - name: Check the USB address and DHCP service
+          ansible.builtin.raw: |
+            set -e
+            test "$(ip -4 -o address show dev br0 | awk '{print $4}')" = {{ (usb_address ~ '/28') | quote }}
+            systemctl is-active --quiet dnsmasq.service
+            dnsmasq --test
+          changed_when: false
+
+    - name: Report the USB and Wi-Fi addresses
+      ansible.builtin.debug:
+        msg: >-
+          {{ inventory_hostname }} USB address is {{ usb_address }}/28;
+          USB DHCP assigns {{ usb_host_address }} to this machine.
+          Wi-Fi address is {{ rae_wifi_address }}.
+          Reconnect USB-C or renew its DHCP lease to use the new USB subnet.
+
+  handlers:
+    - name: Reload Wi-Fi configuration
+      # Drop the factory access point address. DHCP is already restricted to br0.
+      ansible.builtin.raw: |
+        set -e
+        systemctl restart wpa_supplicant@{{ wifi_interface }}.service
+        ip -4 address flush dev {{ wifi_interface }}
+        systemctl restart systemd-networkd
+      changed_when: true

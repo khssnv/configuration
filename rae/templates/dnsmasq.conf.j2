@@ -1,0 +1,10 @@
+# USB NCM (usb0) and RNDIS (usb1) are ports of br0.
+interface=br0
+except-interface={{ wifi_interface }}
+bind-dynamic
+domain-needed
+bogus-priv
+dhcp-range={{ dhcp_address }},{{ dhcp_address }},255.255.255.240,12h
+# USB provides access to RAE, not a default gateway or DNS server.
+dhcp-option=option:router
+dhcp-option=option:dns-server

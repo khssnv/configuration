@@ -1,0 +1,16 @@
+---
+rae:
+  vars:
+    ansible_user: root
+    ansible_host: "{{ usb_address }}"
+    # Factory reset regenerates SSH host keys.
+    ansible_ssh_common_args: -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
+    # Wi-Fi network for RAE to join. When empty, the playbook asks for it.
+    wifi_ssid: ""
+  hosts:
+    rae-alpha:
+      usb_address: 192.168.198.55
+      usb_host_address: 192.168.198.54
+    rae-beta:
+      usb_address: 192.168.199.55
+      usb_host_address: 192.168.199.54
