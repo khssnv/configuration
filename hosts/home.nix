@@ -78,7 +78,6 @@ in
       gimp
       git
       gnome-boxes
-      htop
       just
       pkgsUnstable.ledger-live-desktop
       lmstudio
@@ -91,9 +90,9 @@ in
       pkgsUnstable.telegram-desktop
       transmission_4-gtk
       vlc
-      wget
       xclip # Used by the `c` and `v` shell aliases.
       yt-dlp
+      zoom-us
       zulip
     ];
 

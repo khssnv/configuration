@@ -92,10 +92,10 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    vim
     curl
     dmidecode
     ethtool
+    htop
     inxi
     iw
     lm_sensors
@@ -106,7 +106,8 @@
     powertop# TODO: consider `powerManagement.powertop.enable = true;` for laptops.
     smartmontools # TODO: consider `services.smartd.enable = true;` for periodic smart checks.
     usbutils
-    zoom-us
+    vim
+    wget
   ];
 
   # udev rules for Ledger hardware wallets.
