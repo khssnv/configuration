@@ -94,6 +94,18 @@
   environment.systemPackages = with pkgs; [
     vim
     curl
+    dmidecode
+    ethtool
+    inxi
+    iw
+    lm_sensors
+    lshw
+    lsscsi
+    nvme-cli
+    pciutils
+    powertop# TODO: consider `powerManagement.powertop.enable = true;` for laptops.
+    smartmontools # TODO: consider `services.smartd.enable = true;` for periodic smart checks.
+    usbutils
     zoom-us
   ];
 
