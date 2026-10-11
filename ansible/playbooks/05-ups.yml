@@ -1,0 +1,165 @@
+---
+- name: Configure Eaton 5E UPS shutdown on knas9
+  become: true
+  hosts: knas9
+  gather_facts: false
+
+  pre_tasks:
+    - name: Validate the monitor password before changing the host
+      ansible.builtin.assert:
+        that:
+          - nut_monitor_password is defined
+          - nut_monitor_password is string
+          - nut_monitor_password is match('^[A-Za-z0-9_-]+\Z')
+      no_log: true
+
+  tasks:
+    - name: Install NUT
+      ansible.builtin.apt:
+        name:
+          - nut-server
+          - nut-client
+        update_cache: true
+      notify:
+        - Apply NUT USB permissions
+        - Restart NUT
+
+    - name: Configure standalone operation
+      ansible.builtin.copy:
+        dest: /etc/nut/nut.conf
+        content: |
+          # Managed by Ansible.
+          MODE=standalone
+        owner: root
+        group: nut
+        mode: "0640"
+      notify: Restart NUT
+
+    - name: Configure the Eaton 5E USB driver
+      ansible.builtin.copy:
+        dest: /etc/nut/ups.conf
+        content: |
+          # Managed by Ansible.
+          [ups]
+              driver = usbhid-ups
+              port = auto
+        owner: root
+        group: nut
+        mode: "0640"
+      notify: Restart NUT
+
+    - name: Configure the local monitor account
+      ansible.builtin.copy:
+        dest: /etc/nut/upsd.users
+        content: |
+          # Managed by Ansible.
+          [upsmon]
+              password = {{ nut_monitor_password }}
+              upsmon primary
+        owner: root
+        group: nut
+        mode: "0640"
+      no_log: true
+      diff: false
+      notify: Restart NUT
+
+    - name: Configure automatic host shutdown
+      ansible.builtin.copy:
+        dest: /etc/nut/upsmon.conf
+        content: |
+          # Managed by Ansible.
+          MONITOR ups@localhost 1 upsmon {{ nut_monitor_password }} primary
+          SHUTDOWNCMD "/sbin/shutdown -h now"
+          # Keep the packaged shutdown hook's flag check consistent with this path.
+          POWERDOWNFLAG /run/nut/killpower
+        owner: root
+        group: nut
+        mode: "0640"
+      no_log: true
+      diff: false
+      notify: Restart NUT
+
+    - name: Enable NUT at boot
+      ansible.builtin.systemd_service:
+        name: "{{ item }}"
+        enabled: true
+      loop:
+        - nut-driver-enumerator.service
+        - nut.target
+      notify: Restart NUT
+
+    - name: Apply NUT configuration
+      ansible.builtin.meta: flush_handlers
+
+    - name: Start NUT
+      ansible.builtin.systemd_service:
+        name: nut.target
+        state: started
+
+    # An active target does not imply healthy services or fresh driver data.
+    - name: Verify NUT services are running
+      ansible.builtin.command:
+        argv:
+          - systemctl
+          - is-active
+          - "{{ item }}"
+      loop:
+        - nut-driver@ups.service
+        - nut-server.service
+        - nut-monitor.service
+      register: nut_services
+      changed_when: false
+      until: nut_services.rc == 0
+      retries: 5
+      delay: 2
+      when: not ansible_check_mode
+
+    # Public status does not verify upsmon authentication; check its journal too.
+    - name: Verify fresh UPS status and charge readings
+      ansible.builtin.command:
+        argv:
+          - upsc
+          - ups@localhost
+          - "{{ item }}"
+      loop:
+        - ups.status
+        - battery.charge
+      register: nut_status
+      changed_when: false
+      until: nut_status.rc == 0 and nut_status.stdout | trim | length > 0
+      retries: 10
+      delay: 2
+      when: not ansible_check_mode
+
+  handlers:
+    # Apply packaged rules to the already connected UPS before restarting NUT.
+    - name: Reload udev rules
+      ansible.builtin.command:
+        argv:
+          - udevadm
+          - control
+          - --reload-rules
+      changed_when: false
+      listen: Apply NUT USB permissions
+
+    - name: Apply udev rules to the Eaton UPS
+      ansible.builtin.command:
+        argv:
+          - udevadm
+          - trigger
+          - --subsystem-match=usb
+          - --attr-match=idVendor=0463
+          - --attr-match=idProduct=ffff
+          - --action=add
+          - --settle
+      changed_when: true
+      listen: Apply NUT USB permissions
+
+    # PartOf=nut.target propagates the restart to NUT services and driver units.
+    - name: Restart NUT
+      ansible.builtin.systemd_service:
+        name: "{{ item }}"
+        state: restarted
+      loop:
+        - nut-driver-enumerator.service
+        - nut.target
