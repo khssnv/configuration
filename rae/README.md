@@ -36,3 +36,28 @@ To rerun network setup on a configured RAE, omit `initial_host`:
 ```console
 ansible-playbook 01-network-setup.yml --limit rae-alpha
 ```
+
+## Configuration dump
+
+`config-dump` was created to preserve the initial factory configuration before
+network setup or other configuration changes. Saved JSON snapshots and the generated
+[configuration dump](init-config-dump.md) record the observations collected from each robot.
+
+If needed collect the factory configuration before network setup. Select the physical
+robot with `--limit` using the same USB precautions:
+
+```console
+ansible-playbook 00-config-dump.yml --limit rae-alpha -e initial_host=192.168.197.55
+```
+
+For a configured robot, omit `initial_host` and set `snapshot_dir` and
+`report_path` to other paths to preserve the factory baseline.
+
+To regenerate [init-config-dump.md](init-config-dump.md) from saved snapshots:
+
+```console
+python3 config-dump/render.py
+```
+
+Edit snapshots or the renderer, not the generated report.
+See [collector instructions](config-dump/README.md) for options and manual collection.

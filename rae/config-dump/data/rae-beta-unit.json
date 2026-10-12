@@ -1,0 +1,55 @@
+{
+  "section": "unit",
+  "probes": {
+    "serial": {
+      "command": "tr -d '\\000' < /sys/firmware/devicetree/base/serial-number; printf '\\n'; fw_printenv 'serial#'",
+      "returncode": 0,
+      "stdout": "4A721816838860C5\nserial#=4A721816838860C5\n",
+      "stderr": ""
+    },
+    "wifi_mac": {
+      "command": "cat /sys/class/net/wlp1s0/address",
+      "returncode": 0,
+      "stdout": "60:dd:8e:a7:0a:99\n",
+      "stderr": ""
+    },
+    "ap_ssid": {
+      "command": "iw dev wlp1s0 info",
+      "returncode": 0,
+      "stdout": "Interface wlp1s0\n\tifindex 2\n\twdev 0x1\n\taddr 60:dd:8e:a7:0a:99\n\tssid rae-4A72181\n\ttype AP\n\twiphy 0\n\tchannel 1 (2412 MHz), width: 20 MHz, center1: 2412 MHz\n\ttxpower 22.00 dBm\n\tmulticast TXQ:\n\t\tqsz-byt\tqsz-pkt\tflows\tdrops\tmarks\toverlmt\thashcol\ttx-bytes\ttx-packets\n\t\t0\t0\t0\t0\t0\t0\t0\t0\t\t0\n",
+      "stderr": ""
+    },
+    "battery": {
+      "command": "cat /sys/class/power_supply/bq27441-0/charge_full /sys/class/power_supply/bq27441-0/charge_full_design",
+      "returncode": 0,
+      "stdout": "1160000\n1000000\n",
+      "stderr": ""
+    },
+    "boot": {
+      "command": "cat /proc/cmdline; fw_printenv mender_boot_part; findmnt -no SOURCE /",
+      "returncode": 0,
+      "stdout": "root=/dev/mmcblk1p8 rootwait rw mender.data=/dev/mmcblk1p11 earlycon=uart8250,mmio32,0x20180000 verity=0\nmender_boot_part=8\n/dev/mmcblk1p8\n",
+      "stderr": ""
+    }
+  },
+  "unit": "rae-beta",
+  "ssh_target": "192.168.197.55",
+  "collected_at_utc": "2026-10-12T11:50:54.780202+00:00",
+  "timestamp_source": "controller, after collection; robot clock may be unsynchronized",
+  "controller_link": {
+    "route": {
+      "command": "ip -j route get 192.168.197.55",
+      "returncode": 0,
+      "stdout": "[{\"dst\":\"192.168.197.55\",\"dev\":\"usb0\",\"prefsrc\":\"192.168.197.54\",\"flags\":[],\"uid\":1000,\"cache\":[]}]\n",
+      "stderr": ""
+    },
+    "address": {
+      "command": "ip -j -4 address show dev usb0",
+      "returncode": 0,
+      "stdout": "[{\"ifindex\":7,\"ifname\":\"usb0\",\"flags\":[\"BROADCAST\",\"MULTICAST\",\"UP\",\"LOWER_UP\"],\"mtu\":1500,\"qdisc\":\"fq_codel\",\"operstate\":\"UP\",\"group\":\"default\",\"txqlen\":1000,\"altnames\":[\"enp128s20f0u11u3u4\",\"enx2e865f871339\"],\"addr_info\":[{\"family\":\"inet\",\"local\":\"192.168.197.54\",\"prefixlen\":28,\"broadcast\":\"192.168.197.63\",\"scope\":\"global\",\"dynamic\":true,\"noprefixroute\":true,\"label\":\"usb0\",\"valid_life_time\":43063,\"preferred_life_time\":43063}]}]\n",
+      "stderr": ""
+    },
+    "driver_path": "/sys/class/net/usb0/device/driver",
+    "driver": "cdc_ncm"
+  }
+}

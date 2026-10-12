@@ -1,0 +1,79 @@
+---
+- name: Collect RAE observations and regenerate Markdown
+  hosts: rae
+  # Robot Python 3.8 runs the standalone collector; Ansible modules run locally.
+  gather_facts: false
+
+  vars:
+    collector_path: "{{ playbook_dir }}/config-dump/collect.py"
+    snapshot_dir: "{{ playbook_dir }}/config-dump/data"
+    report_path: "{{ playbook_dir }}/init-config-dump.md"
+    collect_section: all
+    collect_sections: "{{ ['common', 'unit'] if collect_section == 'all' else [collect_section] }}"
+    # Match the collector's direct USB transport without reading local SSH config/keys.
+    ansible_ssh_args: >-
+      -F /dev/null -o GlobalKnownHostsFile=/dev/null
+      -o PubkeyAuthentication=no -o PasswordAuthentication=no
+      -o KbdInteractiveAuthentication=no -o IdentityAgent=none -o BatchMode=yes
+    ansible_python_interpreter: "{{ ansible_playbook_python }}"
+
+  pre_tasks:
+    - name: Require one physical RAE and a valid section
+      ansible.builtin.assert:
+        that:
+          - ansible_play_hosts_all | length == 1
+          - inventory_hostname in ['rae-alpha', 'rae-beta']
+          - collect_section in ['all', 'common', 'unit']
+        fail_msg: >-
+          Select one RAE with --limit rae-alpha or --limit rae-beta; keep at most
+          one factory-reset USB link active. collect_section must be all, common or unit.
+        quiet: true
+
+    - name: Select the robot address
+      ansible.builtin.set_fact:
+        ansible_host: "{{ initial_host | default(usb_address) }}"
+
+  tasks:
+    - name: Collect and save observations
+      # raw/command tasks are skipped by --check; skip their consumers too.
+      when: not ansible_check_mode
+      block:
+        - name: Execute the collector without installing files on RAE
+          ansible.builtin.raw: >-
+            python3 -c {{ lookup('ansible.builtin.file', collector_path) | quote }} {{ item | quote }}
+          loop: "{{ collect_sections }}"
+          register: collected
+          changed_when: false
+
+        - name: Add controller metadata and atomically save each JSON snapshot
+          ansible.builtin.command:
+            argv:
+              - "{{ ansible_playbook_python }}"
+              - "{{ collector_path }}"
+              - annotate
+              - --unit-label
+              - "{{ inventory_hostname }}"
+              - --target
+              - "{{ hostvars[inventory_hostname].ansible_host }}"
+              - --output
+              - "{{ snapshot_dir }}/{{ inventory_hostname }}-{{ item.item }}.json"
+            stdin: "{{ item.stdout }}"
+            stdin_add_newline: false
+          loop: "{{ collected.results }}"
+          loop_control:
+            label: "{{ item.item }}"
+          delegate_to: localhost
+          changed_when: true
+
+        - name: Regenerate the Markdown report from all saved snapshots
+          ansible.builtin.command:
+            argv:
+              - "{{ ansible_playbook_python }}"
+              - "{{ playbook_dir }}/config-dump/render.py"
+              - --snapshots
+              - "{{ snapshot_dir }}"
+              - --output
+              - "{{ report_path }}"
+          delegate_to: localhost
+          register: rendered
+          changed_when: rendered.stdout is match('changed:')
