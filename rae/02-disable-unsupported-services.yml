@@ -1,0 +1,14 @@
+---
+- name: Disable unsupported RAE services
+  hosts: rae
+  # Factory Python 3.8 is too old for current ansible-core modules.
+  gather_facts: false
+
+  tasks:
+    - name: Disable RobotHub autostart
+      ansible.builtin.raw: robothub-ctl startup disable
+      changed_when: true # suppress ansible-lint(no-changed-when)
+
+    - name: Stop RobotHub
+      ansible.builtin.raw: robothub-ctl stop
+      changed_when: true # suppress ansible-lint(no-changed-when)
