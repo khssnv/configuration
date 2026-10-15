@@ -1,8 +1,8 @@
-# Coding agents: the CLIs and their shared skill set.
+# Coding agents: the CLIs, shared skills, and MCP servers.
 #
-# Both agents are configured through their config directories (`~/.claude` and
-# `~/.codex`) rather than through CLI arguments, so the same settings apply to
-# the CLIs installed here and to the VS Code extensions.
+# Home Manager manages the agents' context and skills in their config
+# directories. Shared MCP servers use Codex's system config and a Claude Code
+# plugin.
 
 {
   inputs,
@@ -24,6 +24,7 @@ in
 {
   home.packages = [
     pkgs.pi-coding-agent # `pi`, the agent little-coder is built on.
+    pkgsUnstable.terraform-mcp-server # Stable still packages 0.5.2.
 
     # Token usage and cost reports from the agents' local session logs, which
     # the VS Code extensions share with the CLIs. Absent from stable.
@@ -37,8 +38,14 @@ in
   ];
 
   programs = {
+    mcp = {
+      enable = true;
+      servers.terraform.command = "${pkgsUnstable.terraform-mcp-server}/bin/terraform-mcp-server";
+    };
+
     claude-code = {
       enable = true;
+      enableMcpIntegration = true;
       package = pkgsUnstable.claude-code;
       context = ../dotfiles/agents.md;
 

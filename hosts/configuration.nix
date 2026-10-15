@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   userName,
   ...
@@ -81,6 +82,14 @@
   };
 
   programs.zsh.enable = true;
+
+  # Using system config to keep the user config mutable.
+  environment.etc."codex/config.toml".source =
+    (pkgs.formats.toml { }).generate "codex-system-config"
+      {
+        mcp_servers.terraform.command =
+          config.home-manager.users.${userName}.programs.mcp.servers.terraform.command;
+      };
 
   security.sudo.wheelNeedsPassword = false;
 

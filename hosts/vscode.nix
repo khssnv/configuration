@@ -6,6 +6,15 @@
 }:
 
 {
+  # Use this stable path in VS Code's manually managed user settings. Required to configure MCPs.
+  home.file.".local/bin/claude-code-vscode".source = pkgs.writeShellScript "claude-code-vscode" ''
+    case "''${1-}" in
+      ""|-*) ;;
+      *) shift ;;
+    esac
+    exec ${lib.getExe config.programs.claude-code.finalPackage} "$@"
+  '';
+
   programs.vscode = {
     enable = true;
 
@@ -143,7 +152,7 @@
             ];
 
             misc = [
-              config.programs.claude-code.package # anthropic.claude-code CLI integration.
+              config.programs.claude-code.finalPackage # anthropic.claude-code CLI integration.
               chromium # yzane.markdown-pdf Chromium runtime.
               graphviz # tintinweb.graphviz-interactive-preview and PlantUML diagrams.
               openscad # Leathong.openscad-language-support and URDF previews.
