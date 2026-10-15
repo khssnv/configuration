@@ -2,7 +2,9 @@
 rae:
   vars:
     ansible_user: root
-    ansible_host: "{{ usb_address }}"
+    # 00-config-dump.yml and 01-network-setup.yml select the USB address.
+    # Subsequent playbooks use the hostname registered in local DNS.
+    ansible_host: "{{ inventory_hostname }}.lan"
     # Factory reset regenerates SSH host keys.
     ansible_ssh_common_args: -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null
     # Wi-Fi network for RAE to join. When empty, the playbook asks for it.
