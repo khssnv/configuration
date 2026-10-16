@@ -65,6 +65,13 @@
     percentageAction = 50;
   };
 
+  services.netdata = {
+    enable = true;
+    # Nixpkgs excludes the dashboard from the default package.
+    # See https://wiki.nixos.org/wiki/Netdata.
+    package = pkgs.netdata.override { withCloudUi = true; };
+  };
+
   # Keep host lifecycle versions local even while their current values match.
   system.stateVersion = "26.05";
 }
