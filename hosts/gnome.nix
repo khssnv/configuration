@@ -24,6 +24,7 @@ in
     gnomeExtensions.night-theme-switcher
     gnomeExtensions.no-overview
     gnomeExtensions.system-monitor-next
+    gnomeExtensions.power-off-options
     gnomeExtensions.user-themes
     yaru-theme
   ];
@@ -106,6 +107,7 @@ in
           pkgs.gnomeExtensions.night-theme-switcher.extensionUuid
           pkgs.gnomeExtensions.no-overview.extensionUuid
           pkgs.gnomeExtensions.system-monitor-next.extensionUuid
+          pkgs.gnomeExtensions.power-off-options.extensionUuid
           pkgs.gnomeExtensions.user-themes.extensionUuid
         ];
         favorite-apps = [
@@ -142,6 +144,8 @@ in
       };
 
       "org/gnome/shell/extensions/appindicator".tray-pos = "left";
+
+      "org/gnome/shell/extensions/power-off-options".show-settings = false;
 
       "org/gnome/shell/extensions/system-monitor-next-applet" = {
         icon-display = false;
