@@ -88,7 +88,8 @@ in
         [ "$(cat "$adapter/../status")" = connected ] || exit 0
 
         [ -e "$adapter/$client" ] || echo ddcci 0x37 > "$adapter/new_device"
-        [ ! -e "$adapter/$client/driver" ] || exit 0
+        backlight=ddcci''${1#i2c-}
+        [ ! -e "/sys/class/backlight/$backlight" ] || exit 0
 
         # Monitors not listed as supporting DDC/CI get only the probe above. An
         # empty list prints an empty line, which must not match a monitor
@@ -106,6 +107,14 @@ in
         until [ -e "$adapter/$client/driver" ]; do
           sleep 1
           echo "$client" 2>/dev/null > /sys/bus/i2c/drivers/ddcci/bind || true
+        done
+
+        # The bus driver can bind while the backlight probe still fails with
+        # EAGAIN. Retry that probe too, and finish only when GNOME can see the
+        # backlight, rather than merely the DDC/CI bus device.
+        until [ -e "/sys/class/backlight/$backlight" ]; do
+          sleep 1
+          echo "$backlight" 2>/dev/null > /sys/bus/ddcci/drivers/ddcci-backlight/bind || true
         done
       '';
       serviceConfig = {
