@@ -1,5 +1,6 @@
 {
   hostName,
+  lib,
   pkgs,
   userName,
   ...
@@ -65,12 +66,8 @@
     percentageAction = 50;
   };
 
-  services.netdata = {
-    enable = true;
-    # Nixpkgs excludes the dashboard from the default package.
-    # See https://wiki.nixos.org/wiki/Netdata.
-    package = pkgs.netdata.override { withCloudUi = true; };
-  };
+  # Disable netdata autostart; start until reboot with `systemctl start netdata` as root.
+  # systemd.services.netdata.wantedBy = lib.mkForce [ ];
 
   # Keep host lifecycle versions local even while their current values match.
   system.stateVersion = "26.05";

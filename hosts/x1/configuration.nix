@@ -1,4 +1,4 @@
-{ hostName, pkgs, ... }:
+{ hostName, lib, pkgs, ... }:
 
 {
   imports = [
@@ -15,6 +15,9 @@
   };
 
   networking.hostName = hostName;
+
+  # Disable netdata autostart; start until reboot with `systemctl start netdata` as root.
+  systemd.services.netdata.wantedBy = lib.mkForce [ ];
 
   services.printing.drivers = [ pkgs.brlaser ];
 

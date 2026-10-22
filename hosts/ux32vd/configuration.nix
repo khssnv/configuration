@@ -1,4 +1,4 @@
-{ hostName, ... }:
+{ hostName, lib, ... }:
 
 {
   imports = [
@@ -15,6 +15,9 @@
   };
 
   networking.hostName = hostName;
+
+  # Disable netdata autostart; start until reboot with `systemctl start netdata` as root.
+  systemd.services.netdata.wantedBy = lib.mkForce [ ];
 
   # Static location for desktop features using sunrise/sunset. Coordinates are
   # the Asia/Almaty representative point from tzdata's zone1970.tab

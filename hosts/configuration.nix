@@ -58,6 +58,13 @@
 
   services.printing.enable = true;
 
+  services.netdata = {
+    enable = true;
+    # Nixpkgs excludes the dashboard from the default package.
+    # See https://wiki.nixos.org/wiki/Netdata.
+    package = pkgs.netdata.override { withCloudUi = true; };
+  };
+
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
