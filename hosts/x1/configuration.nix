@@ -16,6 +16,10 @@
 
   networking.hostName = hostName;
 
+  # Respect sleep inhibitors on lid close so GNOME Caffeine can keep the laptop
+  # awake while enabled. This also honors sleep inhibitors from other apps.
+  services.logind.settings.Login.LidSwitchIgnoreInhibited = false;
+
   # Disable netdata autostart; start until reboot with `systemctl start netdata` as root.
   systemd.services.netdata.wantedBy = lib.mkForce [ ];
 
