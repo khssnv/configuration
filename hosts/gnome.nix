@@ -17,6 +17,7 @@ in
 
   home.packages = with pkgs; [
     deja-dup
+    gnome-power-manager
     gnome-tweaks
     gnomeExtensions.appindicator
     gnomeExtensions.caffeine
