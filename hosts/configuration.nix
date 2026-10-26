@@ -19,6 +19,9 @@
   # Wi-Fi, Bluetooth, audio DSPs, and CPU microcode.
   hardware.enableRedistributableFirmware = true;
 
+  # Keep *.lan names resolvable while a VPN is active.
+  services.resolved.enable = true;
+
   services.xserver = {
     enable = true;
     xkb.layout = "us,ru,kz";
