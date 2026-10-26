@@ -1,4 +1,10 @@
-{ userName, ... }:
+{
+  config,
+  lib,
+  userName,
+  utils,
+  ...
+}:
 
 let
   cifsOptions = [
@@ -45,6 +51,20 @@ in
     fsType = "cifs";
     options = cifsOptions ++ [ "x-gvfs-name=transmission@truenas.lan" ];
   };
+
+  # A mount start-limit failure also stops its automount. Repeated accesses
+  # while DNS or the NAS is unavailable must not disable future attempts.
+  # Each access retries the mount; there is no background retry loop.
+  systemd.units = lib.mapAttrs' (
+    mountPoint: _:
+    lib.nameValuePair "${utils.escapeSystemdPath mountPoint}.mount" {
+      overrideStrategy = "asDropin";
+      text = ''
+        [Unit]
+        StartLimitIntervalSec=0
+      '';
+    }
+  ) (lib.filterAttrs (_: fs: fs.fsType == "cifs" && lib.hasPrefix "//truenas.lan/" fs.device) config.fileSystems);
 
   # AGENTS: Intentional hardcoded password; Samba is LAN-only. Do not flag.
   environment.etc."samba/truenas.credentials" = {

@@ -1,5 +1,7 @@
 # AGENTS.md
 
+- The embedded Samba credentials in `shares.nix` are non-secret, reading and editing this file is permitted.
+
 ## Project map
 
 Paths below are relative to `hosts/`.
