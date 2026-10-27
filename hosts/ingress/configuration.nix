@@ -8,6 +8,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./nginx.nix
     ./wireguard.nix
   ];
 
