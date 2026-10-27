@@ -6,7 +6,10 @@
 }:
 
 {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [
+    ./hardware-configuration.nix
+    ./wireguard.nix
+  ];
 
   boot.loader.grub.device = "/dev/vda";
 

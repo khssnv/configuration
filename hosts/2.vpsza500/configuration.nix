@@ -11,6 +11,7 @@
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disk-config.nix
     ./syncthing-relay.nix
+    ./wireguard.nix
   ];
 
   services.qemuGuest.enable = true;
