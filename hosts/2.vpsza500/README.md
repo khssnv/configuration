@@ -94,3 +94,7 @@ On other devices, replace the token in the relay listen address.
 ## Wireguard
 
 See [../ingress/README.md#WireGuard](../ingress/README.md#wireguard).
+
+## Security
+
+See [Security](../ingress/SECURITY.md).
