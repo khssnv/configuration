@@ -22,12 +22,18 @@
 
   services.openssh = {
     enable = true;
+    startWhenNeeded = true;
+    openFirewall = false;
     settings = {
-      PermitRootLogin = "prohibit-password";
       PasswordAuthentication = false;
       KbdInteractiveAuthentication = false;
     };
   };
+
+  # Bind the listener to the administrative interface without fixing its DHCP address.
+  systemd.sockets.sshd.socketConfig.BindToDevice = "ens18";
+
+  networking.firewall.interfaces.ens18.allowedTCPPorts = config.services.openssh.ports;
 
   users.users =
     let
