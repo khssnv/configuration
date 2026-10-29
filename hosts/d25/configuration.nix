@@ -69,6 +69,17 @@
   # Disable netdata autostart; start until reboot with `systemctl start netdata` as root.
   # systemd.services.netdata.wantedBy = lib.mkForce [ ];
 
+  # Polling Docker 29+ every second causes high dockerd/containerd CPU usage. See
+  # https://github.com/moby/moby/issues/53077, https://github.com/netdata/netdata/releases/tag/v2.12.1.
+  # TODO: Remove after upgrading Netdata to >= 2.12.1, which caches the image
+  # list for five minutes and defaults to a ten-second collection interval.
+  services.netdata.configDir."go.d/docker.conf" = pkgs.writeText "netdata-docker.conf" ''
+    jobs:
+      - name: local
+        address: unix:///var/run/docker.sock
+        update_every: 10
+  '';
+
   # Keep host lifecycle versions local even while their current values match.
   system.stateVersion = "26.05";
 }
