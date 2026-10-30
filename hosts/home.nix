@@ -78,6 +78,7 @@ in
       gimp
       git
       gnome-boxes
+      httrack
       just
       pkgsUnstable.ledger-live-desktop
       lmstudio
