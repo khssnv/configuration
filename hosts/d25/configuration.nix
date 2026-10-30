@@ -10,6 +10,7 @@
   imports = [
     ../configuration.nix
     ./hardware-configuration.nix
+    ./vllm.nix
     ./modules/benq-display-pilot-2
     ./modules/ddcci-backlight
   ];
