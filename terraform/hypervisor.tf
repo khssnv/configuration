@@ -69,6 +69,14 @@ resource "proxmox_virtual_environment_vm" "hypervisor" {
     }
   }
 
+  agent {
+    enabled = true
+
+    wait_for_ip {
+      ipv4 = true
+    }
+  }
+
   operating_system {
     type = "l26"
   }
