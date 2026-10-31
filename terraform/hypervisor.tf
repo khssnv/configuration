@@ -75,10 +75,3 @@ resource "proxmox_virtual_environment_vm" "hypervisor" {
 
   serial_device {}
 }
-
-output "hypervisor" {
-  value = {
-    vm_id          = proxmox_virtual_environment_vm.hypervisor.vm_id
-    ipv4_addresses = proxmox_virtual_environment_vm.hypervisor.ipv4_addresses
-  }
-}
