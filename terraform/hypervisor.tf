@@ -59,8 +59,18 @@ resource "proxmox_virtual_environment_vm" "hypervisor" {
     bridge = "vmbr0"
   }
 
+  network_device {
+    bridge = "vmbr2"
+  }
+
   initialization {
     user_data_file_id = proxmox_virtual_environment_file.hypervisor_user_data.id
+
+    ip_config {
+      ipv4 {
+        address = "dhcp"
+      }
+    }
 
     ip_config {
       ipv4 {
