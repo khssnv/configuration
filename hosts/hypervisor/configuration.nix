@@ -12,6 +12,16 @@
 
   boot.loader.grub.device = "/dev/vda";
 
+  # TODO: consider using iSCSI + zvol per VM or iSCSI + LVM-Thin.
+  fileSystems."/var/lib/libvirt/images" = {
+    device = "truenas.lan:/mnt/sata-ssd/hypervisor/libvirt/images";
+    fsType = "nfs";
+    options = [
+      "nfsvers=4.2"
+      "x-systemd.automount"
+    ];
+  };
+
   networking.hostName = "hypervisor";
 
   security.sudo.wheelNeedsPassword = false;
@@ -66,7 +76,10 @@
         isNormalUser = true;
         description = "Alisher Khassanov";
         shell = pkgs.zsh;
-        extraGroups = [ "wheel" ];
+        extraGroups = [
+          "wheel"
+          "libvirtd"
+        ];
         openssh.authorizedKeys.keys = [ sshPublicKey ];
       };
 
@@ -83,6 +96,11 @@
       enable = true;
       theme = "ys";
     };
+  };
+
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu.runAsRoot = false;
   };
 
   nix.settings = {
