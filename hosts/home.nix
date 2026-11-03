@@ -96,34 +96,6 @@ in
       zoom-us
       zulip
     ];
-
-    activation.zulipStartMinimized =
-      let
-        commands = {
-          install = lib.getExe' pkgs.coreutils "install";
-          jq = lib.getExe pkgs.jq;
-          mktemp = lib.getExe' pkgs.coreutils "mktemp";
-          rm = lib.getExe' pkgs.coreutils "rm";
-        };
-        managedSettings = pkgs.writeText "zulip-managed-settings.json" (
-          builtins.toJSON {
-            startMinimized = true;
-            trayIcon = true;
-          }
-        );
-      in
-      lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        settings_file="${config.xdg.configHome}/Zulip/config/settings.json"
-
-        if [[ -e "$settings_file" ]]; then
-          settings_tmp="$(${commands.mktemp})"
-          ${commands.jq} '.startMinimized = true | .trayIcon = true' "$settings_file" > "$settings_tmp"
-          ${commands.install} -Dm600 "$settings_tmp" "$settings_file"
-          ${commands.rm} -f "$settings_tmp"
-        else
-          ${commands.install} -Dm600 ${managedSettings} "$settings_file"
-        fi
-      '';
   };
 
   programs = {

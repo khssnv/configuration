@@ -117,7 +117,6 @@ in
           "org.gnome.TextEditor.desktop"
           "code.desktop"
           "org.telegram.desktop.desktop"
-          "zulip.desktop"
           "org.gnome.Nautilus.desktop"
           "org.keepassxc.KeePassXC.desktop"
           "bitwarden.desktop"
