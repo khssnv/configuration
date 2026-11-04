@@ -160,6 +160,7 @@
               plantuml # jebbs.plantuml and mebrahtom.plantumlpreviewer.
               protobuf # Protocol Buffers compiler.
               protolint # plex.vscode-protolint.
+              rumdl # Markdown linter and formatter.
               sqlite # alexcvzz.vscode-sqlite fallback CLI.
               tex-fmt # james-yu.latex-workshop optional formatter.
               (texlive.combine {
