@@ -1,8 +1,10 @@
 # Security
 
-Scope: `client -> gateway (2.vpsza500) -> WireGuard -> ingress -> homelab service`.
+Scope:
+`client -> gateway (2.vpsza500) -> WireGuard -> ingress -> homelab service`.
 Protected assets: service data, user identities, credentials, TLS keys, and
-administrative access. These are requirements, not verified deployment guarantees.
+administrative access. These are requirements, not verified deployment
+guarantees.
 
 Assume only the named component is compromised. WireGuard authenticates peers
 and encrypts the tunnel; peer identity and network location grant no application
@@ -36,9 +38,10 @@ answer HTTP-01 or TLS-ALPN-01 challenges, so challenge control alone is
 insufficient protection against unauthorized certificate issuance.
 
 Each independent TLS endpoint manages its own certificates and ACME account.
-Domain-specific CAA restricts issuance to that account and the selected challenge
-method. The account key and DNS management access remain outside the gateway.
-Restricting only the CA or only HTTP-01 does not establish this boundary.
+Domain-specific CAA restricts issuance to that account and the selected
+challenge method. The account key and DNS management access remain outside the
+gateway. Restricting only the CA or only HTTP-01 does not establish this
+boundary.
 
 Preserving the ACME account avoids CAA changes during recovery and unnecessary
 [account registrations](https://letsencrypt.org/docs/rate-limits/#account-registration-limits).
@@ -48,8 +51,8 @@ establish independence from the gateway.
 ## Ingress compromise
 
 Root compromise exposes TLS keys, credentials, sessions, and plaintext handled
-by ingress. An attacker can modify responses and impersonate services whose
-keys ingress holds. Trust in identities asserted by ingress is lost.
+by ingress. An attacker can modify responses and impersonate services whose keys
+ingress holds. Trust in identities asserted by ingress is lost.
 
 Containment still requires backend authorization and no general administrative
 access from ingress to the homelab. Services terminating their own TLS manage
@@ -60,6 +63,8 @@ their keys and accounts independently.
 The relay token must grant neither access to synchronized data nor a trusted
 device identity. Verify relay protections separately from HTTP ingress.
 
-See [OWASP threat modeling](https://owasp.github.io/www-project-threat-modeling/)
-for terminology and [Let's Encrypt challenges](https://letsencrypt.org/docs/challenge-types/)
-for validation methods.
+See
+[OWASP threat modeling](https://owasp.github.io/www-project-threat-modeling/)
+for terminology and
+[Let's Encrypt challenges](https://letsencrypt.org/docs/challenge-types/) for
+validation methods.

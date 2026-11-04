@@ -3,8 +3,8 @@
 [Worktrunk](https://worktrunk.dev/switch/) manages Git worktrees by branch name.
 
 The global [config](../dotfiles/worktrunk/config.toml) places worktrees in
-`../<repo>.worktrees/<sanitized-branch>`; `pre-start` hooks copy local and ignored
-files selected by `.worktreeinclude` from the primary worktree
+`../<repo>.worktrees/<sanitized-branch>`; `pre-start` hooks copy local and
+ignored files selected by `.worktreeinclude` from the primary worktree
 ([customization](../scripts/wt-copy-local/README.md)).
 
 ## Everyday commands

@@ -5,7 +5,7 @@
 1. Set up a GNU / Linux machine with SSH access as `root`.
 
 1. Get the network configuration of the target machine and set it in
-    [configuration.nix](configuration.nix).
+   [configuration.nix](configuration.nix).
 
     On the target machine:
 
@@ -27,8 +27,8 @@
     the `networking` section accordingly.
 
 1. Follow
-    [Re-encrypt for a new host key](../README.md#re-encrypt-for-a-new-host-key)
-    to re-encrypt secrets for the new SSH host key in case the old one is lost.
+   [Re-encrypt for a new host key](../README.md#re-encrypt-for-a-new-host-key)
+   to re-encrypt secrets for the new SSH host key in case the old one is lost.
 
 1. Install NixOS. The installation repartitions `/dev/vda`.
 
@@ -39,7 +39,8 @@
       --target-host root@2.vpsza500.khassanov.xyz
     ```
 
-See nixos-anywhere docs at <https://nix-community.github.io/nixos-anywhere/quickstart.html>.
+See nixos-anywhere docs at
+<https://nix-community.github.io/nixos-anywhere/quickstart.html>.
 
 ## Apply configuration remotely
 
@@ -52,9 +53,9 @@ nixos-rebuild switch \
 
 ## Syncthing Relay
 
-NixOS desktops get the relay address from [syncthing.nix](../syncthing.nix).
-The relay ID changes on reinstallation, update `relayId` there. Get the ID on
-the remote machine:
+NixOS desktops get the relay address from [syncthing.nix](../syncthing.nix). The
+relay ID changes on reinstallation, update `relayId` there. Get the ID on the
+remote machine:
 
 ```console
 journalctl -u syncthing-relay.service -b | grep -i id

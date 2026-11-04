@@ -8,11 +8,12 @@ INGRESS_IP="<vm-lan-ip>"
 
 ## Bootstrap or restore
 
-1. Before replacing the VM, back up [WireGuard](#backup) and [ACME](DNS.md#save).
-   Keep backups outside ingress and the gateway. For encrypted backups, store
-   the decryption identity separately. Preserve configuration changes, DNS/CAA records,
-   and [Terraform state](../../terraform/README.md) separately. Test recovery
-   before deleting the source.
+1. Before replacing the VM, back up [WireGuard](#backup) and
+   [ACME](DNS.md#save). Keep backups outside ingress and the gateway. For
+   encrypted backups, store the decryption identity separately. Preserve
+   configuration changes, DNS/CAA records, and
+   [Terraform state](../../terraform/README.md) separately. Test recovery before
+   deleting the source.
 1. Create the VM with [Terraform](../../terraform/README.md); obtain its address
    with `terraform output ingress` from `terraform/`.
 1. Verify the new SSH host key through the Proxmox console before replacing
@@ -64,8 +65,8 @@ Check the exit status; failed commands can leave incomplete archives.
 
 ### Restore
 
-Restore a trusted backup before first deployment. If a key already exists,
-use it with [Lost key](#lost-key), or stop WireGuard and preserve it separately
+Restore a trusted backup before first deployment. If a key already exists, use
+it with [Lost key](#lost-key), or stop WireGuard and preserve it separately
 before restoring. Do not overwrite a running interface's key.
 
 ```sh
@@ -96,8 +97,9 @@ If restoring onto an already configured VM, reboot to load the restored key.
    ssh root@"$INGRESS_IP" 'wg show wg0 public-key'
    ```
 
-1. Replace `peers[].publicKey` in [the gateway module](../2.vpsza500/wireguard.nix)
-   and [deploy the gateway](../2.vpsza500/README.md#apply-configuration-remotely)
+1. Replace `peers[].publicKey` in
+   [the gateway module](../2.vpsza500/wireguard.nix) and
+   [deploy the gateway](../2.vpsza500/README.md#apply-configuration-remotely)
    from `nixos/2.vpsza500/`.
 1. If the gateway key was also lost, obtain its new public key the same way,
    update [ingress's peer entry](wireguard.nix), and redeploy ingress.
@@ -112,7 +114,8 @@ Certificates alone do not preserve the account required by CAA `accounturi`.
 1. Restore both settings to `true` and deploy to register a new ACME account.
    Issuance can fail while CAA still names the old account.
 1. Follow [DNS setup](DNS.md#publish-or-restore-a-service) to obtain the new
-   account URI and update CAA. Wait for DNS caches; keep the account restriction.
+   account URI and update CAA. Wait for DNS caches; keep the account
+   restriction.
 1. Retry issuance on ingress:
 
    ```sh

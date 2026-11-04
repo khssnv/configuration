@@ -6,7 +6,8 @@
     ansible-galaxy install -r requirements.yml
     ```
 
-1. Export Proxmox VE API token secret for the dynamic inventory, see `.env.example`.
+1. Export Proxmox VE API token secret for the dynamic inventory, see
+   `.env.example`.
 
     ```console
     source .env

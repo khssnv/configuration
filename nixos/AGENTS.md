@@ -1,6 +1,7 @@
 # AGENTS.md
 
-- The embedded Samba credentials in `shares.nix` are non-secret, reading and editing this file is permitted.
+- The embedded Samba credentials in `shares.nix` are non-secret, reading and
+  editing this file is permitted.
 
 ## Project map
 
@@ -13,20 +14,21 @@ Paths below are relative to `nixos/`.
 - `home.nix` — shared Home Manager settings, user packages,
   and application module imports.
 - `gnome.nix`, `wallpaper.nix` — shared GNOME and wallpaper settings.
-- `d25/`, `ux32vd/`, `x1/` — settings for individual hosts:
-  `configuration.nix` imports the shared system configuration,
-  `home.nix` imports the shared user configuration; `gnome.nix` contains
-  the host's GNOME settings, and `hardware-configuration.nix` is generated hardware configuration.
+- `d25/`, `ux32vd/`, `x1/` — settings for individual hosts: `configuration.nix`
+  imports the shared system configuration, `home.nix` imports the shared user
+  configuration; `gnome.nix` contains the host's GNOME settings, and
+  `hardware-configuration.nix` is generated hardware configuration.
 - `agents.nix`, `vscode.nix`, `worktrunk.nix`, `starship.nix` — settings
   for coding agents, the editor, Git worktrees, and the shell prompt.
-- `goldendict.nix`, `simple-scan.nix`, `syncthing.nix` — respective applications;
-  `shares.nix` — network file shares.
+- `goldendict.nix`, `simple-scan.nix`, `syncthing.nix` — respective
+  applications; `shares.nix` — network file shares.
 - `d25/modules/`, `d25/pkgs/` — hardware modules and packages for `d25`.
-- `rockpix/` — separate flake for the YouTube kiosk;
-  `2.vpsza500/` — separate server flake, with `disk-config.nix` for disk partitioning
-  and `syncthing-relay.nix` for the Syncthing relay.
-- `README.md` and READMEs in host directories — setup and deployment instructions.
-  `../dotfiles/`, `../scripts/` — files and scripts referenced by Nix modules.
+- `rockpix/` — separate flake for the YouTube kiosk; `2.vpsza500/` — separate
+  server flake, with `disk-config.nix` for disk partitioning and
+  `syncthing-relay.nix` for the Syncthing relay.
+- `README.md` and READMEs in host directories — setup and deployment
+  instructions. `../dotfiles/`, `../scripts/` — files and scripts referenced by
+  Nix modules.
 
-For a change to one host, start in its directory and follow `imports`.
-Changes to shared modules affect every host that imports them.
+For a change to one host, start in its directory and follow `imports`. Changes
+to shared modules affect every host that imports them.

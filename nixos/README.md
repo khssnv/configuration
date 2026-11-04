@@ -5,8 +5,8 @@
 ### SSH key
 
 Desktops decrypt secrets with `~/.ssh/id_ed25519`, its age recipient is the
-`&alisher` key in [.sops.yaml](.sops.yaml). Put the key in place before
-applying the configuration. sops-nix cannot use a key with a passphrase.
+`&alisher` key in [.sops.yaml](.sops.yaml). Put the key in place before applying
+the configuration. sops-nix cannot use a key with a passphrase.
 
 ### Apply configuration
 
@@ -29,8 +29,8 @@ Defined in [goldendict.nix](goldendict.nix).
 
 Writes the Syncthing connection (GUI address and API key from the local
 Syncthing config) to the Syncthing Tray settings, so its setup wizard is not
-shown. Run it after Syncthing has started at least once, and quit Syncthing
-Tray first, because it rewrites its settings on exit.
+shown. Run it after Syncthing has started at least once, and quit Syncthing Tray
+first, because it rewrites its settings on exit.
 
 ```console
 bootstrap-syncthingtray
@@ -78,7 +78,7 @@ Needed when a host gets a new SSH host key. The steps below use
 `2.vpsza500.khassanov.xyz` as an example.
 
 1. Get the host key fingerprint through a trusted channel, such as the hosting
-    provider's console. On the server, run:
+   provider's console. On the server, run:
 
     ```console
     ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub -E sha256

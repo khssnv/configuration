@@ -1,8 +1,8 @@
 # Configure DNS and CAA
 
-DNS is managed manually; keep DNS management access off the gateway.
-For each service, identify its TLS endpoint and obtain the gateway's public IP
-addresses. Use the ingress ACME account only when ingress terminates that TLS.
+DNS is managed manually; keep DNS management access off the gateway. For each
+service, identify its TLS endpoint and obtain the gateway's public IP addresses.
+Use the ingress ACME account only when ingress terminates that TLS.
 
 ## Publish or restore a service
 
@@ -25,7 +25,10 @@ addresses. Use the ingress ACME account only when ingress terminates that TLS.
 
    - Prohibit wildcard certificates: `";"`.
    - Allow them for the selected account:
-     `"letsencrypt.org; accounturi=https://acme-v02.api.letsencrypt.org/acme/acct/<ACCOUNT_ID>; validationmethods=dns-01"`.
+
+     ```text
+     "letsencrypt.org; accounturi=https://acme-v02.api.letsencrypt.org/acme/acct/<ACCOUNT_ID>; validationmethods=dns-01"
+     ```
 
    For wildcard issuance, configure DNS-01 and manually add the client's requested
    TXT records at `_acme-challenge.myservice.khassanov.xyz`. Without `issuewild`,
@@ -37,7 +40,8 @@ See [Let's Encrypt CAA](https://letsencrypt.org/docs/caa/) for record semantics.
 
 1. Query A, AAAA, and CAA with `dig` against authoritative and public recursive
    nameservers. Expect the gateway addresses and selected CAA policy, with no
-   unintended issuance permissions. Wait for previous DNS and CA caches to expire.
+   unintended issuance permissions. Wait for previous DNS and CA caches to
+   expire.
 1. Request a certificate through the intended endpoint. Confirm successful
    issuance and that the expected service loads over valid HTTPS from outside
    the homelab.
@@ -53,16 +57,16 @@ non-secret URI with the DNS records. Reuse the account after recovery; if it
 changes, update `accounturi` and repeat verification.
 
 The commands below are for the operator to run. They transfer private account
-and certificate keys. Run them only from a trusted administrative machine,
-over verified SSH directly to ingress, never from the public gateway. Do not
-print or commit the archive or its contents.
+and certificate keys. Run them only from a trusted administrative machine, over
+verified SSH directly to ingress, never from the public gateway. Do not print or
+commit the archive or its contents.
 
 ### Save
 
-Back up after account registration and before replacing the VM or its disk.
-Use `age` on the administrative machine with an existing backup recipient.
-Keep the corresponding decryption identity separately from ingress and the
-gateway. See the [age documentation](https://github.com/FiloSottile/age).
+Back up after account registration and before replacing the VM or its disk. Use
+`age` on the administrative machine with an existing backup recipient. Keep the
+corresponding decryption identity separately from ingress and the gateway. See
+the [age documentation](https://github.com/FiloSottile/age).
 
 1. Set the VM address, the public backup recipient, and a new archive path on
    the administrative machine:

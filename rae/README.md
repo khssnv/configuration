@@ -1,12 +1,13 @@
 # rae
 
-Luxonis RAE robots configuration. Vendor setup instructions: <https://docs.luxonis.com/hardware/rae/get-started/>.
+Luxonis RAE robots configuration. Vendor setup instructions:
+<https://docs.luxonis.com/hardware/rae/get-started/>.
 
 ## Network setup
 
 After each factory reset, configure networking on one robot at a time. Keep at
-most one factory-reset USB link active: both robots use `192.168.197.55`.
-Select the physical robot yourself; `--limit` does not identify it automatically.
+most one factory-reset USB link active: both robots use `192.168.197.55`. Select
+the physical robot yourself; `--limit` does not identify it automatically.
 
 The playbook configures the hostname, Wi-Fi client, and individual USB subnet.
 The computer must be able to reach RAE over Wi-Fi. Check routing and client
@@ -40,11 +41,12 @@ ansible-playbook 01-network-setup.yml --limit rae-alpha
 ## Configuration dump
 
 `config-dump` was created to preserve the initial factory configuration before
-network setup or other configuration changes. Saved JSON snapshots and the generated
-[configuration dump](init-config-dump.md) record the observations collected from each robot.
+network setup or other configuration changes. Saved JSON snapshots and the
+generated [configuration dump](init-config-dump.md) record the observations
+collected from each robot.
 
-If needed collect the factory configuration before network setup. Select the physical
-robot with `--limit` using the same USB precautions:
+If needed collect the factory configuration before network setup. Select the
+physical robot with `--limit` using the same USB precautions:
 
 ```console
 ansible-playbook 00-config-dump.yml --limit rae-alpha -e initial_host=192.168.197.55
@@ -59,5 +61,6 @@ To regenerate [init-config-dump.md](init-config-dump.md) from saved snapshots:
 python3 config-dump/render.py
 ```
 
-Edit snapshots or the renderer, not the generated report.
-See [collector instructions](config-dump/README.md) for options and manual collection.
+Edit snapshots or the renderer, not the generated report. See
+[collector instructions](config-dump/README.md) for options and manual
+collection.
