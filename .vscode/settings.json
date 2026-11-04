@@ -2,7 +2,7 @@
   "nix.serverSettings": {
     "nixd": {
       "nixpkgs": {
-        "expr": "import (builtins.getFlake \"${workspaceFolder}/hosts\").inputs.nixpkgs { }"
+        "expr": "import (builtins.getFlake \"${workspaceFolder}/nixos\").inputs.nixpkgs { }"
       },
       "formatting": {
         "command": [
@@ -11,10 +11,10 @@
       },
       "options": {
         "nixos": {
-          "expr": "(builtins.getFlake \"${workspaceFolder}/hosts\").nixosConfigurations.d25.options"
+          "expr": "(builtins.getFlake \"${workspaceFolder}/nixos\").nixosConfigurations.d25.options"
         },
         "home-manager": {
-          "expr": "(builtins.getFlake \"${workspaceFolder}/hosts\").nixosConfigurations.d25.options.home-manager.users.type.getSubOptions []"
+          "expr": "(builtins.getFlake \"${workspaceFolder}/nixos\").nixosConfigurations.d25.options.home-manager.users.type.getSubOptions []"
         }
       }
     }

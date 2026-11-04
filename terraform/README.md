@@ -44,4 +44,4 @@ Run from `terraform/`.
     terraform apply -replace=proxmox_virtual_environment_vm.ingress
     ```
 
-1. Continue with NixOS deployment in [../hosts/ingress/README.md](../hosts/ingress/README.md).
+1. Continue with NixOS deployment in [../nixos/ingress/README.md](../nixos/ingress/README.md).

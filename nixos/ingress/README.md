@@ -98,7 +98,7 @@ If restoring onto an already configured VM, reboot to load the restored key.
 
 1. Replace `peers[].publicKey` in [the gateway module](../2.vpsza500/wireguard.nix)
    and [deploy the gateway](../2.vpsza500/README.md#apply-configuration-remotely)
-   from `hosts/2.vpsza500/`.
+   from `nixos/2.vpsza500/`.
 1. If the gateway key was also lost, obtain its new public key the same way,
    update [ingress's peer entry](wireguard.nix), and redeploy ingress.
 1. [Verify the tunnel](#verification) and save a new backup.

@@ -1,23 +1,21 @@
-# configuration/hosts
+# nixos
 
-## NixOS hosts
+## Bootstrap
 
-### Bootstrap
-
-#### SSH key
+### SSH key
 
 Desktops decrypt secrets with `~/.ssh/id_ed25519`, its age recipient is the
 `&alisher` key in [.sops.yaml](.sops.yaml). Put the key in place before
 applying the configuration. sops-nix cannot use a key with a passphrase.
 
-#### Apply configuration
+### Apply configuration
 
 ```console
 HOSTNAME=<bootstrap_host_name>
 sudo nixos-rebuild switch --flake ".#$HOSTNAME"
 ```
 
-#### GoldenDict dictionaries
+### GoldenDict dictionaries
 
 Copies dictionaries from NAS. GoldenDict takes some time to index them.
 
@@ -27,7 +25,7 @@ bootstrap-goldendict-dictionaries
 
 Defined in [goldendict.nix](goldendict.nix).
 
-#### Syncthing Tray
+### Syncthing Tray
 
 Writes the Syncthing connection (GUI address and API key from the local
 Syncthing config) to the Syncthing Tray settings, so its setup wizard is not
@@ -40,7 +38,7 @@ bootstrap-syncthingtray
 
 Defined in [syncthing.nix](syncthing.nix).
 
-#### Wallpapers
+### Wallpapers
 
 Copies GNOME wallpapers from NAS. The light wallpaper is used for the light
 theme, and the dark wallpaper is used for the dark theme.

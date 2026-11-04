@@ -15,7 +15,7 @@ node_modules/
 !docs/drafts/
 ```
 
-Requires Python 3.10+, pathspec and Git, supplied by the [Nix module](../../hosts/worktrunk.nix).
+Requires Python 3.10+, pathspec and Git, supplied by the [Nix module](../../nixos/worktrunk.nix).
 See `--help` for behavior and limits, and the [command reference](../../docs/worktrunk.md) for usage.
 
 ```sh

@@ -4,7 +4,7 @@
 
 ## Project map
 
-Paths below are relative to `hosts/`.
+Paths below are relative to `nixos/`.
 
 - `flake.nix`, `flake.lock` — shared entry point and dependencies for `d25`,
   `ux32vd`, and `x1`; outputs are `nixosConfigurations.<host>`.
