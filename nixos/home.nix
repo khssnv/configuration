@@ -74,6 +74,7 @@ in
         bitwarden
       )
       compressPdf
+      discord
       element-desktop
       gimp
       git
