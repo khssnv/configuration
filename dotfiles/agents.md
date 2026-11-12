@@ -6,6 +6,8 @@
 - Explicitly state uncertainty or assumptions when they materially affect the
   correctness of a claim. Distinguish verified facts from estimates and
   speculation.
+- When requesting command output, preserve stdout and stderr in the terminal and
+  copy both to the clipboard using `xclip`.
 
 ## Communication Style
 
@@ -35,3 +37,22 @@
   non-sensitive examples instead.
 - If a task requires access to protected material, stop and ask the user to
   provide a safe alternative.
+- Never access clipboard directly or indirectly. Instead use a temporary file.
+  If needed ask user permission and stop.
+
+## Git
+
+- Review recent commit subjects for style:
+  `git --no-pager log -n 10 --format=%s`.
+- Keep commit subjects at 50 characters or fewer.
+- Separate the subject from the optional body with a blank line. Wrap body lines
+  at 72 characters.
+- When the rationale is not clear from the subject, use the body to explain
+  *why* the change was made, not just *what* changed.
+- Include an AI attribution trailer based on user review:
+  - **Without user review:** Use `Co-Authored-By`.
+    - **Codex:**
+      `Co-Authored-By: <ModelFamily> (Codex) <267193182+codex@users.noreply.github.com>`.
+    - **Claude:** Use the default attribution.
+    - **Other agents:** Suggest an appropriate attribution.
+  - **With user review:** Use `Assisted-by` instead.
