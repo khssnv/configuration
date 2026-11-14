@@ -2,6 +2,9 @@
 
 - The embedded Samba credentials in `shares.nix` are non-secret, reading and
   editing this file is permitted.
+- For GNOME autostart, use Home Manager's `xdg.autostart.entries` with
+  package-provided `.desktop` files. Create custom entries only when launch
+  commands or autostart-related settings must differ.
 
 ## Project map
 
