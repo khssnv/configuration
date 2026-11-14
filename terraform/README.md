@@ -50,4 +50,4 @@ Run from `terraform/`.
     ```
 
 1. Continue with NixOS deployment in
-   [../nixos/ingress/README.md](../nixos/ingress/README.md).
+   [../nixos/hosts/ingress/README.md](../nixos/hosts/ingress/README.md).

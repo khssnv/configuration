@@ -17,18 +17,23 @@ Paths below are relative to `nixos/`.
 - `home.nix` — shared Home Manager settings, user packages,
   and application module imports.
 - `gnome.nix`, `wallpaper.nix` — shared GNOME and wallpaper settings.
-- `d25/`, `ux32vd/`, `x1/` — settings for individual hosts: `configuration.nix`
-  imports the shared system configuration, `home.nix` imports the shared user
-  configuration; `gnome.nix` contains the host's GNOME settings, and
+- `hosts/d25/`, `hosts/ux32vd/`, `hosts/x1/` — settings for individual hosts:
+  `configuration.nix` imports `../../configuration.nix`, and `home.nix` imports
+  `../../home.nix`; `gnome.nix` contains the host's GNOME settings, and
   `hardware-configuration.nix` is generated hardware configuration.
 - `agents.nix`, `vscode.nix`, `worktrunk.nix`, `starship.nix` — settings
   for coding agents, the editor, Git worktrees, and the shell prompt.
 - `goldendict.nix`, `simple-scan.nix`, `syncthing.nix` — respective
   applications; `shares.nix` — network file shares.
-- `d25/modules/`, `d25/pkgs/` — hardware modules and packages for `d25`.
-- `rockpix/` — separate flake for the YouTube kiosk; `2.vpsza500/` — separate
-  server flake, with `disk-config.nix` for disk partitioning and
-  `syncthing-relay.nix` for the Syncthing relay.
+- `modules/` — reusable Netinstall, DDC/CI backlight, and BenQ Display Pilot 2
+  modules. Hosts explicitly import and configure the modules they use.
+- `pkgs/` — local package recipes and their supporting files. New package
+  recipes belong here rather than inside host directories.
+- `hosts/rockpix/` — separate flake for the YouTube kiosk.
+- `hosts/1.hostkey/`, `hosts/2.vpsza500/` — separate server flakes, each with
+  `disk-config.nix`; `2.vpsza500` also runs the Syncthing relay.
+- `hosts/ingress/`, `hosts/hypervisor/` — separate flakes for the ingress VM
+  and the KVM/libvirt hypervisor.
 - `README.md` and READMEs in host directories — setup and deployment
   instructions. `../dotfiles/`, `../scripts/` — files and scripts referenced by
   Nix modules.

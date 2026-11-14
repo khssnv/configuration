@@ -72,7 +72,7 @@ for useNftables in false true; do
     let
       flake = builtins.getFlake (toString ./nixos);
       host = flake.nixosConfigurations.d25.extendModules {
-        modules = [ ./nixos/d25/modules/netinstall {
+        modules = [ ./nixos/modules/netinstall {
           programs.netinstall = {
             enable = true;
             openFirewall = true;
@@ -85,7 +85,7 @@ for useNftables in false true; do
       (p: p.name == "netinstall-cli") host.config.environment.systemPackages)
   ' --out-link "/tmp/netinstall-test-$useNftables" || break
 
-  python3 nixos/d25/modules/netinstall/test-firewall.py \
+  python3 nixos/modules/netinstall/test-firewall.py \
     "/tmp/netinstall-test-$useNftables/bin/netinstall-cli" || break
 done
 ```

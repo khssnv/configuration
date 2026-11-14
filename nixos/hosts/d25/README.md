@@ -13,8 +13,8 @@ waits for monitors listed in `hardware.ddcciBacklight.monitors` in
 [configuration.nix](configuration.nix). Other monitors have no slider unless
 they answer at once. Add a new monitor to the list so the boot waits for it too,
 the option description in
-[modules/ddcci-backlight](modules/ddcci-backlight/default.nix) shows how to
-print its name.
+[modules/ddcci-backlight](../../modules/ddcci-backlight/default.nix) shows how
+to print its name.
 
 ## vLLM
 

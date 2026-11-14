@@ -12,10 +12,10 @@ INGRESS_IP="<vm-lan-ip>"
    [ACME](DNS.md#save). Keep backups outside ingress and the gateway. For
    encrypted backups, store the decryption identity separately. Preserve
    configuration changes, DNS/CAA records, and
-   [Terraform state](../../terraform/README.md) separately. Test recovery before
-   deleting the source.
-1. Create the VM with [Terraform](../../terraform/README.md); obtain its address
-   with `terraform output ingress` from `terraform/`.
+   [Terraform state](../../../terraform/README.md) separately. Test recovery
+   before deleting the source.
+1. Create the VM with [Terraform](../../../terraform/README.md); obtain its
+   address with `terraform output ingress` from `terraform/`.
 1. Verify the new SSH host key through the Proxmox console before replacing
    any old known-host entry. Keep console access until deployment is verified.
 1. Generate hardware configuration:
@@ -100,7 +100,7 @@ If restoring onto an already configured VM, reboot to load the restored key.
 1. Replace `peers[].publicKey` in
    [the gateway module](../2.vpsza500/wireguard.nix) and
    [deploy the gateway](../2.vpsza500/README.md#apply-configuration-remotely)
-   from `nixos/2.vpsza500/`.
+   from `nixos/hosts/2.vpsza500/`.
 1. If the gateway key was also lost, obtain its new public key the same way,
    update [ingress's peer entry](wireguard.nix), and redeploy ingress.
 1. [Verify the tunnel](#verification) and save a new backup.
@@ -149,5 +149,5 @@ Expect an HTTPS redirect after TLS recovery. Finish with external
 
 ## TODO
 
-- [DNS.md](./DNS.md) and [SECURITY.md](./SECURITY.md) are AI-generated. Rework
+- [DNS.md](DNS.md) and [SECURITY.md](SECURITY.md) are AI-generated. Rework
   after publishing the first service.

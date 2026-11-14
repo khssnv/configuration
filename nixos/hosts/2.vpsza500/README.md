@@ -27,7 +27,7 @@
     the `networking` section accordingly.
 
 1. Follow
-   [Re-encrypt for a new host key](../README.md#re-encrypt-for-a-new-host-key)
+   [Re-encrypt for a new host key](../../README.md#re-encrypt-for-a-new-host-key)
    to re-encrypt secrets for the new SSH host key in case the old one is lost.
 
 1. Install NixOS. The installation repartitions `/dev/vda`.
@@ -53,9 +53,9 @@ nixos-rebuild switch \
 
 ## Syncthing Relay
 
-NixOS desktops get the relay address from [syncthing.nix](../syncthing.nix). The
-relay ID changes on reinstallation, update `relayId` there. Get the ID on the
-remote machine:
+NixOS desktops get the relay address from [syncthing.nix](../../syncthing.nix).
+The relay ID changes on reinstallation, update `relayId` there. Get the ID on
+the remote machine:
 
 ```console
 journalctl -u syncthing-relay.service -b | grep -i id
@@ -70,7 +70,7 @@ Keep existing listen addresses and append:
 relay://2.vpsza500.khassanov.xyz:22067/?id=<relay-device-id>&token=<token>
 ```
 
-Print the token from the `hosts` directory:
+Print the token from the `nixos/` directory:
 
 ```console
 sops decrypt --extract '["syncthing-relay"]["token"]' secrets.yaml
@@ -78,10 +78,10 @@ sops decrypt --extract '["syncthing-relay"]["token"]' secrets.yaml
 
 ### Rotate the token
 
-The token is `syncthing-relay/token` in [secrets.yaml](../secrets.yaml). Set a
-new one from the `hosts` directory, then apply this host and the desktops. The
-desktops pick up the new token only when `syncthing-init` runs again, on login
-or on restart.
+The token is `syncthing-relay/token` in [secrets.yaml](../../secrets.yaml). Set
+a new one from the `nixos/` directory, then apply this host and the desktops.
+The desktops pick up the new token only when `syncthing-init` runs again, on
+login or on restart.
 
 ```console
 printf '"%s"' "$(nix run nixpkgs#openssl -- rand -hex 32)" \

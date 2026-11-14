@@ -1,7 +1,7 @@
 { lib, pkgs, ... }:
 
 let
-  ap6255Firmware = pkgs.callPackage ./pkgs/ap6255-firmware.nix { };
+  ap6255Firmware = pkgs.callPackage ../../pkgs/ap6255-firmware.nix { };
 
   youtubeKiosk = pkgs.writeShellScript "youtube-kiosk" ''
     if [ "$USER" != "kiosk" ]; then

@@ -11,7 +11,7 @@ let
 in
 {
   imports = [
-    ../home.nix
+    ../../home.nix
     (import ./gnome.nix { inherit idleDelay lib; })
   ];
 
@@ -28,15 +28,15 @@ in
       pkgs.hyphenDicts.en_US # American English hyphenation for LibreOffice.
       pkgs.hyphenDicts.ru_RU # Russian hyphenation for LibreOffice.
       pkgs.zed-editor
-      (pkgs.callPackage ./pkgs/trik-studio/package.nix { })
-      (pkgs.callPackage ./pkgs/rotki.nix { })
+      (pkgs.callPackage ../../pkgs/trik-studio/package.nix { })
+      (pkgs.callPackage ../../pkgs/rotki.nix { })
     ];
   };
 
   programs.keepassxc.settings.Security.LockDatabaseIdleSeconds = idleDelay;
 
   # Replaces the entry Bitwarden writes itself, which points at the unwrapped
-  # store path and bypasses the wrapper from ../home.nix.
+  # store path and bypasses the wrapper from ../../home.nix.
   # Disable autostart until Bitwarden no longer blocks hibernation (memfd_secret).
   # Check before re-enabling: https://github.com/bitwarden/clients/issues/21661
   xdg.configFile."autostart/bitwarden.desktop" = {

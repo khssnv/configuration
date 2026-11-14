@@ -23,8 +23,9 @@ configuration imports.
 - [nixos/](nixos/) — NixOS and Home Manager configurations. Read the
   [local agent instructions and module map](nixos/AGENTS.md) and
   [setup guide](nixos/README.md). The shared [flake](nixos/flake.nix)
-  defines `d25`, `ux32vd`, and `x1`; `ingress/`, `hypervisor/`,
-  `rockpix/`, and `2.vpsza500/` have separate flakes and READMEs.
+  defines `d25`, `ux32vd`, and `x1`. Host-specific files are in
+  `nixos/hosts/`; `1.hostkey`, `2.vpsza500`, `hypervisor`, `ingress`, and
+  `rockpix` have separate flakes and READMEs there.
 - [rae/](rae/README.md) — Luxonis RAE robot configuration with Ansible.
   [config-dump/](rae/config-dump/README.md) collects snapshots and renders
   [init-config-dump.md](rae/init-config-dump.md); edit the snapshots or

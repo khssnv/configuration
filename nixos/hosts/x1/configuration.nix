@@ -1,17 +1,17 @@
-{ hostName, lib, ... }:
+{ hostName, lib, pkgs, ... }:
 
 {
   imports = [
-    ../configuration.nix
+    ../../configuration.nix
     ./hardware-configuration.nix
   ];
 
   boot = {
-    loader.systemd-boot.enable = true;
+    loader.systemd-boot = {
+      enable = true;
+      consoleMode = "1";
+    };
     loader.efi.canTouchEfiVariables = true;
-
-    initrd.luks.devices."luks-efbfbd18-6370-44b1-a4d0-1de3f0ea6b66".device =
-      "/dev/disk/by-uuid/efbfbd18-6370-44b1-a4d0-1de3f0ea6b66";
   };
 
   networking.hostName = hostName;
@@ -22,6 +22,8 @@
 
   # Disable netdata autostart; start until reboot with `systemctl start netdata` as root.
   systemd.services.netdata.wantedBy = lib.mkForce [ ];
+
+  services.printing.drivers = [ pkgs.brlaser ];
 
   # Static location for desktop features using sunrise/sunset. Coordinates are
   # the Asia/Almaty representative point from tzdata's zone1970.tab
@@ -34,10 +36,6 @@
     staticAltitude = 800;
     staticAccuracy = 20000;
   };
-
-  # Expose the built-in ACPI ambient light sensor to GNOME. Its power plugin
-  # enables ambient brightness control by default when this proxy is present.
-  hardware.sensor.iio.enable = true;
 
   # Keep host lifecycle versions local even while their current values match.
   system.stateVersion = "26.05";

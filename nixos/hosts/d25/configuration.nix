@@ -9,12 +9,12 @@
 
 {
   imports = [
-    ../configuration.nix
+    ../../configuration.nix
     ./hardware-configuration.nix
     ./vllm.nix
-    ./modules/benq-display-pilot-2
-    ./modules/ddcci-backlight
-    ./modules/netinstall
+    ../../modules/benq-display-pilot-2
+    ../../modules/ddcci-backlight
+    ../../modules/netinstall
   ];
 
   boot = {

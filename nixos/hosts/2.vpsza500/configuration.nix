@@ -52,7 +52,7 @@
     };
   };
 
-  sops.defaultSopsFile = ../secrets.yaml;
+  sops.defaultSopsFile = ../../secrets.yaml;
 
   environment.systemPackages = map lib.lowPrio [
     pkgs.curl

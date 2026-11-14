@@ -79,20 +79,20 @@
       nixosConfigurations = {
         d25 = mkHost {
           hostName = "d25";
-          systemModule = ./d25/configuration.nix;
-          homeModule = ./d25/home.nix;
+          systemModule = ./hosts/d25/configuration.nix;
+          homeModule = ./hosts/d25/home.nix;
         };
 
         ux32vd = mkHost {
           hostName = "ux32vd";
-          systemModule = ./ux32vd/configuration.nix;
-          homeModule = ./ux32vd/home.nix;
+          systemModule = ./hosts/ux32vd/configuration.nix;
+          homeModule = ./hosts/ux32vd/home.nix;
         };
 
         x1 = mkHost {
           hostName = "x1";
-          systemModule = ./x1/configuration.nix;
-          homeModule = ./x1/home.nix;
+          systemModule = ./hosts/x1/configuration.nix;
+          homeModule = ./hosts/x1/home.nix;
         };
       };
     };
