@@ -4,6 +4,9 @@
 x/*
 !x/.gitkeep
 
+# Machine-specific agent instructions.
+AGENTS.override.md
+
 # Ansible
 # =======
 
