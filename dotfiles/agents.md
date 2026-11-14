@@ -8,6 +8,12 @@
   speculation.
 - When requesting command output, preserve stdout and stderr in the terminal and
   copy both to the clipboard using `xclip`.
+- Avoid explicitly setting default values in configuration files unless
+  necessary to override behavior, preserve compatibility, or document intent.
+- Unless the user explicitly requests autonomous work, prefer asking clarifying
+  questions over making assumptions about requirements or decisions that
+  materially affect the outcome. Make reasonable assumptions about minor
+  implementation details.
 
 ## Communication Style
 
