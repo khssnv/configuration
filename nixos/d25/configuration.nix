@@ -1,5 +1,6 @@
 {
   hostName,
+  inputs,
   lib,
   pkgs,
   userName,
@@ -13,6 +14,7 @@
     ./vllm.nix
     ./modules/benq-display-pilot-2
     ./modules/ddcci-backlight
+    ./modules/netinstall
   ];
 
   boot = {
@@ -80,6 +82,25 @@
         address: unix:///var/run/docker.sock
         update_every: 10
   '';
+
+  # MikroTik Netinstall.
+  # Use the NixOS module rather than Home Manager to manage firewall ports.
+  programs.netinstall = {
+    enable = true;
+    openFirewall = true;
+  };
+
+  # MikroTik WinBox.
+  # Use the NixOS module rather than Home Manager to manage firewall ports.
+  programs.winbox = {
+    enable = true;
+    openFirewall = true;
+    package =
+      (import inputs.nixpkgs-unstable {
+        inherit (pkgs.stdenv.hostPlatform) system;
+        config.allowUnfree = true;
+      }).winbox;
+  };
 
   # Keep host lifecycle versions local even while their current values match.
   system.stateVersion = "26.05";
