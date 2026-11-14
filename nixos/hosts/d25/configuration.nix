@@ -11,6 +11,7 @@
   imports = [
     ../../configuration.nix
     ./hardware-configuration.nix
+    ./gns3.nix
     ./vllm.nix
     ../../modules/benq-display-pilot-2
     ../../modules/ddcci-backlight
