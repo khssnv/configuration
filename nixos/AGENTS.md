@@ -34,9 +34,6 @@ Paths below are relative to `nixos/`.
   `disk-config.nix`; `2.vpsza500` also runs the Syncthing relay.
 - `hosts/ingress/`, `hosts/hypervisor/` — separate flakes for the ingress VM
   and the KVM/libvirt hypervisor.
-- `README.md` and READMEs in host directories — setup and deployment
-  instructions. `../dotfiles/`, `../scripts/` — files and scripts referenced by
-  Nix modules.
 
 For a change to one host, start in its directory and follow `imports`. Changes
 to shared modules affect every host that imports them.

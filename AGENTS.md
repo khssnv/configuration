@@ -22,10 +22,7 @@ configuration imports.
   NixOS modules also reference files in this directory.
 - [nixos/](nixos/) — NixOS and Home Manager configurations. Read the
   [local agent instructions and module map](nixos/AGENTS.md) and
-  [setup guide](nixos/README.md). The shared [flake](nixos/flake.nix)
-  defines `d25`, `ux32vd`, and `x1`. Host-specific files are in
-  `nixos/hosts/`; `1.hostkey`, `2.vpsza500`, `hypervisor`, `ingress`, and
-  `rockpix` have separate flakes and READMEs there.
+  [setup guide](nixos/README.md).
 - [rae/](rae/README.md) — Luxonis RAE robot configuration with Ansible.
   [config-dump/](rae/config-dump/README.md) collects snapshots and renders
   [init-config-dump.md](rae/init-config-dump.md); edit the snapshots or
@@ -34,8 +31,8 @@ configuration imports.
   [Worktrunk local-file copying](scripts/wt-copy-local/README.md).
 - [terraform/](terraform/README.md) — Proxmox VM provisioning.
   `ingress.tf` and `hypervisor.tf` define the VMs configured by
-  [nixos/ingress/](nixos/ingress/README.md) and
-  [nixos/hypervisor/](nixos/hypervisor/README.md).
+  [nixos/hosts/ingress/](nixos/hosts/ingress/README.md) and
+  [nixos/hosts/hypervisor/](nixos/hosts/hypervisor/README.md).
 
 ## Git Commit Message
 
