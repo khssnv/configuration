@@ -5,6 +5,10 @@
 - For GNOME autostart, use Home Manager's `xdg.autostart.entries` with
   package-provided `.desktop` files. Create custom entries only when launch
   commands or autostart-related settings must differ.
+- Place new configuration options by semantic grouping, importance
+  (general/system-level first, specific/user-level later), and locality of
+  scope, following existing conventions without reordering or moving existing
+  code.
 
 ## Project map
 
