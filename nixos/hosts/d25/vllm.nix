@@ -27,6 +27,7 @@ in
   virtualisation.oci-containers = {
     backend = "docker";
     containers.vllm = {
+      autoStart = false;
       image = "vllm/vllm-openai-cpu:v0.32.0-x86_64@sha256:827ef38187f9b52f2bb838695ef815ec5b65f4bf3e4c061b002b2b0a19cb0701";
 
       volumes = [
