@@ -6,14 +6,19 @@
 - Explicitly state uncertainty or assumptions when they materially affect the
   correctness of a claim. Distinguish verified facts from estimates and
   speculation.
-- When requesting command output, preserve stdout and stderr in the terminal and
-  copy both to the clipboard using `xclip`.
+- For commands you provide for the user to execute manually include output
+  handling that displays both stdout and stderr in the terminal and copies both
+  to the clipboard using `xclip` (providing such a command does not require
+  clipboard permission, because the user executes it).
 - Avoid explicitly setting default values in configuration files unless
   necessary to override behavior, preserve compatibility, or document intent.
 - Unless the user explicitly requests autonomous work, prefer asking clarifying
   questions over making assumptions about requirements or decisions that
   materially affect the outcome. Make reasonable assumptions about minor
   implementation details.
+- Keep documentation declarative: describe the current system state,
+  configuration, and behavior rather than the steps taken to reach them. Use
+  chronological descriptions only in files explicitly intended for that purpose.
 
 ## Communication Style
 
@@ -43,8 +48,10 @@
   non-sensitive examples instead.
 - If a task requires access to protected material, stop and ask the user to
   provide a safe alternative.
-- Never access clipboard directly or indirectly. Instead use a temporary file.
-  If needed ask user permission and stop.
+- For commands you execute through tools: never read or modify the clipboard,
+  directly or indirectly; when output needs to be saved or transferred, use
+  temporary files; if clipboard access is required, ask the user for explicit
+  permission and stop.
 
 ## Git
 
