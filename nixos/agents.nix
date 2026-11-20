@@ -6,20 +6,25 @@
 
 {
   inputs,
+  lib,
   pkgs,
   pkgsUnstable,
   ...
 }:
 
 let
-  # Both agents accept the same value forms here (a directory, a file, or
-  # inline text), so one set covers them. The attribute name becomes the skill
-  # directory name, hence the `/name` command that invokes it.
+  # Both agents share upstream skills and local directories containing SKILL.md.
+  localSkills = lib.mapAttrs (name: _: ../skills + "/${name}") (
+    lib.filterAttrs (
+      name: type: type == "directory" && builtins.pathExists (../skills + "/${name}/SKILL.md")
+    ) (builtins.readDir ../skills)
+  );
   skills = {
     # Upstream ships a skill per directory; `caveman` itself is the compression
     # mode, the rest (caveman-commit, caveman-review, ...) are extras.
     caveman = "${inputs.caveman}/skills/caveman";
-  };
+  }
+  // localSkills;
 in
 {
   home.packages = [
