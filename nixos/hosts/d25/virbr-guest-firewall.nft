@@ -1,0 +1,59 @@
+# Replace only this table atomically on start and reload.
+destroy table inet libvirt_guest_filter
+
+table inet libvirt_guest_filter {
+  # Block private, link-local, shared and special-use destinations.
+  set nonInternetIPv4 {
+    type ipv4_addr;
+    flags interval;
+    elements = {
+      # Private networks (RFC 1918).
+      10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16,
+      # Shared address space for carrier-grade NAT (RFC 6598).
+      100.64.0.0/10,
+      # This network, loopback and link-local addresses.
+      0.0.0.0/8, 127.0.0.0/8, 169.254.0.0/16,
+      # IETF protocol assignments; includes globally reachable .9 and .10.
+      192.0.0.0/24,
+      # Documentation networks (RFC 5737).
+      192.0.2.0/24, 198.51.100.0/24, 203.0.113.0/24,
+      # Network device benchmarking (RFC 2544).
+      198.18.0.0/15,
+      # Multicast.
+      224.0.0.0/4,
+      # Reserved addresses, including limited broadcast 255.255.255.255.
+      240.0.0.0/4
+    };
+  }
+
+  chain dns {
+    type nat hook prerouting priority dstnat - 10; policy accept;
+
+    # DHCP advertises the gateway as DNS. Bypass the host's LAN resolver.
+    iifname $guestNetworkBridge ip daddr $guestNetworkGateway meta l4proto { tcp, udp } th dport 53 dnat ip to 9.9.9.9
+  }
+
+  chain input {
+    # Apply guest restrictions before ordinary firewall accept rules.
+    type filter hook input priority filter - 10; policy accept;
+
+    # DHCP is the only host service available to guests.
+    iifname $guestNetworkBridge ip saddr { 0.0.0.0, 192.168.123.0/24 } ip daddr { $guestNetworkGateway, 192.168.123.255, 255.255.255.255 } udp sport 68 udp dport 67 accept
+    iifname $guestNetworkBridge drop
+  }
+
+  chain forward {
+    type filter hook forward priority filter - 10; policy accept;
+
+    # Restrict IPv4 egress to public addresses via Ethernet or Wi-Fi.
+    iifname $guestNetworkBridge ip daddr @nonInternetIPv4 drop
+    iifname $guestNetworkBridge oifname { "enp129s0", "wlp128s20f3" } ip saddr 192.168.123.0/24 accept
+
+    # Drop other guest traffic, including IPv6.
+    iifname $guestNetworkBridge drop
+
+    # Allow return traffic for connections initiated by guests.
+    oifname $guestNetworkBridge ip daddr 192.168.123.0/24 ct direction reply ct state { established, related } accept
+    oifname $guestNetworkBridge drop
+  }
+}

@@ -13,6 +13,7 @@
     ./hardware-configuration.nix
     ./gns3.nix
     ./vllm.nix
+    ./virtualisation.nix
     ../../modules/benq-display-pilot-2
     ../../modules/ddcci-backlight
     ../../modules/netinstall
